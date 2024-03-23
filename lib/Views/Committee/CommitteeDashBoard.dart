@@ -210,11 +210,11 @@ Future<List<Application>> getAllApplication()async{
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80,top:CustomSize().customHeight(context)/80 ),
-                                    child:Text(snapshot.data![index].name,style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
+                                    child:Text(snapshot.data?[index].name??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80,top:CustomSize().customHeight(context)/80 ),
-                                    child:Text(snapshot.data![index].aridNo,style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
+                                    child:Text(snapshot.data?[index].aridNo??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
                                   ),
                                 ],
                               ),
