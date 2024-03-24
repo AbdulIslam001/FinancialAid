@@ -18,7 +18,7 @@ class EndPoint{
   static String getApplication=baseUrl+"api/Committee/GetApplication";
   static String updateProfileImage=baseUrl+"api/Student/UpdateProfileImage";
   static String committeeMemberInfo=baseUrl+"api/Committee/CommitteeMembers";
-
+  static String documentUrl=baseUrl+"Content/HouseAgreement/";
 
 //  --------------------------
 

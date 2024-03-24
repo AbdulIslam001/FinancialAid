@@ -1,6 +1,8 @@
 
 import 'dart:io';
 
+import 'EvidenceDocument.dart';
+
 class App{
   String name;
   String aridNumber;
@@ -23,6 +25,7 @@ String applicationDate;
   String? occupation;
   String? contactNo;
   String? salary;
+//List<EvidenceDocument?> documents;
   String? salarySlip;
   String? deathCertificate;
   String? gName;
@@ -36,8 +39,7 @@ String applicationDate;
   Application({
     required this.applicationDate,
   required this.profileImage,required this.name,required this.status,required this.semester,required this.degree,required this.fatherName,required this.section,required this.amount,required this.gender,required this.aridNo,required this.cgpa,
-    required this.studentId, required this.reason,required this.agreement,
-    required this.house,required this.occupation,required this.deathCertificate,
-    required this.salarySlip,required this.salary,required this.contactNo,required this.gContact,
-    required this.gName,required this.gRelation});
+    required this.studentId, required this.reason, required this.house,
+    required this.occupation, required this.deathCertificate,required this.salary,required this.agreement,
+    required this.salarySlip, required this.contactNo,required this.gContact, required this.gName,required this.gRelation});
 }
