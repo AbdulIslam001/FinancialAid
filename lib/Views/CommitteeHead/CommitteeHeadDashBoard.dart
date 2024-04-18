@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
@@ -26,133 +24,164 @@ class CommitteeHeadDashBoard extends StatefulWidget {
 }
 
 class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
+  String name = '';
+  String profileImage = '';
+  bool isTrue = false;
 
-  String name='';
-  String profileImage='';
-  bool isTrue=false;
-  Future<void> getAdminData()async{
-    Response res =await AdminApiHandler().getAdminInfo();
-    if(res.statusCode==200){
-      dynamic obj=jsonDecode(res.body);
-      name=obj['Name'].toString();
-      profileImage=obj['ProfilePic'].toString();
-      if(profileImage!=null || profileImage!=''){
-        isTrue=true;
+  Future<void> getAdminData() async {
+    Response res = await AdminApiHandler().getAdminInfo();
+    if (res.statusCode == 200) {
+      dynamic obj = jsonDecode(res.body);
+      name = obj['Name'].toString();
+      profileImage = obj['ProfilePic'].toString();
+      if (profileImage != null || profileImage != '') {
+        isTrue = true;
       }
-    }else if(context.mounted){
+    } else if (context.mounted) {
       Utilis.flushBarMessage("try again later", context);
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
     getAdminData();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:const Text("CommitteeHead"),
-      centerTitle: true,
-      backgroundColor: Theme.of(context).primaryColor,
+      appBar: AppBar(
+        title: const Text("CommitteeHead"),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       drawer: Drawer(
-        width: CustomSize().customWidth(context)/1.8,
+        width: CustomSize().customWidth(context) / 1.8,
         child: ListTile(
           title: Padding(
-            padding: EdgeInsets.only(top:CustomSize().customWidth(context)/10),
+            padding:
+                EdgeInsets.only(top: CustomSize().customWidth(context) / 10),
             child: GestureDetector(
-              onTap: (){},
+              onTap: () {},
               child: FutureBuilder(
                 future: getAdminData(),
                 builder: (context, snapshot) {
-                return CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  radius: CustomSize().customHeight(context) / 13,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                        CustomSize().customHeight(context) / 13),
-                    child:EndPoint.imageUrl+profileImage=="http://192.168.100.11/FinancialAidAllocation/Content/profileImages/"?
-                    Icon(Icons.person,size: CustomSize().customHeight(context)/10):Image(
-                      image: NetworkImage(EndPoint.imageUrl + profileImage),
-                      width: CustomSize().customHeight(context) / 6,
-                      height: CustomSize().customHeight(context) / 6,
-                      fit: BoxFit.fill,
+                  return CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: CustomSize().customHeight(context) / 13,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          CustomSize().customHeight(context) / 13),
+                      child: EndPoint.imageUrl + profileImage ==
+                              EndPoint.imageUrl
+                          ? Icon(Icons.person,
+                              size: CustomSize().customHeight(context) / 10)
+                          : Image(
+                              image: NetworkImage(
+                                  EndPoint.imageUrl + profileImage),
+                              width: CustomSize().customHeight(context) / 6,
+                              height: CustomSize().customHeight(context) / 6,
+                              fit: BoxFit.fill,
+                            ),
                     ),
-                  ),
-                );
-              },),
+                  );
+                },
+              ),
             ),
           ),
-          subtitle:Column(
+          subtitle: Column(
             children: [
               FutureBuilder(
                 future: getAdminData(),
                 builder: (context, snapshot) {
-                return Text(name,style: TextStyle(fontSize: CustomSize().customWidth(context)/15));
-              },),
-              Padding(
-                padding: EdgeInsets.only(top:CustomSize().customWidth(context)/20),
-                child:DrawerCustomButtons(title: "Budget",onTab: (){
-                  Navigator.pushNamed(context, RouteName.budget);
-                }) ,
+                  return Text(name,
+                      style: TextStyle(
+                          fontSize: CustomSize().customWidth(context) / 15));
+                },
               ),
               Padding(
-                padding: EdgeInsets.only(top:CustomSize().customWidth(context)/20),
-                child:DrawerCustomButtons(title: "Student",onTab: ()async{
+                padding: EdgeInsets.only(
+                    top: CustomSize().customWidth(context) / 20),
+                child: DrawerCustomButtons(
+                    title: "Budget",
+                    onTab: () {
+                      Navigator.pushNamed(context, RouteName.budget);
+                    }),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: CustomSize().customWidth(context) / 20),
+                child: DrawerCustomButtons(
+                    title: "Student",
+                    onTab: () async {
 //                  Navigator.pushNamed(context, RouteName.studentRecord);
-                  Response res=await AdminApiHandler().getAllStudent();
-                  List<Student> studentList=[];
-                  if(res.statusCode==200 && context.mounted)
-                  {
-                    dynamic obj=jsonDecode(res.body);
-                    for(var i in obj){
-                      Student s = Student(
-                        aridNo: i["arid_no"].toString(),
-                        name: i["name"].toString(),
-                        semester: int.parse(i["semester"].toString()),
-                        cgpa: double.parse(i["cgpa"].toString()),
-                        section: i["section"].toString(),
-                        degree: i["degree"].toString(),
-                        fatherName: i["father_name"].toString(),
-                        gender: i["gender"].toString(),
-                        studentId: int.parse(i["student_id"].toString()),
-                        profileImage: i["profile_image"].toString(),
-                      );
-                      studentList.add(s);
-                    }
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return StudentRecord(studentList: studentList,);
-                    },));
-                  }
-                }) ,
+                      Response res = await AdminApiHandler().getAllStudent();
+                      List<Student> studentList = [];
+                      if (res.statusCode == 200 && context.mounted) {
+                        dynamic obj = jsonDecode(res.body);
+                        for (var i in obj) {
+                          Student s = Student(
+                            aridNo: i["arid_no"].toString(),
+                            name: i["name"].toString(),
+                            semester: int.parse(i["semester"].toString()),
+                            cgpa: double.parse(i["cgpa"].toString()),
+                            section: i["section"].toString(),
+                            degree: i["degree"].toString(),
+                            fatherName: i["father_name"].toString(),
+                            gender: i["gender"].toString(),
+                            studentId: int.parse(i["student_id"].toString()),
+                            profileImage: i["profile_image"].toString(),
+                          );
+                          studentList.add(s);
+                        }
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return StudentRecord(
+                              studentList: studentList,
+                            );
+                          },
+                        ));
+                      }
+                    }),
               ),
               Padding(
-                padding: EdgeInsets.only(top:CustomSize().customWidth(context)/20),
-                child:DrawerCustomButtons(title: "Policies",onTab: (){}) ,
+                padding: EdgeInsets.only(
+                    top: CustomSize().customWidth(context) / 20),
+                child: DrawerCustomButtons(title: "Policies", onTab: () {}),
               ),
               Padding(
-                padding: EdgeInsets.only(top:CustomSize().customWidth(context)/20),
-                child:DrawerCustomButtons(title: "Faculty",onTab: ()async{
-                   Navigator.pushNamed(context, RouteName.facultyRecord);
-                }) ,
+                padding: EdgeInsets.only(
+                    top: CustomSize().customWidth(context) / 20),
+                child: DrawerCustomButtons(
+                    title: "Faculty",
+                    onTab: () async {
+                      Navigator.pushNamed(context, RouteName.facultyRecord);
+                    }),
               ),
               Padding(
-                padding: EdgeInsets.only(top:CustomSize().customWidth(context)/20),
-                child:DrawerCustomButtons(title: "Committee",onTab: (){
-                  Navigator.pushNamed(context, RouteName.committeeRecord);
-                }) ,
+                padding: EdgeInsets.only(
+                    top: CustomSize().customWidth(context) / 20),
+                child: DrawerCustomButtons(
+                    title: "Committee",
+                    onTab: () {
+                      Navigator.pushNamed(context, RouteName.committeeRecord);
+                    }),
               ),
               SizedBox(
-                height: CustomSize().customHeight(context)/5,
+                height: CustomSize().customHeight(context) / 5,
               ),
-              DrawerCustomButtons(title: "Logout", onTab: () async{
-                SharedPreferences sp = await SharedPreferences.getInstance();
-                sp.clear();
-                if(context.mounted){
-                  Navigator.pushReplacementNamed(context, RouteName.login);
-                }
-              }),
+              DrawerCustomButtons(
+                  title: "Logout",
+                  onTab: () async {
+                    SharedPreferences sp =
+                        await SharedPreferences.getInstance();
+                    sp.clear();
+                    if (context.mounted) {
+                      Navigator.pushReplacementNamed(context, RouteName.login);
+                    }
+                  }),
             ],
           ),
         ),
@@ -167,39 +196,64 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: CustomSize().customHeight(context)/100,
+                  height: CustomSize().customHeight(context) / 100,
                 ),
-                OptionContainer(onTap: (){},image: "Assets/mbl.png",title: "Meritbase Shotlisting"),
-                OptionContainer(onTap: (){}, image: "Assets/c1.png",title: "NeedBase Applications"),
+                OptionContainer(
+                    onTap: () {},
+                    image: "Assets/mbl.png",
+                    title: "Meritbase Shotlisting"),
+                OptionContainer(
+                    onTap: () {
+                      Navigator.pushNamed(context, RouteName.needBaseScreen);
+                    },
+                    image: "Assets/c1.png",
+                    title: "NeedBase Applications"),
               ],
             ),
             SizedBox(
-              height: CustomSize().customHeight(context)/100,
+              height: CustomSize().customHeight(context) / 100,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                OptionContainer(onTap: (){},image: "Assets/ap.png",title: "Accepted Applications"),
-                OptionContainer(onTap: (){}, image: "Assets/ra.png",title: "Rejected Applications"),
+                OptionContainer(
+                    onTap: () async{
+                      Navigator.pushNamed(context, RouteName.acceptedApplication);
+                    },
+                    image: "Assets/ap.png",
+                    title: "Accepted Applications"),
+                OptionContainer(
+                    onTap: () async {
+                      Navigator.pushNamed(context, RouteName.rejectedApplication);
+                    },
+                    image: "Assets/ra.png",
+                    title: "Rejected Applications"),
               ],
             ),
             SizedBox(
-              height: CustomSize().customHeight(context)/100,
+              height: CustomSize().customHeight(context) / 100,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                OptionContainer(onTap: (){
-                  Navigator.pushNamed(context, RouteName.committeeRecord);
-
-                },image: "Assets/audience.png",title: "Committee Members"),
-                OptionContainer(onTap: (){}, image: "Assets/user-graduate.png",title: "Assign graders"),
+                OptionContainer(
+                    onTap: () {
+                      Navigator.pushNamed(context, RouteName.committeeRecord);
+                    },
+                    image: "Assets/audience.png",
+                    title: "Committee Members"),
+                OptionContainer(
+                    image: "Assets/user-graduate.png",
+                    title: "Assign graders",
+                    onTap: () {
+                      Navigator.pushNamed(context, RouteName.graders);
+                    }),
               ],
             ),
             SizedBox(
-              height: CustomSize().customHeight(context)/100,
+              height: CustomSize().customHeight(context) / 100,
             ),
           ],
         ),
@@ -207,5 +261,3 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
     );
   }
 }
-
-

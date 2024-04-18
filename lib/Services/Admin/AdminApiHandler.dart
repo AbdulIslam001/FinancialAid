@@ -80,5 +80,40 @@ class AdminApiHandler{
     var response=await http.post(uri);
     return response.statusCode;
   }
+
+  Future<http.Response> getApplications()async{
+    String apiEndPoint=EndPoint.adminApplication;
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.get(uri);
+    return response;
+  }
+
+  Future<int> rejectApplication(int id)async{
+    String apiEndPoint=EndPoint.rejectApplication+"?applicationid=$id";
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.post(uri);
+    return response.statusCode;
+  }
+
+  Future<int> acceptApplication(int id , int amount)async{
+    String apiEndPoint=EndPoint.acceptApplication+"?amount=$amount&applicationid=$id";
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.post(uri);
+    return response.statusCode;
+  }
+
+  Future<http.Response> acceptedApplication()async{
+    String apiEndPoint=EndPoint.accepted;
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.get(uri);
+    return response;
+  }
+
+  Future<http.Response> rejectedApplication()async{
+    String apiEndPoint=EndPoint.rejected;
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.get(uri);
+    return response;
+  }
 }
 

@@ -16,4 +16,9 @@ class RouteName{
   static const addFacultyMember="AddFacultyMember";
   static const committeeRecord="CommitteeRecord";
   static const   addCommitteeMember ="AddCommitteeMember";
+  static const needBaseScreen="NeedBaseApplication";
+  static const acceptedApplication="Accepted";
+  static const rejectedApplication="Rejected";
+  static const graders="Graders";
+
 }

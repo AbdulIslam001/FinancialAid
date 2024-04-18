@@ -162,7 +162,7 @@ class _AddStudentState extends State<AddStudent> {
                     Consumer<DegreeViewModel>(
                       builder: (context, value, child) {
                         return DropdownButton(
-                          //value: value.selectedValue,
+                          value: value.selectedValue,
                           hint: const Text("--Select--"),
                           onChanged: (e) {
                             DegreeViewModel().setSelectedValue(e.toString());

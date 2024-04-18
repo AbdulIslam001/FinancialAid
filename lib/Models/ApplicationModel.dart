@@ -34,10 +34,13 @@ String applicationDate;
   String house;
   String agreement;
   String reason;
-  String? amount;
+  String amount;
+  String applicationID;
+  List<String>? suggestion;
+  String? applicationStatus;
 
-  Application({
-    required this.applicationDate,
+  Application({this.applicationStatus,
+    required this.applicationDate,required this.applicationID,this.suggestion,
   required this.profileImage,required this.name,required this.status,required this.semester,required this.degree,required this.fatherName,required this.section,required this.amount,required this.gender,required this.aridNo,required this.cgpa,
     required this.studentId, required this.reason, required this.house,
     required this.occupation, required this.deathCertificate,required this.salary,required this.agreement,

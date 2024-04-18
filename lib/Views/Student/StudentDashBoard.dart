@@ -50,9 +50,13 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
     if(res.statusCode==200)
     {
       dynamic obj=jsonDecode(res.body);
-      applicationStatus=obj[0]["applicationStatus"].toString();
-    }else{
-      applicationStatus="Not Submitted";
+      if(obj!=null)
+      {
+        obj["applicationStatus"].toString()!=null?
+        applicationStatus=obj["applicationStatus"].toString():applicationStatus='Not Submitted';
+      }else{
+        applicationStatus='Not Submitted';
+      }
     }
   }
   @override

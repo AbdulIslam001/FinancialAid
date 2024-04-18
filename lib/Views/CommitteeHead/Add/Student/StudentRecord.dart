@@ -75,7 +75,7 @@ class StudentRecord extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(
                                 CustomSize().customHeight(context) / 30),
-                            child:EndPoint.imageUrl+studentList[index].profileImage=="http://192.168.100.11/FinancialAidAllocation/Content/profileImages/null"?(
+                            child:EndPoint.imageUrl+studentList[index].profileImage==EndPoint.imageUrl+"null"||EndPoint.imageUrl+studentList[index].profileImage==EndPoint.imageUrl?(
                              studentList[index].gender=='M'?Image.asset("Assets/male.png"):Image.asset("Assets/female.png"))
                                 :Image(
                               image: NetworkImage(EndPoint.imageUrl + studentList[index].profileImage),

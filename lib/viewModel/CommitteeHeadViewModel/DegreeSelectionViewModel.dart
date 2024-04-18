@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class DegreeViewModel with ChangeNotifier{
 
-  String _selectedValue="";
+  String? _selectedValue;
 
   get selectedValue=>_selectedValue;
 

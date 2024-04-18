@@ -1,5 +1,6 @@
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Utilis/Routes/RouteNavigation.dart';
+import 'package:financial_aid/viewModel/CommitteeHeadViewModel/ApplicationView.dart';
 import 'package:financial_aid/viewModel/CommitteeHeadViewModel/DegreeSelectionViewModel.dart';
 import 'package:financial_aid/viewModel/CommitteeViewModel/AddCommitteeViewModel.dart';
 import 'package:financial_aid/viewModel/LoginViewModel.dart';
@@ -25,6 +26,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=>StudentInfoViewModel()),
         ChangeNotifierProvider(create: (_)=>AddCommitteeViewModel()),
         ChangeNotifierProvider(create: (_)=>FilePickerViewModel()),
+        ChangeNotifierProvider(create: (_)=>ApplicationViewModel()),
+
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
           useMaterial3: true,
         ),
-        initialRoute: RouteName.login,
+        initialRoute: RouteName.splashScreen,
         onGenerateRoute: RoutesNavigation.generateRoute,
       ),
     );

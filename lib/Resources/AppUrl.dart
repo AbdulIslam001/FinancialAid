@@ -19,23 +19,18 @@ class EndPoint{
   static String updateProfileImage=baseUrl+"api/Student/UpdateProfileImage";
   static String committeeMemberInfo=baseUrl+"api/Committee/CommitteeMembers";
   static String documentUrl=baseUrl+"Content/HouseAgreement/";
+  static String giveSuggestion=baseUrl+"api/Committee/GiveSuggestion";
+  static String getBalance=baseUrl+"api/Committee/GetBalance";
+  static String switchRole=baseUrl+"api/User/SwitchRole";
+  static String facultyInfo=baseUrl+"api/Faculty/FacultyInfo";
+  static String adminApplication=baseUrl+"api/Admin/ApplicationSuggestions";
+  static String acceptApplication=baseUrl+"api/Admin/AcceptApplication";
+  static String rejectApplication=baseUrl+"api/Admin/RejectApplication";
+  static String accepted=baseUrl+"api/Admin/AcceptedApplication";
+  static String rejected=baseUrl+"api/Admin/RejectedApplication";
+  static String assignGrader=baseUrl+"api/Admin/AssignGrader";
+  static String meritBaseShortListing=baseUrl+"api/Admin/MeritBaseShortListing";
 
 //  --------------------------
-
-
-  static String signUp=baseUrl+"api/User/createAccount";
-
-  static String updatedPhoto=baseUrl+"api/Employee/GetPhoto";
-  static String markAttendance=baseUrl+"api/Employee/MarkAttendance";
-  static String markLeave=baseUrl+"api/Employee/MarkLeave";
-  static String getAttendance=baseUrl+"api/Employee/GetAttendance";
-  static String getOnlineStudent=baseUrl+"api/Employee/GetOnlineEmployees";
-  static String getLeaveApplications=baseUrl+"/api/Employee/GetLeave";
-  static String leaves=baseUrl+"/api/Employee/Leaves";
-  static String getAllAttendance=baseUrl+"/api/Employee/GetAllAttendance";
-  static String updateAttendance=baseUrl+"/api/Employee/UpdateAttendance";
-  static String getAllEmployees=baseUrl+"/api/Employee/getAllEmployees";
-
-
 
 }

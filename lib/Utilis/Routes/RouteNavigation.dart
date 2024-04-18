@@ -1,11 +1,16 @@
 
 
+import 'package:financial_aid/Views/CommitteeHead/AcceptedApplication.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Budget.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Committee/AddCommitteeMember.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/AddFacultyMember.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/FacultyRecord.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Student/StudentRecord.dart';
 import 'package:financial_aid/Views/CommitteeHead/CommitteeHeadDashBoard.dart';
+import 'package:financial_aid/Views/CommitteeHead/Graders/Grader.dart';
+import 'package:financial_aid/Views/CommitteeHead/NeedBase/NeedBaseApplication.dart';
+import 'package:financial_aid/Views/CommitteeHead/NeedBase/NeedBaseApplicationDetail.dart';
+import 'package:financial_aid/Views/CommitteeHead/RejectedApplication.dart';
 import 'package:financial_aid/Views/Faculty/FacultyDashBoard.dart';
 import 'package:financial_aid/Views/Student/Application/ApplicationForm.dart';
 import 'package:financial_aid/Views/Student/Application/ApplicationForm_one.dart';
@@ -52,6 +57,14 @@ class RoutesNavigation {
         return MaterialPageRoute(builder: (context) => CommitteeRecord());
       case RouteName.addCommitteeMember:
         return MaterialPageRoute(builder: (context) => AddCommitteeMember());
+      case RouteName.needBaseScreen:
+        return MaterialPageRoute(builder: (context) => NeedBaseApplications());
+      case RouteName.acceptedApplication:
+        return MaterialPageRoute(builder: (context) => AcceptedApplication());
+      case RouteName.rejectedApplication:
+        return MaterialPageRoute(builder: (context) => RejectApplication());
+      case RouteName.graders:
+        return MaterialPageRoute(builder: (context) => Graders());
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(
