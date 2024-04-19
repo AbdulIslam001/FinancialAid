@@ -98,7 +98,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(
                         CustomSize().customHeight(context) / 13),
-                    child:EndPoint.imageUrl+profileImage=="http://192.168.100.11/FinancialAidAllocation/Content/profileImages/null"||EndPoint.imageUrl+profileImage=="http://192.168.100.11/FinancialAidAllocation/Content/profileImages/"?
+                    child:EndPoint.imageUrl+profileImage==EndPoint.imageUrl+"null"||EndPoint.imageUrl+profileImage==EndPoint.imageUrl?
                     Icon(Icons.person,size: CustomSize().customHeight(context)/10,):Image(
                       image: NetworkImage(EndPoint.imageUrl + profileImage),
                       width: CustomSize().customHeight(context) / 6,
@@ -161,13 +161,17 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                       if(applicationStatus=='Pending'){
                         Utilis.flushBarMessage("Application already submitted", context);
                       }else{
-                        if(double.parse(cgpa)>=2){
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return ApplicationForm(aridNo: aridNo,cgpa: cgpa,name: name, fatherName: fatherName, semester: semester);
+                        },));
+                        /*if(double.parse(cgpa)>2){
                           Utilis.flushBarMessage("Cgpa is less then the required cgpa", context);
                         }else{
                           Navigator.push(context, MaterialPageRoute(builder: (context) {
                             return ApplicationForm(aridNo: aridNo,cgpa: cgpa,name: name, fatherName: fatherName, semester: semester);
                           },));
-                        }
+                        }*/
                       }
                     },
                     image: "Assets/scholarship.png",

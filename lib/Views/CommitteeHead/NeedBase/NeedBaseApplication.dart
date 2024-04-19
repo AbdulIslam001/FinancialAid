@@ -7,6 +7,7 @@ import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/CommitteeHead/NeedBase/NeedBaseApplicationDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 
 import '../../../Models/ApplicationModel.dart';
 import '../../../Models/EvidenceDocument.dart';
@@ -163,7 +164,6 @@ class NeedBaseApplications extends StatelessWidget {
                                 height: CustomSize().customHeight(context)/4.5,
                                 width: CustomSize().customWidth(context)/1.13,
                                 decoration: BoxDecoration(
-
                                   color: Colors.blueGrey.withOpacity(0.2),
                                   boxShadow: [
                                     BoxShadow(
@@ -196,9 +196,9 @@ class NeedBaseApplications extends StatelessWidget {
                                         ],
                                       ),
                                       child: EndPoint.documentUrl+snapshot.data![index].agreement
-                                          !="http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/" ||
+                                          !=EndPoint.documentUrl ||
                                           EndPoint.documentUrl+snapshot.data![index].agreement
-                                              !="http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/null"?
+                                              !="${EndPoint.documentUrl}/null"?
                                       Image(
                                           height: CustomSize().customHeight(context)/4.5,
                                           width: CustomSize().customWidth(context)/1.13,

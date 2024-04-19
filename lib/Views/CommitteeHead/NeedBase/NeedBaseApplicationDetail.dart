@@ -9,6 +9,7 @@ import 'package:financial_aid/Views/Committee/ApplicationDetails.dart';
 import 'package:financial_aid/viewModel/CommitteeHeadViewModel/ApplicationView.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:provider/provider.dart';
 
 import '../../../Resources/AppUrl.dart';
@@ -111,16 +112,18 @@ class _NeedBaseApplicationDetailsState
                                               EndPoint.documentUrl ||
                                           EndPoint.documentUrl + docsList[i] !=
                                               EndPoint.documentUrl + "null"
-                                      ? Image(
-                                          height: CustomSize()
-                                                  .customHeight(context) /
-                                              3.5,
-                                          width:
-                                              CustomSize().customWidth(context),
-                                          image: NetworkImage(
-                                              EndPoint.documentUrl + docsList[i] ??
-                                                  ""),
-                                          fit: BoxFit.fill)
+                                      ? InstaImageViewer(
+                                        child: Image(
+                                            height: CustomSize()
+                                                    .customHeight(context) /
+                                                3.5,
+                                            width:
+                                                CustomSize().customWidth(context),
+                                            image: NetworkImage(
+                                                EndPoint.documentUrl + docsList[i] ??
+                                                    ""),
+                                            fit: BoxFit.fill),
+                                      )
                                       : Image(
                                           height: CustomSize()
                                                   .customHeight(context) /

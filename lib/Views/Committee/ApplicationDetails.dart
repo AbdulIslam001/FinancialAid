@@ -5,6 +5,7 @@ import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/Student/StudentDashBoard.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 
 import '../../Components/CustomButton.dart';
 import '../../Resources/AppUrl.dart';
@@ -61,13 +62,15 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                           "http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/" ||
                           EndPoint.documentUrl + docsList[i] !=
                               "http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/null"
-                          ? Image(
-                          height: CustomSize().customHeight(context) / 3.5,
-                          width: CustomSize().customWidth(context),
-                          image: NetworkImage(
-                              EndPoint.documentUrl + docsList[i] ?? ""),
-                          fit: BoxFit.fill
-                      )
+                          ? InstaImageViewer(
+                            child: Image(
+                            height: CustomSize().customHeight(context) / 3.5,
+                            width: CustomSize().customWidth(context),
+                            image: NetworkImage(
+                                EndPoint.documentUrl + docsList[i] ?? ""),
+                            fit: BoxFit.fill
+                      ),
+                          )
                           : Image(
                           height: CustomSize().customHeight(context) / 3.5,
                           width: CustomSize().customWidth(context),

@@ -200,9 +200,9 @@ class RejectApplication extends StatelessWidget {
                                           ],
                                         ),
                                         child: EndPoint.documentUrl+snapshot.data![index].agreement
-                                            !="http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/" ||
+                                            !=EndPoint.documentUrl ||
                                             EndPoint.documentUrl+snapshot.data![index].agreement
-                                                !="http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/null"?
+                                                !="${EndPoint.documentUrl}/null"?
                                         Image(
                                             height: CustomSize().customHeight(context)/4.5,
                                             width: CustomSize().customWidth(context)/1.13,
