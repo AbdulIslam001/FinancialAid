@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:financial_aid/Components/InfoContainer.dart';
@@ -24,41 +23,42 @@ class StudentDashBoard extends StatefulWidget {
   State<StudentDashBoard> createState() => _StudentDashBoardState();
 }
 
-String name='';
-String aridNo='';
-int semester=1;
-String fatherName='';
-String cgpa='';
-String applicationStatus="";
-String profileImage="";
+String name = '';
+String aridNo = '';
+int semester = 1;
+String fatherName = '';
+String cgpa = '';
+String applicationStatus = "";
+String profileImage = "";
 
 class _StudentDashBoardState extends State<StudentDashBoard> {
   Future<void> getStudentData() async {
     Response res = await StudentApiHandle().getStudentInfo();
     dynamic obj = jsonDecode(res.body);
-    name=obj["name"].toString();
-    aridNo=obj["arid_no"].toString();
-    fatherName=obj["father_name"].toString();
-    semester=int.parse(obj["semester"].toString());
-    cgpa=obj['cgpa'].toString();
-    profileImage=obj["profile_image"].toString();
-    StudentInfoViewModel().setStudentInfo(obj["name"].toString(),obj["arid_no"].toString());
+    name = obj["name"].toString();
+    aridNo = obj["arid_no"].toString();
+    fatherName = obj["father_name"].toString();
+    semester = int.parse(obj["semester"].toString());
+    cgpa = obj['cgpa'].toString();
+    profileImage = obj["profile_image"].toString();
+    StudentInfoViewModel()
+        .setStudentInfo(obj["name"].toString(), obj["arid_no"].toString());
   }
 
-  Future<void> getApplicationStatus()async{
-    Response res=await StudentApiHandle().applicationStatus();
-    if(res.statusCode==200)
-    {
-      dynamic obj=jsonDecode(res.body);
-      if(obj!=null)
-      {
-        obj["applicationStatus"].toString()!=null?
-        applicationStatus=obj["applicationStatus"].toString():applicationStatus='Not Submitted';
-      }else{
-        applicationStatus='Not Submitted';
+  Future<void> getApplicationStatus() async {
+    Response res = await StudentApiHandle().applicationStatus();
+    if (res.statusCode == 200) {
+      dynamic obj = jsonDecode(res.body);
+      if (obj != null) {
+        obj["applicationStatus"].toString() != null
+            ? applicationStatus = obj["applicationStatus"].toString()
+            : applicationStatus = 'Not Submitted';
+      } else {
+        applicationStatus = 'Not Submitted';
       }
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -66,6 +66,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
     getStudentData();
     getApplicationStatus();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,38 +91,52 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
             padding:
                 EdgeInsets.only(top: CustomSize().customWidth(context) / 10),
             child: GestureDetector(
-              onTap: (){},
-              child: FutureBuilder(future: getStudentData(),builder: (context, snapshot) {
-                return CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  radius: CustomSize().customHeight(context) / 13,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                        CustomSize().customHeight(context) / 13),
-                    child:EndPoint.imageUrl+profileImage==EndPoint.imageUrl+"null"||EndPoint.imageUrl+profileImage==EndPoint.imageUrl?
-                    Icon(Icons.person,size: CustomSize().customHeight(context)/10,):Image(
-                      image: NetworkImage(EndPoint.imageUrl + profileImage),
-                      width: CustomSize().customHeight(context) / 6,
-                      height: CustomSize().customHeight(context) / 6,
-                      fit: BoxFit.fill,
+              onTap: () {},
+              child: FutureBuilder(
+                future: getStudentData(),
+                builder: (context, snapshot) {
+                  return CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: CustomSize().customHeight(context) / 13,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          CustomSize().customHeight(context) / 13),
+                      child: EndPoint.imageUrl + profileImage ==
+                                  EndPoint.imageUrl + "null" ||
+                              EndPoint.imageUrl + profileImage ==
+                                  EndPoint.imageUrl
+                          ? Icon(
+                              Icons.person,
+                              size: CustomSize().customHeight(context) / 10,
+                            )
+                          : Image(
+                              image: NetworkImage(
+                                  EndPoint.imageUrl + profileImage),
+                              width: CustomSize().customHeight(context) / 6,
+                              height: CustomSize().customHeight(context) / 6,
+                              fit: BoxFit.fill,
+                            ),
                     ),
-                  ),
-                );
-              },),
+                  );
+                },
+              ),
             ),
           ),
           subtitle: Column(
             children: [
               SizedBox(
-                height: CustomSize().customHeight(context)/1.4,
+                height: CustomSize().customHeight(context) / 1.4,
               ),
-              DrawerCustomButtons(title: "Logout", onTab: () async{
-                SharedPreferences sp = await SharedPreferences.getInstance();
-                sp.clear();
-                if(context.mounted){
-                  Navigator.pushReplacementNamed(context, RouteName.login);
-                }
-              }),
+              DrawerCustomButtons(
+                  title: "Logout",
+                  onTab: () async {
+                    SharedPreferences sp =
+                        await SharedPreferences.getInstance();
+                    sp.clear();
+                    if (context.mounted) {
+                      Navigator.pushReplacementNamed(context, RouteName.login);
+                    }
+                  }),
             ],
           ),
         ),
@@ -133,21 +148,22 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
               height: CustomSize().customHeight(context) / 100,
             ),
             FutureBuilder(
-              future: getStudentData(), builder: (context, snapshot) {
-              return Consumer<StudentInfoViewModel>(
-                builder: (context, value, child) {
-                  return InfoContainer(
-                      name:name,
-                      aridNo:aridNo,
-                      status: applicationStatus);
-                },);
-            },),
+              future: getStudentData(),
+              builder: (context, snapshot) {
+                return Consumer<StudentInfoViewModel>(
+                  builder: (context, value, child) {
+                    return InfoContainer(
+                        name: name, aridNo: aridNo, status: applicationStatus);
+                  },
+                );
+              },
+            ),
             SizedBox(
               height: CustomSize().customHeight(context) / 100,
             ),
             Visibility(
-              visible: applicationStatus=='Not Submitted'?true:false,
-                child:const  Text("Apply before 01/03/2024"),
+              visible: applicationStatus == 'Not Submitted' ? true : false,
+              child: const Text("Apply before 01/03/2024"),
             ),
             SizedBox(
               height: CustomSize().customHeight(context) / 100,
@@ -158,13 +174,20 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
               children: [
                 OptionContainer(
                     onTap: () {
-                      if(applicationStatus=='Pending'){
-                        Utilis.flushBarMessage("Application already submitted", context);
-                      }else{
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return ApplicationForm(aridNo: aridNo,cgpa: cgpa,name: name, fatherName: fatherName, semester: semester);
-                        },));
+                      if (applicationStatus == 'Pending') {
+                        Utilis.flushBarMessage(
+                            "Application already submitted", context);
+                      } else {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return ApplicationForm(
+                                aridNo: aridNo,
+                                cgpa: cgpa,
+                                name: name,
+                                fatherName: fatherName,
+                                semester: semester);
+                          },
+                        ));
                         /*if(double.parse(cgpa)>2){
                           Utilis.flushBarMessage("Cgpa is less then the required cgpa", context);
                         }else{
