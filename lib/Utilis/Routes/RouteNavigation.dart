@@ -5,6 +5,7 @@ import 'package:financial_aid/Views/CommitteeHead/Add/Budget.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Committee/AddCommitteeMember.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/AddFacultyMember.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/FacultyRecord.dart';
+import 'package:financial_aid/Views/CommitteeHead/Add/Policy/AddPolicy.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Student/StudentRecord.dart';
 import 'package:financial_aid/Views/CommitteeHead/CommitteeHeadDashBoard.dart';
 import 'package:financial_aid/Views/CommitteeHead/Graders/Grader.dart';
@@ -65,6 +66,8 @@ class RoutesNavigation {
         return MaterialPageRoute(builder: (context) => RejectApplication());
       case RouteName.graders:
         return MaterialPageRoute(builder: (context) => Graders());
+      case RouteName.addPolicy:
+        return MaterialPageRoute(builder: (context) => AddPolice());
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(

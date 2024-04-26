@@ -149,7 +149,9 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
               Padding(
                 padding: EdgeInsets.only(
                     top: CustomSize().customWidth(context) / 20),
-                child: DrawerCustomButtons(title: "Policies", onTab: () {}),
+                child: DrawerCustomButtons(title: "Policies", onTab: () {
+                  Navigator.pushNamed(context, RouteName.addPolicy);
+                }),
               ),
               Padding(
                 padding: EdgeInsets.only(

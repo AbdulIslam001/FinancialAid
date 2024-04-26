@@ -115,5 +115,37 @@ class AdminApiHandler{
     var response=await http.get(uri);
     return response;
   }
+
+  Future<int> addStudent(
+      String name,
+      String password,
+      String aridNo,
+      String semester,
+      String gender,
+      String section,
+      File image,
+      String fatherName,
+      String degree,
+      String cgpa
+      )async{
+    String apiEndPoint=EndPoint.addStudent;
+    Uri uri=Uri.parse(apiEndPoint);
+    http.MultipartRequest request=http.MultipartRequest('POST',uri);
+    request.fields["name"]=name;
+    request.fields["cgpa"]=cgpa;
+    request.fields["semester"]=semester;
+    request.fields["aridno"]=aridNo;
+    request.fields["gender"]=gender;
+    request.fields["fathername"]=fatherName;
+    request.fields["degree"]=degree;
+    request.fields["section"]=section;
+    request.fields["password"]=password;
+    http.MultipartFile pic=await http.MultipartFile.
+    fromPath("pic",image.path);
+    request.files.add(pic);
+    var response =await request.send();
+    return response.statusCode;
+  }
+
 }
 

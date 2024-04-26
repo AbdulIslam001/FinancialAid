@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:financial_aid/Components/CustomButton.dart';
+import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
+import 'package:financial_aid/Utilis/FlushBar.dart';
+import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/viewModel/CommitteeHeadViewModel/DegreeSelectionViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../../../../Resources/CustomSize.dart';
 
 class AddStudent extends StatefulWidget {
-
   AddStudent({super.key});
 
   @override
@@ -17,8 +19,11 @@ class AddStudent extends StatefulWidget {
 }
 
 class _AddStudentState extends State<AddStudent> {
-
   final TextEditingController _name = TextEditingController();
+
+  final TextEditingController _semester = TextEditingController();
+
+  final TextEditingController _cgpa = TextEditingController();
 
   final TextEditingController _aridNo = TextEditingController();
 
@@ -26,13 +31,18 @@ class _AddStudentState extends State<AddStudent> {
 
   final TextEditingController _fatherName = TextEditingController();
 
+  final TextEditingController _password = TextEditingController();
+
+  String degreeSelected="BSCS";
+
   FocusNode name = FocusNode();
   FocusNode aridNo = FocusNode();
 
   FocusNode section = FocusNode();
   FocusNode fatherName = FocusNode();
 
-  String gVal = "";
+  String gVal = "Male";
+  String selectedVal="BSCS";
   File? pickedImage;
   List<String> degrees = ["BSCS", "BSIT", "BSAI", "BSSE"];
 
@@ -115,6 +125,41 @@ class _AddStudentState extends State<AddStudent> {
                             CustomSize().customWidth(context) / 20)),
                   ),
                 ),
+                SizedBox(
+                  height: CustomSize().customWidth(context) / 60,
+                ),
+                TextFormField(
+                  onFieldSubmitted: (e) {
+                    FocusScope.of(context).requestFocus(fatherName);
+                  },
+                  controller: _semester,
+                  decoration: InputDecoration(
+                    labelText: "semester",
+                    hintText: "semester",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                            CustomSize().customWidth(context) / 20)),
+                  ),
+                ),
+                SizedBox(
+                  height: CustomSize().customWidth(context) / 60,
+                ),
+                Visibility(
+                  visible: _semester.text == '1' ? false : true,
+                  child: TextFormField(
+                    onFieldSubmitted: (e) {
+                      FocusScope.of(context).requestFocus(fatherName);
+                    },
+                    controller: _cgpa,
+                    decoration: InputDecoration(
+                      labelText: "cgpa",
+                      hintText: "cgpa",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              CustomSize().customWidth(context) / 20)),
+                    ),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -158,23 +203,28 @@ class _AddStudentState extends State<AddStudent> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("Select Degree",style: TextStyle(fontSize:CustomSize().customWidth(context) / 22),),
+                    Text(
+                      "Select Degree",
+                      style: TextStyle(
+                          fontSize: CustomSize().customWidth(context) / 22),
+                    ),
                     Consumer<DegreeViewModel>(
                       builder: (context, value, child) {
                         return DropdownButton(
-                          value: value.selectedValue,
+                          value: selectedVal,
                           hint: const Text("--Select--"),
                           onChanged: (e) {
-                            DegreeViewModel().setSelectedValue(e.toString());
+                            selectedVal=e.toString();
+                            setState(() {});
                           },
-                            items: degrees.map((e) {
-                              return DropdownMenuItem(
-                                value: e.toString(),
-                                child: Text(
-                                  e.toString(),
-                                ),
-                              );
-                            }).toList(),
+                          items: degrees.map((e) {
+                            return DropdownMenuItem(
+                              value: e.toString(),
+                              child: Text(
+                                e.toString(),
+                              ),
+                            );
+                          }).toList(),
                         );
                       },
                     ),
@@ -197,12 +247,48 @@ class _AddStudentState extends State<AddStudent> {
                   ),
                 ),
                 SizedBox(
+                  height: CustomSize().customWidth(context) / 60,
+                ),
+                TextFormField(
+                  onFieldSubmitted: (e) {
+                    FocusScope.of(context).requestFocus(fatherName);
+                  },
+                  controller: _password,
+                  decoration: InputDecoration(
+                    labelText: "password",
+                    hintText: "password",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                            CustomSize().customWidth(context) / 20)),
+                  ),
+                ),
+                SizedBox(
                   height: CustomSize().customWidth(context) / 5,
                 ),
                 CustomButton(
                   title: "Add",
                   loading: false,
-                  onTap: () {},
+                  onTap: () async {
+                    int code = await AdminApiHandler().addStudent(
+                        _name.text,
+                        _password.text,
+                        _aridNo.text,
+                        _semester.text,
+                        gVal,
+                        _section.text,
+                        pickedImage!.absolute,
+                        _fatherName.text,
+                        selectedVal,
+                        _cgpa.text);
+                    if (context.mounted) {
+                      if (code == 200) {
+                        Utilis.flushBarMessage("Add Successfully", context);
+                        Navigator.pop(context);
+                      } else {
+                        Utilis.flushBarMessage("error!!", context);
+                      }
+                    }
+                  },
                 ),
               ],
             ),
