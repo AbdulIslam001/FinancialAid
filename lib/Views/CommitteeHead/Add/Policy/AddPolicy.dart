@@ -58,39 +58,42 @@ class _AddPoliceState extends State<AddPolice> {
                 })
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    Radio(value: "CGPA", groupValue: gVal, onChanged: (e){
-                      gVal=e.toString();
-                      hintStr="Min cgpa required";
-                      isTrue=false;
-                      setState(() {
+            Visibility(
+              visible: isTrue,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Radio(value: "CGPA", groupValue: gVal, onChanged: (e){
+                        gVal=e.toString();
+                        hintStr="Min cgpa required";
+                        isTrue=false;
+                        setState(() {
 
-                      });
-                    }),
-                    const Text("CGPA")
-                  ],
-                ),
-                SizedBox(
-                  width: CustomSize().customWidth(context)/10,
-                ),
-                Row(
-                  children: [
-                    Radio(value: "STRENGTH", groupValue: gVal, onChanged: (e){
-                      gVal=e.toString();
-                      hintStr="Min Strength";
-                      isTrue=true;
-                      setState(() {
+                        });
+                      }),
+                      const Text("CGPA")
+                    ],
+                  ),
+                  SizedBox(
+                    width: CustomSize().customWidth(context)/10,
+                  ),
+                  Row(
+                    children: [
+                      Radio(value: "STRENGTH", groupValue: gVal, onChanged: (e){
+                        gVal=e.toString();
+                        hintStr="Min Strength";
+                        isTrue=true;
+                        setState(() {
 
-                      });
-                    }),
-                    const Text("STRENGTH")
-                  ],
-                ),
-              ],
+                        });
+                      }),
+                      const Text("STRENGTH")
+                    ],
+                  ),
+                ],
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
