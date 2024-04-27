@@ -47,6 +47,8 @@ class AdminApiHandler{
   }
 
 //////////////Faculty//////////////////
+
+
   Future<int> addFacultyMember(String name , String contactNo,String password , File image)async{
     String apiEndPoint = EndPoint.addFacultyMember;
     Uri uri=Uri.parse(apiEndPoint);
