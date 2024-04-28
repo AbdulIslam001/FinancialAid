@@ -1,7 +1,11 @@
 
 
 import 'package:financial_aid/Components/CustomButton.dart';
+import 'package:financial_aid/Models/PolicyModel.dart';
 import 'package:financial_aid/Resources/CustomSize.dart';
+import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
+import 'package:financial_aid/Utilis/FlushBar.dart';
+import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:flutter/material.dart';
 
 class AddPolice extends StatefulWidget {
@@ -15,8 +19,12 @@ class _AddPoliceState extends State<AddPolice> {
 
   String hintStr="Min cgpa required";
   bool isTrue=false;
+  bool isRadio=false;
 
   List<String> policyFor=["NeedBase","MeritBase"];
+
+  List<String> strength=["1","2","3"];
+  String strengthVal="1";
 
   final TextEditingController _val1=TextEditingController();
   final TextEditingController _val2=TextEditingController();
@@ -54,12 +62,17 @@ class _AddPoliceState extends State<AddPolice> {
                     }).toList(),
                     onChanged: (val){
                     selectedVal=val.toString();
+                    if(val=="MeritBase"){
+                      isRadio=true;
+                    }else if(val=="NeedBase"){
+                      isRadio=false;
+                    }
                     setState((){});
                 })
               ],
             ),
             Visibility(
-              visible: isTrue,
+              visible: isRadio,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -129,20 +142,28 @@ class _AddPoliceState extends State<AddPolice> {
               visible: isTrue,
               child: Padding(
                 padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
-                child: TextFormField(
-                  onChanged: (val){},
-                  controller: _amount,
-                  decoration: InputDecoration(
-                    hintText: "Amount",
-                    labelText: "Amount",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
-                    ),
-                  ),
+                child: Row(
+                  children: [
+                    const Text("Top :"),
+                    DropdownButton(
+                      value: strengthVal,
+                        hint:const Text("Select"),
+                        items: strength.map((e) {
+                      return DropdownMenuItem(
+                          value: e.toString(),
+                          child: Text(e.toString()));
+                    }).toList(),
+                        onChanged: (val){
+                        strengthVal=val.toString();
+                          setState((){});
+                    }),
+                    const Text("Student will get"),
+
+                  ],
                 ),
               ),
             ),
-            Padding(
+/*            Padding(
               padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
               child: TextFormField(
                 onChanged: (val){},
@@ -155,7 +176,7 @@ class _AddPoliceState extends State<AddPolice> {
                   ),
                 ),
               ),
-            ),
+            ),*/
             SizedBox(
               height: CustomSize().customHeight(context)/10,
             ),
@@ -166,7 +187,20 @@ class _AddPoliceState extends State<AddPolice> {
                 SizedBox(
                   width: CustomSize().customWidth(context)/15,
                 ),
-                CustomButton(title: "Add", loading: false),
+                CustomButton(title: "Add", loading: false,onTap: ()async{
+                  PolicyModel pm = PolicyModel(policyFor: selectedVal, strength: int.parse(strengthVal),
+                      policy: gVal, val1: _val1.text, val2: _val2.text);
+                  int code=await AdminApiHandler().addPolicy(pm);
+                  if(context.mounted){
+                    if(code==200){
+                      Utilis.flushBarMessage("Added", context);
+                      Navigator.pushReplacementNamed(context,RouteName.policy);
+                    }
+                    else{
+                      Utilis.flushBarMessage("Added", context);
+                    }
+                  }
+                }),
               ],
             )
           ],

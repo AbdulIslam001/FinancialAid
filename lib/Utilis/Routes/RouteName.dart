@@ -20,5 +20,6 @@ class RouteName{
   static const acceptedApplication="Accepted";
   static const rejectedApplication="Rejected";
   static const graders="Graders";
+  static const policy="Policy";
   static const addPolicy="AddPolicy";
 }

@@ -31,6 +31,7 @@ class EndPoint{
   static String assignGrader=baseUrl+"api/Admin/AssignGrader";
   static String meritBaseShortListing=baseUrl+"api/Admin/MeritBaseShortListing";
   static String addStudent=baseUrl+"api/Admin/AddStudent";
+  static String addPolicies=baseUrl+"api/Admin/AddPolicies";
 //  --------------------------
 
 }

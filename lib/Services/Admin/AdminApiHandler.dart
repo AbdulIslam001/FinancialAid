@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:financial_aid/Models/PolicyModel.dart';
 import 'package:financial_aid/Resources/AppUrl.dart';
 import 'package:http/http.dart'as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -149,5 +150,11 @@ class AdminApiHandler{
     return response.statusCode;
   }
 
+  Future<int> addPolicy(PolicyModel pm)async{
+    String apiEndPoint=EndPoint.addPolicies+"?pm=$pm";
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.post(uri);
+    return response.statusCode;
+  }
 }
 
