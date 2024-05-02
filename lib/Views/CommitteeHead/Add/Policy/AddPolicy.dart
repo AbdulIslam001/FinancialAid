@@ -188,7 +188,7 @@ class _AddPoliceState extends State<AddPolice> {
                   width: CustomSize().customWidth(context)/15,
                 ),
                 CustomButton(title: "Add", loading: false,onTap: ()async{
-                  PolicyModel pm = PolicyModel(policyFor: selectedVal, strength: int.parse(strengthVal),
+                  PolicyModel pm = PolicyModel(description: " ",policyFor: selectedVal, strength: int.parse(strengthVal),
                       policy: gVal, val1: _val1.text, val2: _val2.text);
                   int code=await AdminApiHandler().addPolicy(pm);
                   if(context.mounted){
@@ -197,7 +197,7 @@ class _AddPoliceState extends State<AddPolice> {
                       Navigator.pushReplacementNamed(context,RouteName.policy);
                     }
                     else{
-                      Utilis.flushBarMessage("Added", context);
+                      Utilis.flushBarMessage("Error", context);
                     }
                   }
                 }),

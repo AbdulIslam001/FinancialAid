@@ -151,7 +151,7 @@ class AdminApiHandler{
   }
 
   Future<int> addPolicy(PolicyModel pm)async{
-    String apiEndPoint=EndPoint.addPolicies+"?pm=$pm";
+    String apiEndPoint=EndPoint.addPolicies+"?pm$pm";
     Uri uri=Uri.parse(apiEndPoint);
     var response=await http.post(uri);
     return response.statusCode;

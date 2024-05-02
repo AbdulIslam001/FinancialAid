@@ -44,6 +44,7 @@ dependencies:
   iconly: ^1.0.1
   data_table_2: ^2.5.10
   insta_image_viewer:
+  carousel_slider: ^4.2.1
 
   pie_chart: ^5.4.0
 
