@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:financial_aid/Components/ApplicationView.dart';
 import 'package:financial_aid/Components/CustomButton.dart';
 import 'package:financial_aid/Models/ApplicationModel.dart';
@@ -36,10 +37,14 @@ class _NeedBaseApplicationDetailsState
   @override
   Widget build(BuildContext context) {
     _reason.text = widget.application.reason;
-    List<String> docsList = [widget.application.agreement];
+    List<String> docsList = [];
     if (widget.application.salarySlip != null ||
         widget.application.salarySlip != '') {
       docsList.add(widget.application.salarySlip ?? "");
+    }
+    if (widget.application.agreement != null ||
+        widget.application.agreement != '') {
+      docsList.add(widget.application.agreement?? "");
     }
     if (widget.application.deathCertificate != null ||
         widget.application.deathCertificate != '') {
@@ -91,7 +96,53 @@ class _NeedBaseApplicationDetailsState
                       visible: value.isTrue,
                       child: Column(
                         children: [
-                          Stack(
+                          CarouselSlider(
+                            options: CarouselOptions(),
+                            items: docsList.map((e){
+                              return Container(
+                                height:
+                                CustomSize().customHeight(context) / 3.5,
+                                width: CustomSize().customWidth(context),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(
+                                          CustomSize().customHeight(context) /
+                                              30),
+                                      bottomRight: Radius.circular(
+                                          CustomSize().customHeight(context) /
+                                              30)),
+                                  //  border: Border.all()
+                                ),
+                                child: EndPoint.houseAgreement + e.toString() !=
+                                    EndPoint.houseAgreement ||
+                                    EndPoint.houseAgreement + e.toString() !=
+                                        EndPoint.houseAgreement + "null"
+                                    ? InstaImageViewer(
+                                  child: Image(
+                                      height: CustomSize()
+                                          .customHeight(context) /
+                                          3.5,
+                                      width:
+                                      CustomSize().customWidth(context),
+                                      image: NetworkImage(
+                                        e.startsWith("s")?EndPoint.salarySlip+ e.toString():
+                                        e.startsWith("d")?EndPoint.deathCertificate+ e.toString():
+                                        EndPoint.houseAgreement + e.toString()
+                                      ),
+                                      fit: BoxFit.fill),
+                                )
+                                    : Image(
+                                    height: CustomSize()
+                                        .customHeight(context) /
+                                        3.5,
+                                    width:
+                                    CustomSize().customWidth(context),
+                                    fit: BoxFit.fill,
+                                    image: const AssetImage("Assets/c1.png")),
+                              );
+                            }).toList(),
+                          ),
+/*                          Stack(
                             children: [
                               Positioned(
                                 child: Container(
@@ -134,7 +185,7 @@ class _NeedBaseApplicationDetailsState
                                           image: const AssetImage("Assets/c1.png")),
                                 ),
                               ),
-                              Positioned(
+*//*                              Positioned(
                                   right: CustomSize().customWidth(context) / 70,
                                   top: CustomSize().customWidth(context) / 4,
                                   child: GestureDetector(
@@ -165,9 +216,9 @@ class _NeedBaseApplicationDetailsState
                                         size:
                                             CustomSize().customWidth(context) /
                                                 7,
-                                      ))),
+                                      ))),*//*
                             ],
-                          ),
+                          ),*/
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [

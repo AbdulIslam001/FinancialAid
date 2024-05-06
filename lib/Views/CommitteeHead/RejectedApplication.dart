@@ -199,14 +199,14 @@ class RejectApplication extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        child: EndPoint.documentUrl+snapshot.data![index].agreement
-                                            !=EndPoint.documentUrl ||
-                                            EndPoint.documentUrl+snapshot.data![index].agreement
-                                                !="${EndPoint.documentUrl}/null"?
+                                        child: EndPoint.houseAgreement+snapshot.data![index].agreement
+                                            !=EndPoint.houseAgreement ||
+                                            EndPoint.houseAgreement+snapshot.data![index].agreement
+                                                !="${EndPoint.houseAgreement}/null"?
                                         Image(
                                             height: CustomSize().customHeight(context)/4.5,
                                             width: CustomSize().customWidth(context)/1.13,
-                                            image: NetworkImage(EndPoint.documentUrl+snapshot.data![index].agreement??""),
+                                            image: NetworkImage(EndPoint.houseAgreement+snapshot.data![index].agreement??""),
                                             fit: BoxFit.fill):
                                         const Image(image: AssetImage("Assets/c1.png")),
                                       ),

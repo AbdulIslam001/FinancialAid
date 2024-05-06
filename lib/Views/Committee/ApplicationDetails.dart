@@ -58,16 +58,16 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                                 CustomSize().customHeight(context) / 30)),
                         //  border: Border.all()
                       ),
-                      child: EndPoint.documentUrl + docsList[i] !=
+                      child: EndPoint.houseAgreement + docsList[i] !=
                           "http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/" ||
-                          EndPoint.documentUrl + docsList[i] !=
+                          EndPoint.houseAgreement + docsList[i] !=
                               "http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/null"
                           ? InstaImageViewer(
                             child: Image(
                             height: CustomSize().customHeight(context) / 3.5,
                             width: CustomSize().customWidth(context),
                             image: NetworkImage(
-                                EndPoint.documentUrl + docsList[i] ?? ""),
+                                EndPoint.houseAgreement + docsList[i] ?? ""),
                             fit: BoxFit.fill
                       ),
                           )
