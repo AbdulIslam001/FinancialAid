@@ -161,10 +161,13 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
             SizedBox(
               height: CustomSize().customHeight(context) / 100,
             ),
-            Visibility(
-              visible: applicationStatus == 'Not Submitted' ? true : false,
-              child: const Text("Apply before 01/03/2024"),
-            ),
+            Consumer<StudentInfoViewModel>(
+              builder: (context, value, child) {
+              return Visibility(
+                visible: applicationStatus == 'Not Submitted' ? true : false,
+                child: const Text("Apply before 01/03/2024"),
+              );
+            },),
             SizedBox(
               height: CustomSize().customHeight(context) / 100,
             ),

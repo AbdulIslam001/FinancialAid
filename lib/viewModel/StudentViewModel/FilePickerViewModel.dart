@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -11,11 +12,23 @@ class FilePickerViewModel with ChangeNotifier{
 
   final imagePicker=ImagePicker();
 
+  int _length=0;
+
+  get length=>_length;
+
+  setLength(int l){
+    _length=l;
+    notifyListeners();
+  }
 //  File? _pickedCertificate;
 
   File? _pickedDocs;
 
   File? _pickedAgreement;
+
+  List<File> _houseAgreement=[];
+
+  get houseAgreement=>_houseAgreement;
 
   bool _certificateStatus=false;
 
@@ -73,11 +86,14 @@ class FilePickerViewModel with ChangeNotifier{
   }
 
   Future<void> setDeathCertificate()async{
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'docx','jpeg','png'],
+    );
 
-    XFile? deathCertificate=await pickSingleFile();
-    if(deathCertificate!=null)
-    {
-      _pickedDocs=File(deathCertificate.path);
+    if (result != null) {
+      File file = File(result.files.single.path!,);
+      _pickedDocs=File(file.path);
       setCertificateStatus(true);
       setSlipStatus(false);
       notifyListeners();
@@ -95,11 +111,44 @@ class FilePickerViewModel with ChangeNotifier{
     }
   }
 
+  Future<void> setDocs1()async{
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'docx','jpeg','png'],
+    );
+
+    if (result != null) {
+      File file = File(result.files.single.path!,);
+      _pickedDocs=File(file.path);
+      setSlipStatus(true);
+      setCertificateStatus(false);
+      notifyListeners();
+    }
+  }
+
   Future<void> setAgreement()async{
     XFile? agreement=await pickSingleFile();
         _pickedAgreement=File(agreement!.path);
       setAgreementStatus(true);
       notifyListeners();
+  }
+
+  Future<void> setAgreement1()async{
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'docx','jpeg','png'],
+    );
+
+    if (result != null) {
+      List<File> files = result.paths.map((path) => File(path!)).toList();
+      for(int i =0; i<files.length;i++){
+        _houseAgreement.add(files[i]);
+      }
+      setLength(files.length);
+    }
+    setAgreementStatus(true);
+    notifyListeners();
   }
 
 }

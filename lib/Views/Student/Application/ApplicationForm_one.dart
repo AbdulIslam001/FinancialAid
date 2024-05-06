@@ -108,7 +108,7 @@ class _ApplicationFormOneState extends State<ApplicationFormOne> {
                               : const Text("Rental Agreement"),
                           TextButton(
                             onPressed: () {
-                              value.setAgreement();
+                              value.setAgreement1();
                             },
                             child: const Text("Upload"),
                           ),
@@ -201,12 +201,14 @@ class _ApplicationFormOneState extends State<ApplicationFormOne> {
                                   }else{
                                     SharedPreferences sp = await SharedPreferences.getInstance();
                                     int? id=sp.getInt('id');
-                                    int code=await StudentApiHandle().sendApplication(value.slipStatus,widget.status,
+                                    int code=await StudentApiHandle().sendApplication(
+                                        value.length,
+                                        value.slipStatus,widget.status,
                                           widget.fatherOccupation!, widget.contactNo!,
                                           widget.salary!, widget.docs?.absolute,
                                           widget.guardianName,
                                           widget.guardianContact, widget.guardianRelation, gVal.toString(),
-                                          value.pickedAgreement, _reason.text.toString(), _requiredAmount.text.toString(),
+                                          value.houseAgreement, _reason.text.toString(), _requiredAmount.text.toString(),
                                           id.toString());
                                       if(code==200 && context.mounted){
                                         Utilis.flushBarMessage("Application Submitted", context);

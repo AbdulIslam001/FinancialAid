@@ -199,7 +199,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
                           children: [
                             Text("Salary Slip",style: TextStyle(fontSize: CustomSize().customHeight(context)/50)),
                             TextButton(onPressed: (){
-                              value.setDocs();
+                              value.setDocs1();
                             }, child:const Text("Upload"),),
                             Center(
                               child: value.slipStatus?const Icon(Icons.check,color: Colors.blue,):const Text(""),

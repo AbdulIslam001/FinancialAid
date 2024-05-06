@@ -15,7 +15,7 @@ class StudentApiHandle {
     return response;
   }
 
-  Future<int> sendApplication(bool isPicked,String status,String? occupation,String? contactNo,String? salary,File? docs,String? gName, String? gContact, String? gRelation, String house,File agreement,
+  Future<int> sendApplication(int length,bool isPicked,String status,String? occupation,String? contactNo,String? salary,File? docs,String? gName, String? gContact, String? gRelation, String house,List<File> agreement,
     String reason, String amount, String studentId,) async {
     String apiEndPoint = EndPoint.sendApplication;
     Uri uri=Uri.parse(apiEndPoint);
@@ -32,6 +32,7 @@ class StudentApiHandle {
     request.fields["studentId"]=studentId;
     request.fields["house"]=house;
     request.fields["isPicked"]=isPicked.toString();
+    request.fields["length"]=length.toString();
 
     if(status=='Alive' && isPicked ){
       http.MultipartFile ss=await http.MultipartFile.
@@ -42,9 +43,11 @@ class StudentApiHandle {
       fromPath("docs",docs!.path);
       request.files.add(ss);
     }
-    http.MultipartFile a=await http.MultipartFile.
-    fromPath("agreement",agreement.path);
-    request.files.add(a);
+    for(int i=0;i<length;i++){
+      http.MultipartFile a=await http.MultipartFile.
+      fromPath("agreement$i",agreement[i].path);
+      request.files.add(a);
+    }
     var response =await request.send();
     return response.statusCode;
   }

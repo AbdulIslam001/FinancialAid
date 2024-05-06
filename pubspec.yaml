@@ -45,7 +45,7 @@ dependencies:
   data_table_2: ^2.5.10
   insta_image_viewer:
   carousel_slider: ^4.2.1
-
+  file_picker:
   pie_chart: ^5.4.0
 
 dev_dependencies:
