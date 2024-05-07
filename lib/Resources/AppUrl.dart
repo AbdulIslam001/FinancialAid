@@ -1,7 +1,7 @@
 
 
 class EndPoint{
-  static String baseUrl="http://192.168.100.11/FinancialAidAllocation/";
+  static String baseUrl="http://192.168.43.249/FinancialAidAllocation/";
   static String login=baseUrl+"api/User/Login";
   static String getStudentInfo=baseUrl+"api/Student/getStudentInfo";
   static String checkApplicationStatus=baseUrl+"api/Student/getStudentApplicationStatus";
@@ -34,6 +34,7 @@ class EndPoint{
   static String meritBaseShortListing=baseUrl+"api/Admin/MeritBaseShortListing";
   static String addStudent=baseUrl+"api/Admin/AddStudent";
   static String addPolicies=baseUrl+"api/Admin/AddPolicies";
+  static String getPolicies=baseUrl+"api/Admin/getPolicies";
 //  --------------------------
 
 }

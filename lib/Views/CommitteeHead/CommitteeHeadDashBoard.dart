@@ -33,7 +33,7 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
     if (res.statusCode == 200) {
       dynamic obj = jsonDecode(res.body);
       name = obj['Name'].toString();
-      profileImage = obj['ProfilePic'].toString();
+      profileImage = obj['profilepic'].toString();
       if (profileImage != null || profileImage != '') {
         isTrue = true;
       }
@@ -75,7 +75,8 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                       borderRadius: BorderRadius.circular(
                           CustomSize().customHeight(context) / 13),
                       child: EndPoint.imageUrl + profileImage ==
-                              EndPoint.imageUrl
+                              EndPoint.imageUrl||EndPoint.imageUrl + profileImage ==
+                          "${EndPoint.imageUrl}null"
                           ? Icon(Icons.person,
                               size: CustomSize().customHeight(context) / 10)
                           : Image(

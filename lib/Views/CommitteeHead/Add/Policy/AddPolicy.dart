@@ -163,7 +163,7 @@ class _AddPoliceState extends State<AddPolice> {
                 ),
               ),
             ),
-/*            Padding(
+            Padding(
               padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
               child: TextFormField(
                 onChanged: (val){},
@@ -176,7 +176,7 @@ class _AddPoliceState extends State<AddPolice> {
                   ),
                 ),
               ),
-            ),*/
+            ),
             SizedBox(
               height: CustomSize().customHeight(context)/10,
             ),
@@ -188,9 +188,9 @@ class _AddPoliceState extends State<AddPolice> {
                   width: CustomSize().customWidth(context)/15,
                 ),
                 CustomButton(title: "Add", loading: false,onTap: ()async{
-                  PolicyModel pm = PolicyModel(description: " ",policyFor: selectedVal, strength: int.parse(strengthVal),
-                      policy: gVal, val1: _val1.text, val2: _val2.text);
-                  int code=await AdminApiHandler().addPolicy(pm);
+                  // PolicyModel pm = PolicyModel(description: _description.text,policyFor: selectedVal, strength: int.parse(strengthVal),
+                  //     policy: gVal, val1: _val1.text, val2: _val2.text);
+                  int code=await AdminApiHandler().addPolicy(_description.text, _val1.text, _val2.text, selectedVal, gVal, strengthVal);
                   if(context.mounted){
                     if(code==200){
                       Utilis.flushBarMessage("Added", context);

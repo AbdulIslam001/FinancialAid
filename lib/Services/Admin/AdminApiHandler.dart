@@ -130,7 +130,7 @@ class AdminApiHandler{
       String fatherName,
       String degree,
       String cgpa
-      )async{
+      ) async{
     String apiEndPoint=EndPoint.addStudent;
     Uri uri=Uri.parse(apiEndPoint);
     http.MultipartRequest request=http.MultipartRequest('POST',uri);
@@ -150,11 +150,18 @@ class AdminApiHandler{
     return response.statusCode;
   }
 
-  Future<int> addPolicy(PolicyModel pm)async{
-    String apiEndPoint=EndPoint.addPolicies+"?pm$pm";
+  Future<int> addPolicy(String description,String val1,String val2,String policyFor,String policy,String strength)async{
+    String apiEndPoint="${EndPoint.addPolicies}?description=$description&val1=$val1&val2=$val2&policyFor=$policyFor&policy=$policy&strength=$strength";
     Uri uri=Uri.parse(apiEndPoint);
     var response=await http.post(uri);
     return response.statusCode;
+  }
+
+  Future<http.Response> getPolicies()async{
+    String apiEndPoint=EndPoint.getPolicies;
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.get(uri);
+    return response;
   }
 }
 
