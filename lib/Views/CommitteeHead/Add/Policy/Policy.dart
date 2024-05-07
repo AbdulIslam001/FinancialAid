@@ -10,7 +10,8 @@ import '../../../../Resources/CustomSize.dart';
 import '../../../../Utilis/Routes/RouteName.dart';
 
 class Policy extends StatefulWidget {
-  const Policy({super.key});
+  bool show;
+  Policy({super.key,required this.show});
 
   @override
   State<Policy> createState() => _PolicyState();
@@ -96,11 +97,13 @@ class _PolicyState extends State<Policy> {
                   itemCount: policyList.length,
                   itemBuilder: (context, index) {
                     return PolicyInfoContainer(
-                      cgpa: policyList[index].val1,
+                      show: widget.show,
+                      val1: policyList[index].val1,
                       session: policyList[index].session ?? "",
-                      description: "",
-                      policy: "",
+                      description: policyList[index].description,
+                      policy: policyList[index].policy,
                       policyFor: policyList[index].policyFor,
+                      val2: policyList[index].strength.toString(),
                     );
                   },
                 );

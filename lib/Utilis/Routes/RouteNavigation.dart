@@ -67,8 +67,8 @@ class RoutesNavigation {
         return MaterialPageRoute(builder: (context) => RejectApplication());
       case RouteName.graders:
         return MaterialPageRoute(builder: (context) => Graders());
-      case RouteName.policy:
-        return MaterialPageRoute(builder: (context) => Policy());
+      // case RouteName.policy:
+      //   return MaterialPageRoute(builder: (context) => Policy());
       case RouteName.addPolicy:
         return MaterialPageRoute(builder: (context) => AddPolice());
       default:

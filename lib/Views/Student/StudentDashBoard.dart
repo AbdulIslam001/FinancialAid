@@ -6,6 +6,7 @@ import 'package:financial_aid/Resources/AppUrl.dart';
 import 'package:financial_aid/Resources/CustomSize.dart';
 import 'package:financial_aid/Services/Student/StudentApiHandler.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
+import 'package:financial_aid/Views/CommitteeHead/Add/Policy/Policy.dart';
 import 'package:financial_aid/Views/Student/Application/ApplicationForm.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -203,7 +204,11 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                     image: "Assets/scholarship.png",
                     title: "Apply for Scholarship"),
                 OptionContainer(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder:(context) {
+                        return Policy(show: false);
+                      },));
+                    },
                     image: "Assets/c1.png",
                     title: "NeedBase criteria"),
               ],
@@ -216,7 +221,11 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 OptionContainer(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder:(context) {
+                        return Policy(show: false);
+                      },));
+                    },
                     image: "Assets/c1.png",
                     title: "MeritBase criteria"),
                 OptionContainer(

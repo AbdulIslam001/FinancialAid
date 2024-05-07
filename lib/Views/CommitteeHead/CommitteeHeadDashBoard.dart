@@ -4,6 +4,7 @@ import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
 import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/FacultyRecord.dart';
+import 'package:financial_aid/Views/CommitteeHead/Add/Policy/Policy.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Student/StudentRecord.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -151,7 +152,10 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                 padding: EdgeInsets.only(
                     top: CustomSize().customWidth(context) / 20),
                 child: DrawerCustomButtons(title: "Policies", onTab: () {
-                  Navigator.pushNamed(context, RouteName.policy);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Policy(show: true);
+
+                  },));
                 }),
               ),
               Padding(
