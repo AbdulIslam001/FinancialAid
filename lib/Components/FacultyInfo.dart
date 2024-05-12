@@ -39,7 +39,7 @@ class FacultyInfo extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(
                       CustomSize().customHeight(context) / 30),
-                  child:EndPoint.imageUrl+image!="http://192.168.100.11/FinancialAidAllocation/Content/profileImages/"?Image(
+                  child:EndPoint.imageUrl+image!=EndPoint.imageUrl||EndPoint.imageUrl+image!="${EndPoint.imageUrl}null"?Image(
                     image: NetworkImage(EndPoint.imageUrl + image),
                     width: CustomSize().customHeight(context) / 12,//CustomSize().customHeight(context)/15
                     height: CustomSize().customHeight(context) / 12,

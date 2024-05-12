@@ -164,7 +164,9 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                 child: DrawerCustomButtons(
                     title: "Faculty",
                     onTab: () async {
-                      Navigator.pushNamed(context, RouteName.facultyRecord);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return FacultyRecord(isShow: false);
+                      },));
                     }),
               ),
               Padding(

@@ -11,7 +11,10 @@ import '../../../../Resources/CustomSize.dart';
 import '../../../../Utilis/Routes/RouteName.dart';
 
 class FacultyRecord extends StatelessWidget {
-  FacultyRecord({super.key});
+  bool isShow;
+  String? studentId;
+  String? name;
+  FacultyRecord({required this.isShow,this.studentId,this.name,super.key});
 
   final TextEditingController _search = TextEditingController();
 
@@ -69,7 +72,22 @@ class FacultyRecord extends StatelessWidget {
                   return ListView.builder(
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
-                    return FacultyInfo(name: snapshot.data?[index].name??"", image: snapshot.data?[index].profileImage??"");
+                    return GestureDetector(
+                        onTap: ()async{
+                          if(isShow){
+                            showDialog(context: context, builder: (context) {
+                              return  AlertDialog(
+                                title: Column(
+                                  children: [
+                                    const Text("Assign Grader"),
+                                    Text(isShow.toString()+" / student Id "+ studentId!+" / faculty Id " + snapshot.data![index].id.toString()),
+                                  ],
+                                ),
+                              );
+                            },);
+                          }
+                        },
+                        child: FacultyInfo(name: snapshot.data?[index].name??"", image: snapshot.data?[index].profileImage??""));
                   },);
                 },
               )

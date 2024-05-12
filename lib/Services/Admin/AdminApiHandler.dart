@@ -129,8 +129,7 @@ class AdminApiHandler{
       File image,
       String fatherName,
       String degree,
-      String cgpa
-      ) async{
+      String cgpa) async{
     String apiEndPoint=EndPoint.addStudent;
     Uri uri=Uri.parse(apiEndPoint);
     http.MultipartRequest request=http.MultipartRequest('POST',uri);
@@ -162,6 +161,19 @@ class AdminApiHandler{
     Uri uri=Uri.parse(apiEndPoint);
     var response=await http.get(uri);
     return response;
+  }
+  Future<http.Response> getUnAssignedStudent()async{
+    String apiEndPoint=EndPoint.unAssignedStudents;
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.get(uri);
+    return response;
+  }
+
+  Future<int> assignGrader(int studentId , int facultyId)async{
+    String apiEndPoint=EndPoint.assignGrader+"?facultyId=$facultyId&StudentId=$studentId";
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.post(uri);
+    return response.statusCode;
   }
 }
 

@@ -51,8 +51,8 @@ class RoutesNavigation {
         return MaterialPageRoute(builder: (context) => AddStudent());
       case RouteName.budget:
         return MaterialPageRoute(builder: (context) => Budget());
-      case RouteName.facultyRecord:
-        return MaterialPageRoute(builder: (context) => FacultyRecord());
+      // case RouteName.facultyRecord:
+      //   return MaterialPageRoute(builder: (context) => FacultyRecord());
       case RouteName.addFacultyMember:
         return MaterialPageRoute(builder: (context) => AddFacultyMember());
       case RouteName.committeeRecord:

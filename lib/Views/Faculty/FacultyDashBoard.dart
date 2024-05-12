@@ -149,12 +149,26 @@ class FacultyDashBoard extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: 2,
                 itemBuilder: (context, index) {
-                      return const Card(
-                        child: ListTile(
+                      return GestureDetector(
+                        onTap: (){
+                          showModalBottomSheet(
+
+                            context: context,
+                            builder: (context) {
+                            return SizedBox(
+                              height: CustomSize().customHeight(context)/2,
+                              width: CustomSize().customWidth(context),
+                              child: Center(child: Text(index.toString())),
+                            );
+                          },);
+                        },
+                        child:const Card(
+                          child: ListTile(
                     title: Text("Adnan"),
                     subtitle: Text("2020-arid-1213"),
                   ),
-                );
+                ),
+                      );
               },))
             ],
           ),

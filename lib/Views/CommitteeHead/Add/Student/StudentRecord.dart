@@ -87,6 +87,7 @@ class StudentRecord extends StatelessWidget {
                         ),
                         title: Text(studentList[index].name),
                         subtitle: Text(studentList[index].aridNo),
+
                       ),
                     ),
                   ),
