@@ -59,9 +59,9 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                         //  border: Border.all()
                       ),
                       child: EndPoint.houseAgreement + docsList[i] !=
-                          "http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/" ||
+                          EndPoint.houseAgreement ||
                           EndPoint.houseAgreement + docsList[i] !=
-                              "http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/null"
+                              "${EndPoint.houseAgreement}/null"
                           ? InstaImageViewer(
                             child: Image(
                             height: CustomSize().customHeight(context) / 3.5,

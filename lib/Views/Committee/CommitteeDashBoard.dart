@@ -277,10 +277,16 @@ Future<List<Application>> getAllApplication()async{
                                           ),
                                         ],
                                       ),
-                                      child: EndPoint.houseAgreement+snapshot.data![index].agreement
-                                          !="http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/" ||
+                                      child:
+                                      snapshot.data![index].agreement.split('.')[1]=="pdf"?
+                                      const Image(image: AssetImage("Assets/pdf1.jpg"),fit: BoxFit.fill,):
+                                      snapshot.data![index].agreement.split('.')[1]=="docx"?
+                                      const Image(image: AssetImage("Assets/docx1.png"))
+                                          :
+                                      EndPoint.houseAgreement+snapshot.data![index].agreement
+                                          !=EndPoint.houseAgreement ||
                                           EndPoint.houseAgreement+snapshot.data![index].agreement
-                                              !="http://192.168.100.11/FinancialAidAllocation/Content/HouseAgreement/null"?
+                                              !="${EndPoint.houseAgreement}/null"?
                                       Image(
                                           height: CustomSize().customHeight(context)/4.5,
                                           width: CustomSize().customWidth(context)/1.13,
