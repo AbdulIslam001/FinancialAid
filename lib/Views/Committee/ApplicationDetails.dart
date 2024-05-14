@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:financial_aid/Models/ApplicationModel.dart';
 import 'package:financial_aid/Resources/CustomSize.dart';
 import 'package:financial_aid/Services/Committee/CommitteeApiHandler.dart';
@@ -28,12 +29,25 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
 
   @override
   Widget build(BuildContext context) {
-    _reason.text=widget.application.reason;
-    List<String> docsList=[widget.application.agreement];
-    if(widget.application.salarySlip!=null||widget.application.salarySlip!=''){
+    _reason.text = widget.application.reason;
+    List<String> docsList = [];
+    if (widget.application.salarySlip != null ||
+        widget.application.salarySlip != '') {
       docsList.add(widget.application.salarySlip??"");
-    }if(widget.application.deathCertificate!=null ||widget.application.deathCertificate!=''){
+    }
+    if (widget.application.agreement != null ||
+        widget.application.agreement != '') {
+      docsList.add(widget.application.agreement);
+    }
+    if (widget.application.deathCertificate != null ||
+        widget.application.deathCertificate != '') {
       docsList.add(widget.application.deathCertificate??"");
+    }
+
+    for(int i=0;i<docsList.length;i++){
+      if(docsList[i].isEmpty){
+        docsList.removeAt(i);
+      }
     }
     return GestureDetector(
       onTap: (){
@@ -44,7 +58,62 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Stack(
+
+              CarouselSlider(
+                options: CarouselOptions(
+                    enableInfiniteScroll: false
+                ),
+                items: docsList.map((e){
+                  return Container(
+                    height:
+                    CustomSize().customHeight(context) / 3.5,
+                    width: CustomSize().customWidth(context),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(
+                              CustomSize().customHeight(context) /
+                                  30),
+                          bottomRight: Radius.circular(
+                              CustomSize().customHeight(context) /
+                                  30)),
+                      //  border: Border.all()
+                    ),
+                    child:
+                    EndPoint.houseAgreement + e.toString() !=
+                        EndPoint.houseAgreement ||
+                        EndPoint.houseAgreement + e.toString() !=
+                            EndPoint.houseAgreement + "null"
+                        ?
+                    e.split('.')[1]=="pdf"?
+                    const Image(image: AssetImage("Assets/pdf1.jpg"),fit: BoxFit.fill,):
+                    e.split('.')[1]=="docx"?
+                    const Image(image: AssetImage("Assets/docx1.png"),fit: BoxFit.fill,):
+                    InstaImageViewer(
+                      child: Image(
+                          height: CustomSize()
+                              .customHeight(context) /
+                              3.5,
+                          width:
+                          CustomSize().customWidth(context),
+                          image: NetworkImage(
+                              e.startsWith("s")?EndPoint.salarySlip+ e.toString():
+                              e.startsWith("d")?EndPoint.deathCertificate+ e.toString():
+                              EndPoint.houseAgreement + e.toString()
+                          ),
+                          fit: BoxFit.fill),
+                    )
+                        : Image(
+                        height: CustomSize()
+                            .customHeight(context) /
+                            3.5,
+                        width:
+                        CustomSize().customWidth(context),
+                        fit: BoxFit.fill,
+                        image: const AssetImage("Assets/c1.png")),
+                  );
+                }).toList(),
+              ),
+/*              Stack(
                 children: [
                   Positioned(
                     child: Container(
@@ -101,7 +170,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                           },
                           child: Icon(Icons.navigate_before_outlined,size: CustomSize().customWidth(context)/7,))),
                 ],
-              ),
+              ),*/
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

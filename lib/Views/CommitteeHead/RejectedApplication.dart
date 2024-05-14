@@ -205,7 +205,6 @@ class RejectApplication extends StatelessWidget {
                                         snapshot.data![index].agreement.split('.')[1]=="docx"?
                                         const Image(image: AssetImage("Assets/docx1.png"))
                                             :
-
                                         EndPoint.houseAgreement+snapshot.data![index].agreement
                                             !=EndPoint.houseAgreement ||
                                             EndPoint.houseAgreement+snapshot.data![index].agreement

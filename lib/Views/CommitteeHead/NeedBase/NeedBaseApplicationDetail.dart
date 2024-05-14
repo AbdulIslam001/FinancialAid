@@ -40,15 +40,21 @@ class _NeedBaseApplicationDetailsState
     List<String> docsList = [];
     if (widget.application.salarySlip != null ||
         widget.application.salarySlip != '') {
-      docsList.add(widget.application.salarySlip ?? "");
+      docsList.add(widget.application.salarySlip??"");
     }
     if (widget.application.agreement != null ||
         widget.application.agreement != '') {
-      docsList.add(widget.application.agreement?? "");
+      docsList.add(widget.application.agreement);
     }
     if (widget.application.deathCertificate != null ||
         widget.application.deathCertificate != '') {
-      docsList.add(widget.application.deathCertificate ?? "");
+      docsList.add(widget.application.deathCertificate??"");
+    }
+
+    for(int i=0;i<docsList.length;i++){
+      if(docsList[i].isEmpty){
+        docsList.removeAt(i);
+      }
     }
     return Scaffold(
       body: SingleChildScrollView(
@@ -97,11 +103,13 @@ class _NeedBaseApplicationDetailsState
                       child: Column(
                         children: [
                           CarouselSlider(
-                            options: CarouselOptions(),
+                            options: CarouselOptions(
+                              enableInfiniteScroll: false
+                            ),
                             items: docsList.map((e){
                               return Container(
                                 height:
-                                CustomSize().customHeight(context) / 3.5,
+                                  CustomSize().customHeight(context) / 3.5,
                                 width: CustomSize().customWidth(context),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(
@@ -113,11 +121,17 @@ class _NeedBaseApplicationDetailsState
                                               30)),
                                   //  border: Border.all()
                                 ),
-                                child: EndPoint.houseAgreement + e.toString() !=
+                                child:
+                                EndPoint.houseAgreement + e.toString() !=
                                     EndPoint.houseAgreement ||
                                     EndPoint.houseAgreement + e.toString() !=
                                         EndPoint.houseAgreement + "null"
-                                    ? InstaImageViewer(
+                                    ?
+                                e.split('.')[1]=="pdf"?
+                                const Image(image: AssetImage("Assets/pdf1.jpg"),fit: BoxFit.fill,):
+                                e.split('.')[1]=="docx"?
+                                const Image(image: AssetImage("Assets/docx1.png"),fit: BoxFit.fill,):
+                                InstaImageViewer(
                                   child: Image(
                                       height: CustomSize()
                                           .customHeight(context) /
