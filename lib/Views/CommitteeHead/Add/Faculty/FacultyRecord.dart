@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:financial_aid/Components/FacultyInfo.dart';
 import 'package:financial_aid/Models/FacultyModel.dart';
 import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
+import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -73,18 +74,29 @@ class FacultyRecord extends StatelessWidget {
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                     return GestureDetector(
-                        onTap: ()async{
+                        onTap: (){
                           if(isShow){
                             showDialog(context: context, builder: (context) {
                               return  AlertDialog(
-                                title: Column(
+                                title: const Column(
                                   children: [
-                                    const Text("Assign Grader"),
-                                    Text(isShow.toString()+" / student Id "+ studentId!+" / faculty Id " + snapshot.data![index].id.toString()),
+                                    Text("Are you sure "),
                                   ],
                                 ),
+                                actions: [
+                                  ElevatedButton(onPressed: ()async{
+                                    int code=await AdminApiHandler().assignGrader(int.parse(studentId!), int.parse(snapshot.data![index].id.toString()));
+                                    if(code==200 && context.mounted){
+                                      Navigator.pushNamed(context, RouteName.graders);
+                                    }else if(context.mounted){
+                                      Utilis.flushBarMessage("try again later", context);
+                                    }
+                                  }, child: const Text("yes")),
+                                ],
                               );
                             },);
+                          }else{
+
                           }
                         },
                         child: FacultyInfo(name: snapshot.data?[index].name??"", image: snapshot.data?[index].profileImage??""));

@@ -197,7 +197,10 @@ class AcceptedApplication extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        child: EndPoint.houseAgreement+snapshot.data![index].agreement
+                                        child:snapshot.data![index].agreement.split('.')[1]=="pdf"||
+                                            snapshot.data![index].agreement.split('.')[1]=="docx"?
+                                        const Image(image: AssetImage("Assets/c1.png"))
+                                            :EndPoint.houseAgreement+snapshot.data![index].agreement
                                             !=EndPoint.houseAgreement ||
                                             EndPoint.houseAgreement+snapshot.data![index].agreement
                                                 !="${EndPoint.houseAgreement}/null"?

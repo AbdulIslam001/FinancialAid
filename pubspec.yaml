@@ -47,6 +47,9 @@ dependencies:
   carousel_slider: ^4.2.1
   file_picker:
   pie_chart: ^5.4.0
+  dio:
+  path_provider:
+  permission_handler:
 
 dev_dependencies:
   flutter_test:

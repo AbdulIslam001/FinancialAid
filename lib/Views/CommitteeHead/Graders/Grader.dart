@@ -5,6 +5,7 @@ import 'package:financial_aid/Models/ApplicationModel.dart';
 import 'package:financial_aid/Models/FacultyModel.dart';
 import 'package:financial_aid/Models/Student.dart';
 import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
+import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/FacultyRecord.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -62,9 +63,15 @@ class Graders extends StatelessWidget {
     final TextEditingController _search = TextEditingController();
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).primaryColor,
         title: const Text("Graders"),
         centerTitle: true,
+        leading:GestureDetector(
+            onTap: (){
+              Navigator.pushReplacementNamed(context, RouteName.committeeHeadDashBoard);
+            },
+            child:const Icon(Icons.arrow_back_ios_new)),
       ),
       body: Column(
         children: [
