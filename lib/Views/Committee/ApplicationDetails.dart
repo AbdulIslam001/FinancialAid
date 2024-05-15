@@ -20,12 +20,12 @@ class ApplicationDetails extends StatefulWidget {
 }
 
 class _ApplicationDetailsState extends State<ApplicationDetails> {
-  final TextEditingController _reason=TextEditingController();
-  final TextEditingController _why=TextEditingController();
-  final TextEditingController _amount=TextEditingController();
+  final TextEditingController _reason = TextEditingController();
+  final TextEditingController _why = TextEditingController();
+  final TextEditingController _amount = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  int i=0;
+  int i = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
     List<String> docsList = [];
     if (widget.application.salarySlip != null ||
         widget.application.salarySlip != '') {
-      docsList.add(widget.application.salarySlip??"");
+      docsList.add(widget.application.salarySlip ?? "");
     }
     if (widget.application.agreement != null ||
         widget.application.agreement != '') {
@@ -41,75 +41,75 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
     }
     if (widget.application.deathCertificate != null ||
         widget.application.deathCertificate != '') {
-      docsList.add(widget.application.deathCertificate??"");
+      docsList.add(widget.application.deathCertificate ?? "");
     }
 
-    for(int i=0;i<docsList.length;i++){
-      if(docsList[i].isEmpty){
+    for (int i = 0; i < docsList.length; i++) {
+      if (docsList[i].isEmpty) {
         docsList.removeAt(i);
       }
     }
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(title:const Text("Application detail"),centerTitle: true,backgroundColor: Theme.of(context).primaryColor),
+        appBar: AppBar(
+            title: const Text("Application detail"),
+            centerTitle: true,
+            backgroundColor: Theme.of(context).primaryColor),
         body: SingleChildScrollView(
           child: Column(
             children: [
-
               CarouselSlider(
-                options: CarouselOptions(
-                    enableInfiniteScroll: false
-                ),
-                items: docsList.map((e){
+                options: CarouselOptions(enableInfiniteScroll: false),
+                items: docsList.map((e) {
                   return Container(
-                    height:
-                    CustomSize().customHeight(context) / 3.5,
+                    height: CustomSize().customHeight(context) / 3.5,
                     width: CustomSize().customWidth(context),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(
-                              CustomSize().customHeight(context) /
-                                  30),
+                              CustomSize().customHeight(context) / 30),
                           bottomRight: Radius.circular(
-                              CustomSize().customHeight(context) /
-                                  30)),
+                              CustomSize().customHeight(context) / 30)),
                       //  border: Border.all()
                     ),
-                    child:
-                    EndPoint.houseAgreement + e.toString() !=
-                        EndPoint.houseAgreement ||
-                        EndPoint.houseAgreement + e.toString() !=
-                            EndPoint.houseAgreement + "null"
-                        ?
-                    e.split('.')[1]=="pdf"?
-                    const Image(image: AssetImage("Assets/pdf1.jpg"),fit: BoxFit.fill,):
-                    e.split('.')[1]=="docx"?
-                    const Image(image: AssetImage("Assets/docx1.png"),fit: BoxFit.fill,):
-                    InstaImageViewer(
-                      child: Image(
-                          height: CustomSize()
-                              .customHeight(context) /
-                              3.5,
-                          width:
-                          CustomSize().customWidth(context),
-                          image: NetworkImage(
-                              e.startsWith("s")?EndPoint.salarySlip+ e.toString():
-                              e.startsWith("d")?EndPoint.deathCertificate+ e.toString():
-                              EndPoint.houseAgreement + e.toString()
-                          ),
-                          fit: BoxFit.fill),
-                    )
+                    child: EndPoint.houseAgreement + e.toString() !=
+                                EndPoint.houseAgreement ||
+                            EndPoint.houseAgreement + e.toString() !=
+                                EndPoint.houseAgreement + "null"
+                        ? e.split('.')[1] == "pdf"
+                            ?const Image(
+                              image: AssetImage("Assets/pdf1.jpg"),
+                              fit: BoxFit.fill,
+                            )
+                            : e.split('.')[1] == "docx"
+                                ?const Image(
+                                  image: AssetImage("Assets/docx1.png"),
+                                  fit: BoxFit.fill,
+                                )
+                                : InstaImageViewer(
+                                    child: Image(
+                                        height:
+                                            CustomSize().customHeight(context) /
+                                                3.5,
+                                        width:
+                                            CustomSize().customWidth(context),
+                                        image: NetworkImage(e.startsWith("s")
+                                            ? EndPoint.salarySlip + e.toString()
+                                            : e.startsWith("d")
+                                                ? EndPoint.deathCertificate +
+                                                    e.toString()
+                                                : EndPoint.houseAgreement +
+                                                    e.toString()),
+                                        fit: BoxFit.fill),
+                                  )
                         : Image(
-                        height: CustomSize()
-                            .customHeight(context) /
-                            3.5,
-                        width:
-                        CustomSize().customWidth(context),
-                        fit: BoxFit.fill,
-                        image: const AssetImage("Assets/c1.png")),
+                            height: CustomSize().customHeight(context) / 3.5,
+                            width: CustomSize().customWidth(context),
+                            fit: BoxFit.fill,
+                            image: const AssetImage("Assets/c1.png")),
                   );
                 }).toList(),
               ),
@@ -181,7 +181,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                         fontStyle: FontStyle.italic),
                   ),
                   SizedBox(
-                    width: CustomSize().customWidth(context)/10,
+                    width: CustomSize().customWidth(context) / 10,
                   ),
                   Text(
                     widget.application.name,
@@ -201,7 +201,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                         fontStyle: FontStyle.italic),
                   ),
                   SizedBox(
-                    width: CustomSize().customWidth(context)/10,
+                    width: CustomSize().customWidth(context) / 10,
                   ),
                   Text(
                     widget.application.aridNo,
@@ -221,7 +221,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                         fontStyle: FontStyle.italic),
                   ),
                   SizedBox(
-                    width: CustomSize().customWidth(context)/10,
+                    width: CustomSize().customWidth(context) / 10,
                   ),
                   Text(
                     widget.application.fatherName,
@@ -241,7 +241,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                         fontStyle: FontStyle.italic),
                   ),
                   SizedBox(
-                    width: CustomSize().customWidth(context)/10,
+                    width: CustomSize().customWidth(context) / 10,
                   ),
                   Text(
                     widget.application.status,
@@ -261,7 +261,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                         fontStyle: FontStyle.italic),
                   ),
                   SizedBox(
-                    width: CustomSize().customWidth(context)/10,
+                    width: CustomSize().customWidth(context) / 10,
                   ),
                   Text(
                     widget.application.amount,
@@ -272,10 +272,10 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                 ],
               ),
               SizedBox(
-                width: CustomSize().customWidth(context)/10,
+                width: CustomSize().customWidth(context) / 10,
               ),
               Padding(
-                padding:EdgeInsets.all(CustomSize().customWidth(context)/30),
+                padding: EdgeInsets.all(CustomSize().customWidth(context) / 30),
                 child: TextFormField(
                   controller: _reason,
                   readOnly: true,
@@ -283,132 +283,192 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                   decoration: const InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
-                      label: Text('Reason For Scholarship')
-                  ),
+                      label: Text('Reason For Scholarship')),
                 ),
               ),
               Form(
                 key: _formKey,
                 child: Padding(
-                  padding:
-                      EdgeInsets.only(top: CustomSize().customHeight(context) / 15),
+                  padding: EdgeInsets.only(
+                      top: CustomSize().customHeight(context) / 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CustomButton(title: "Reject", loading: false, onTap: () {
-                        String status="rejected";
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context, builder: (context) {
-                          return AlertDialog(
-                            title: Column(
-                              children: [
-                                const Text("Rejected"),
-                                TextFormField(
-                                  validator: (val){
-                                    if(val!.isEmpty){
-                                      return "Enter Reason for Rejection";
-                                    }
-                                  },
-                                  controller: _why,
-                                  decoration:const InputDecoration(
-                                    labelText: "Reason of Rejection",
-                                    hintText: "Reason of Rejection",
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: CustomSize().customHeight(context)/20,
-                                ),
-                                Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      CustomButton(
+                          title: "Reject",
+                          loading: false,
+                          onTap: () {
+                            String status = "rejected";
+                            showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Column(
                                     children: [
-                                      CustomButton(title: "cancel", loading: false,onTap: (){
-                                        Navigator.pop(context);
-                                      },),
-                                      CustomButton(title: "confirm", loading: false,onTap: ()async{
-                                        if(_formKey.currentState!.validate()){
-                                          int code=await CommitteeApiHandler().giveSuggestion(_why.text,status, int.parse(widget.application.applicationID.toString()));
-                                          if(code==200 && context.mounted){
-                                            Navigator.pushReplacementNamed(context, RouteName.committeeDashBoard);
-                                          }else if(context.mounted){
-                                            Utilis.flushBarMessage("Error try again later", context);
+                                      const Text("Rejected"),
+                                      TextFormField(
+                                        validator: (val) {
+                                          if (val!.isEmpty) {
+                                            return "Enter Reason for Rejection";
                                           }
-                                        }
-                                      },),
+                                        },
+                                        controller: _why,
+                                        decoration: const InputDecoration(
+                                          labelText: "Reason of Rejection",
+                                          hintText: "Reason of Rejection",
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height:
+                                            CustomSize().customHeight(context) /
+                                                20,
+                                      ),
+                                      Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            CustomButton(
+                                              title: "cancel",
+                                              loading: false,
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            CustomButton(
+                                              title: "confirm",
+                                              loading: false,
+                                              onTap: () async {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  int code =
+                                                      await CommitteeApiHandler()
+                                                          .giveSuggestion(
+                                                              _why.text,
+                                                              status,
+                                                              int.parse(widget
+                                                                  .application
+                                                                  .applicationID
+                                                                  .toString()));
+                                                  if (code == 200 &&
+                                                      context.mounted) {
+                                                    Navigator.pushReplacementNamed(
+                                                        context,
+                                                        RouteName
+                                                            .committeeDashBoard);
+                                                  } else if (context.mounted) {
+                                                    Utilis.flushBarMessage(
+                                                        "Error try again later",
+                                                        context);
+                                                  }
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
-                          );
-                        },);
-                      }),
+                                );
+                              },
+                            );
+                          }),
                       SizedBox(
                         width: CustomSize().customWidth(context) / 10,
                       ),
-                      CustomButton(title: "Accept", loading: false, onTap: () {
-                        String status="Accept";
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context, builder: (context) {
-                          return AlertDialog(
-                            title: Column(
-                              children: [
-                                const Text("Accept"),
-                                TextFormField(
-                                  validator: (val){
-                                    if(val!.isEmpty){
-                                      return "Enter Reason for scholarship";
-                                    }
-                                  },
-                                  controller: _why,
-                                  decoration:const InputDecoration(
-                                    labelText: "Reason of Acceptance",
-                                    hintText: "Reason of Acceptance",
-                                  ),
-                                ),
-                                TextFormField(
-                                  controller: _amount,
-                                  validator: (val){
-                                    if(val!.isEmpty){
-                                      return "Suggest Amount";
-                                    }
-                                  },
-                                  decoration:const InputDecoration(
-                                    labelText: "Scholarship Amount",
-                                    hintText: "Amount",
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: CustomSize().customHeight(context)/20,
-                                ),
-                                Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      CustomButton(
+                          title: "Accept",
+                          loading: false,
+                          onTap: () {
+                            String status = "Accept";
+                            showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Column(
                                     children: [
-                                      CustomButton(title: "cancel", loading: false,onTap: (){
-                                        Navigator.pop(context);
-                                      },),
-                                      CustomButton(title: "confirm", loading: false,onTap: ()async{
-                                        if(_formKey.currentState!.validate()){
-                                          int code=await CommitteeApiHandler().giveSuggestion(_why.text,status, int.parse(widget.application.applicationID.toString()));
-                                          if(code==200 && context.mounted){
-                                            Navigator.pushReplacementNamed(context, RouteName.committeeDashBoard);
-                                          }else if(context.mounted){
-                                            Utilis.flushBarMessage("Error try again later", context);
+                                      const Text("Accept"),
+                                      TextFormField(
+                                        validator: (val) {
+                                          if (val!.isEmpty) {
+                                            return "Enter Reason for scholarship";
                                           }
-                                        }
-                                      },
+                                        },
+                                        controller: _why,
+                                        decoration: const InputDecoration(
+                                          labelText: "Reason of Acceptance",
+                                          hintText: "Reason of Acceptance",
+                                        ),
                                       ),
+                                      TextFormField(
+                                        controller: _amount,
+                                        validator: (val) {
+                                          if (val!.isEmpty) {
+                                            return "Suggest Amount";
+                                          }
+                                        },
+                                        decoration: const InputDecoration(
+                                          labelText: "Scholarship Amount",
+                                          hintText: "Amount",
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height:
+                                            CustomSize().customHeight(context) /
+                                                20,
+                                      ),
+                                      Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            CustomButton(
+                                              title: "cancel",
+                                              loading: false,
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            CustomButton(
+                                              title: "confirm",
+                                              loading: false,
+                                              onTap: () async {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  int code =
+                                                      await CommitteeApiHandler()
+                                                          .giveSuggestion(
+                                                              _why.text,
+                                                              status,
+                                                              int.parse(widget
+                                                                  .application
+                                                                  .applicationID
+                                                                  .toString()));
+                                                  if (code == 200 &&
+                                                      context.mounted) {
+                                                    Navigator.pushReplacementNamed(
+                                                        context,
+                                                        RouteName
+                                                            .committeeDashBoard);
+                                                  } else if (context.mounted) {
+                                                    Utilis.flushBarMessage(
+                                                        "Error try again later",
+                                                        context);
+                                                  }
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
-                          );
-                        },);
-                      }),
+                                );
+                              },
+                            );
+                          }),
                     ],
                   ),
                 ),
