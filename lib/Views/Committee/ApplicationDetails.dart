@@ -82,7 +82,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                         ? e.split('.')[1] == "pdf"
                             ?const Image(
                               image: AssetImage("Assets/pdf1.jpg"),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                             )
                             : e.split('.')[1] == "docx"
                                 ?const Image(
