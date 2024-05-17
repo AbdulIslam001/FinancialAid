@@ -9,9 +9,14 @@ import 'package:http/http.dart';
 import '../../../../Resources/CustomSize.dart';
 import '../../../../Utilis/Routes/RouteName.dart';
 
-class CommitteeRecord extends StatelessWidget {
+class CommitteeRecord extends StatefulWidget {
   CommitteeRecord({super.key});
 
+  @override
+  State<CommitteeRecord> createState() => _CommitteeRecordState();
+}
+
+class _CommitteeRecordState extends State<CommitteeRecord> {
   final TextEditingController _search = TextEditingController();
 
   Future<List<FacultyModel>> getFacultyMembers() async {
@@ -58,7 +63,11 @@ class CommitteeRecord extends StatelessWidget {
                 right: CustomSize().customWidth(context) / 20,
                 top: CustomSize().customWidth(context) / 30),
             child: TextFormField(
-              onChanged: (val) {},
+              onChanged: (val) {
+                setState(() {
+
+                });
+              },
               controller: _search,
               decoration: InputDecoration(
                 hintText: "search",

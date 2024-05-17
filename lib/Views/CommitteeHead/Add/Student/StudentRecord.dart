@@ -11,10 +11,15 @@ import 'package:http/http.dart';
 import '../../../../Resources/AppUrl.dart';
 
 
-class StudentRecord extends StatelessWidget {
+class StudentRecord extends StatefulWidget {
   List<Student> studentList;
   StudentRecord({super.key,required this.studentList});
 
+  @override
+  State<StudentRecord> createState() => _StudentRecordState();
+}
+
+class _StudentRecordState extends State<StudentRecord> {
   final TextEditingController _search=TextEditingController();
 
   @override
@@ -40,6 +45,9 @@ class StudentRecord extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(CustomSize().customWidth(context)/20),
             child: TextFormField(
+              onChanged: (val){
+                setState((){});
+              },
               controller: _search,
               decoration: InputDecoration(
                 suffixIcon:const Icon(Icons.search),
@@ -53,15 +61,15 @@ class StudentRecord extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: studentList.length,
+              itemCount: widget.studentList.length,
               itemBuilder: (context, index) {
-                if(studentList[index].name.toLowerCase().contains(_search.text.toLowerCase()) || studentList[index].aridNo.toLowerCase().contains(_search.text.toLowerCase())){
+                if(widget.studentList[index].name.toLowerCase().contains(_search.text.toLowerCase()) || widget.studentList[index].aridNo.toLowerCase().contains(_search.text.toLowerCase())){
                   return Padding(
                     padding: EdgeInsets.only(left:CustomSize().customWidth(context)/40,right: CustomSize().customWidth(context)/40,top: CustomSize().customWidth(context)/100,bottom: CustomSize().customWidth(context)/100),
                     child: GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return UpdatePassword(id: studentList[index].studentId,aridNo: studentList[index].aridNo, name: studentList[index].name);
+                          return UpdatePassword(id: widget.studentList[index].studentId,aridNo: widget.studentList[index].aridNo, name: widget.studentList[index].name);
                         },));
                       },
                       child: Container(
@@ -76,18 +84,18 @@ class StudentRecord extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(
                                   CustomSize().customHeight(context) / 30),
-                              child:EndPoint.imageUrl+studentList[index].profileImage==EndPoint.imageUrl+"null"||EndPoint.imageUrl+studentList[index].profileImage==EndPoint.imageUrl?(
-                                  studentList[index].gender=='M'?Image.asset("Assets/male.png"):Image.asset("Assets/female.png"))
+                              child:EndPoint.imageUrl+widget.studentList[index].profileImage==EndPoint.imageUrl+"null"||EndPoint.imageUrl+widget.studentList[index].profileImage==EndPoint.imageUrl?(
+                                  widget.studentList[index].gender=='M'?Image.asset("Assets/male.png"):Image.asset("Assets/female.png"))
                                   :Image(
-                                image: NetworkImage(EndPoint.imageUrl + studentList[index].profileImage),
+                                image: NetworkImage(EndPoint.imageUrl + widget.studentList[index].profileImage),
                                 width: CustomSize().customHeight(context) / 12,//CustomSize().customHeight(context)/15
                                 height: CustomSize().customHeight(context) / 12,
                                 fit: BoxFit.fill,
                               ),
                             ),
                           ),
-                          title: Text(studentList[index].name),
-                          subtitle: Text(studentList[index].aridNo),
+                          title: Text(widget.studentList[index].name),
+                          subtitle: Text(widget.studentList[index].aridNo),
 
                         ),
                       ),

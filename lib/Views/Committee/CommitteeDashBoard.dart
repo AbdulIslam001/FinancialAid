@@ -16,11 +16,20 @@ import '../../Resources/CustomSize.dart';
 import '../../Utilis/Routes/RouteName.dart';
 import 'ApplicationDetails.dart';
 
-class CommitteeDashBoard extends StatelessWidget {
+class CommitteeDashBoard extends StatefulWidget {
   CommitteeDashBoard({super.key});
+
+  @override
+  State<CommitteeDashBoard> createState() => _CommitteeDashBoardState();
+}
+
+class _CommitteeDashBoardState extends State<CommitteeDashBoard> {
   final TextEditingController _search=TextEditingController();
+
   String name="";
+
   String profileImage="";
+
   Future<void> getCommitteeInfo()async{
     Response res= await CommitteeApiHandler().committeeMemberInfo();
     if(res.statusCode==200){
@@ -212,7 +221,9 @@ Future<List<Application>> getAllApplication()async{
           Padding(
             padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
             child: TextFormField(
-              onChanged: (val){},
+              onChanged: (val){
+                setState(() {});
+              },
               controller: _search,
               decoration: InputDecoration(
                 hintText: "search",

@@ -11,12 +11,17 @@ import 'package:http/http.dart';
 import '../../../../Resources/CustomSize.dart';
 import '../../../../Utilis/Routes/RouteName.dart';
 
-class FacultyRecord extends StatelessWidget {
+class FacultyRecord extends StatefulWidget {
   bool isShow;
   String? studentId;
   String? name;
   FacultyRecord({required this.isShow,this.studentId,this.name,super.key});
 
+  @override
+  State<FacultyRecord> createState() => _FacultyRecordState();
+}
+
+class _FacultyRecordState extends State<FacultyRecord> {
   final TextEditingController _search = TextEditingController();
 
   Future<List<FacultyModel>> getFacultyMembers()async{
@@ -32,6 +37,7 @@ class FacultyRecord extends StatelessWidget {
     }
     return list;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +60,9 @@ class FacultyRecord extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
             child: TextFormField(
-              onChanged: (val){},
+              onChanged: (val){
+                setState((){});
+              },
               controller: _search,
               decoration: InputDecoration(
                 hintText: "search",
@@ -76,7 +84,7 @@ class FacultyRecord extends StatelessWidget {
                       if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
                         return GestureDetector(
                             onTap: (){
-                              if(isShow){
+                              if(widget.isShow){
                                 showDialog(context: context, builder: (context) {
                                   return  AlertDialog(
                                     title: const Column(
@@ -86,7 +94,7 @@ class FacultyRecord extends StatelessWidget {
                                     ),
                                     actions: [
                                       ElevatedButton(onPressed: ()async{
-                                        int code=await AdminApiHandler().assignGrader(int.parse(studentId!), int.parse(snapshot.data![index].id.toString()));
+                                        int code=await AdminApiHandler().assignGrader(int.parse(widget.studentId!), int.parse(snapshot.data![index].id.toString()));
                                         if(code==200 && context.mounted){
                                           Navigator.pushNamed(context, RouteName.graders);
                                         }else if(context.mounted){
