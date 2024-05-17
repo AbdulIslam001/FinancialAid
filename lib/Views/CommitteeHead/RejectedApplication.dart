@@ -46,14 +46,13 @@ class _RejectApplicationState extends State<RejectApplication> {
               hg=obj["re"]["EvidenceDocuments"][i]["image"];
             }
           }
-/*          EvidenceDocument ed= EvidenceDocument(docs: obj["re"]["EvidenceDocuments"][i]["image"], type: obj["re"]["EvidenceDocuments"][i]["document_type"]);
-          evidenceList.add(ed);*/
         }
         List<String> suggestionList=[];
         for(int j=0;j<obj["re"]["suggestion"].length;j++){
           suggestionList.add(obj["re"]["suggestion"][j]["comment"].toString());
         }
         Application a = Application(
+            applicationStatus: obj['applicationStatus'].toString(),
             profileImage: obj["re"]["profile_image"].toString(),
             name: obj["re"]["name"].toString(),
             status: obj["re"]["father_status"].toString(),
@@ -164,7 +163,6 @@ class _RejectApplicationState extends State<RejectApplication> {
                       }).length??0,
                       itemBuilder: (context, index) {
                         if(snapshot.data![index].aridNo.toLowerCase().contains(_search.text.toLowerCase()) || snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
-                          if(snapshot.data![index].applicationStatus?.toString()=='Rejected'){
                             return Padding(
                               padding: EdgeInsets.all(CustomSize().customHeight(context)/80),
                               child: Center(
@@ -243,7 +241,6 @@ class _RejectApplicationState extends State<RejectApplication> {
                                 ),
                               ),
                             );
-                          }
                         }
                       },);
                   }else{
