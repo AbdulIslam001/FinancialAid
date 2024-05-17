@@ -16,9 +16,16 @@ import '../../../Resources/AppUrl.dart';
 import '../../../Resources/CustomSize.dart';
 import '../../../Services/Committee/CommitteeApiHandler.dart';
 
-class AcceptedApplication extends StatelessWidget {
+class AcceptedApplication extends StatefulWidget {
   AcceptedApplication({super.key});
+
+  @override
+  State<AcceptedApplication> createState() => _AcceptedApplicationState();
+}
+
+class _AcceptedApplicationState extends State<AcceptedApplication> {
   final TextEditingController _search=TextEditingController();
+
   Future<List<Application>> getAllApplication()async{
     List<Application> applicationList=[];
     Response res=await AdminApiHandler().acceptedApplication();
@@ -77,6 +84,7 @@ class AcceptedApplication extends StatelessWidget {
     }
     return applicationList;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +137,11 @@ class AcceptedApplication extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
             child: TextFormField(
-              onChanged: (val){},
+              onChanged: (val){
+                setState(() {
+
+                });
+              },
               controller: _search,
               decoration: InputDecoration(
                 hintText: "search",
@@ -151,82 +163,86 @@ class AcceptedApplication extends StatelessWidget {
                         return item.applicationStatus?.toString()=='Accepted';
                       }).length??0,
                       itemBuilder: (context, index) {
-                        if(snapshot.data![index].applicationStatus?.toString()=="Accepted"){
-                          return Padding(
-                            padding: EdgeInsets.all(CustomSize().customHeight(context)/80),
-                            child: Center(
-                              child: GestureDetector(
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return NeedBaseApplicationDetails(application: snapshot.data![index],isTrue: true,);
-                                  },));
-                                },
-                                child: Container(
-                                  height: CustomSize().customHeight(context)/4.5,
-                                  width: CustomSize().customWidth(context)/1.13,
-                                  decoration: BoxDecoration(
+                        if(snapshot.data![index].aridNo.toLowerCase().contains(_search.text.toLowerCase()) || snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase()) ){
+                          if(snapshot.data![index].applicationStatus?.toString()=="Accepted"){
+                            return Padding(
+                              padding: EdgeInsets.all(CustomSize().customHeight(context)/80),
+                              child: Center(
+                                child: GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return NeedBaseApplicationDetails(application: snapshot.data![index],isTrue: true,);
+                                    },));
+                                  },
+                                  child: ListTile(
+                                    title: Container(
+                                      height: CustomSize().customHeight(context)/4.5,
+                                      width: CustomSize().customWidth(context)/1.13,
+                                      decoration: BoxDecoration(
 
-                                    color: Colors.blueGrey.withOpacity(0.2),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        spreadRadius: CustomSize().customHeight(context)/1000,
-                                        blurRadius: CustomSize().customHeight(context)/100,
-                                        offset: Offset(CustomSize().customHeight(context)/1400,
-                                            CustomSize().customHeight(context)/1400),
+                                        color: Colors.blueGrey.withOpacity(0.2),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.white,
+                                            spreadRadius: CustomSize().customHeight(context)/1000,
+                                            blurRadius: CustomSize().customHeight(context)/100,
+                                            offset: Offset(CustomSize().customHeight(context)/1400,
+                                                CustomSize().customHeight(context)/1400),
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/80),
                                       ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/80),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: CustomSize().customHeight(context)/8,
-                                        width: CustomSize().customWidth(context)/1.12,
-                                        decoration: BoxDecoration(
-                                          color: Colors.blueGrey.withOpacity(0.2),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.white,
-                                              spreadRadius: CustomSize().customHeight(context)/1000,
-                                              blurRadius: CustomSize().customHeight(context)/100,
-                                              offset: Offset(CustomSize().customHeight(context)/1400,
-                                                  CustomSize().customHeight(context)/1400),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            height: CustomSize().customHeight(context)/8,
+                                            width: CustomSize().customWidth(context)/1.12,
+                                            decoration: BoxDecoration(
+                                              color: Colors.blueGrey.withOpacity(0.2),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.white,
+                                                  spreadRadius: CustomSize().customHeight(context)/1000,
+                                                  blurRadius: CustomSize().customHeight(context)/100,
+                                                  offset: Offset(CustomSize().customHeight(context)/1400,
+                                                      CustomSize().customHeight(context)/1400),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        child:snapshot.data![index].agreement.split('.')[1]=="pdf"?
-                                        const Image(image: AssetImage("Assets/pdf1.jpg"),fit: BoxFit.fill,):
-                                        snapshot.data![index].agreement.split('.')[1]=="docx"?
-                                        const Image(image: AssetImage("Assets/docx1.png"))
-                                            :
-                                        EndPoint.houseAgreement+snapshot.data![index].agreement
-                                            !=EndPoint.houseAgreement ||
+                                            child:snapshot.data![index].agreement.split('.')[1]=="pdf"?
+                                            const Image(image: AssetImage("Assets/pdf2.png"),fit: BoxFit.fill,):
+                                            snapshot.data![index].agreement.split('.')[1]=="docx"?
+                                            const Image(image: AssetImage("Assets/docx1.png"))
+                                                :
                                             EndPoint.houseAgreement+snapshot.data![index].agreement
-                                                !="${EndPoint.houseAgreement}/null"?
-                                        Image(
-                                            height: CustomSize().customHeight(context)/4.5,
-                                            width: CustomSize().customWidth(context)/1.13,
-                                            image: NetworkImage(EndPoint.houseAgreement+snapshot.data![index].agreement??""),
-                                            fit: BoxFit.fill):
-                                        const Image(image: AssetImage("Assets/c1.png")),
+                                                !=EndPoint.houseAgreement ||
+                                                EndPoint.houseAgreement+snapshot.data![index].agreement
+                                                    !="${EndPoint.houseAgreement}/null"?
+                                            Image(
+                                                height: CustomSize().customHeight(context)/4.5,
+                                                width: CustomSize().customWidth(context)/1.13,
+                                                image: NetworkImage(EndPoint.houseAgreement+snapshot.data![index].agreement??""),
+                                                fit: BoxFit.fill):
+                                            const Image(image: AssetImage("Assets/c1.png")),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80),
+                                            child:Text(snapshot.data?[index].name??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80),
+                                            child:Text(snapshot.data?[index].aridNo??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
+                                          ),
+                                        ],
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80,top:CustomSize().customHeight(context)/80 ),
-                                        child:Text(snapshot.data?[index].name??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80,top:CustomSize().customHeight(context)/80 ),
-                                        child:Text(snapshot.data?[index].aridNo??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
+                            );
+                          }
                         }
                       },);
                   }else{

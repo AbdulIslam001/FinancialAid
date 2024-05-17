@@ -232,6 +232,7 @@ Future<List<Application>> getAllApplication()async{
                     return ListView.builder(
                       itemCount: snapshot.data?.length,
                       itemBuilder: (context, index) {
+                        if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase()) || snapshot.data![index].aridNo.toLowerCase().contains(_search.text.toLowerCase())){}
                         return Padding(
                           padding: EdgeInsets.all(CustomSize().customHeight(context)/80),
                           child: Center(

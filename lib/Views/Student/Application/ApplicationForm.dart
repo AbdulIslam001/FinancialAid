@@ -8,6 +8,7 @@ import 'package:financial_aid/Views/Student/Application/ApplicationForm_one.dart
 import 'package:financial_aid/Views/Student/StudentDashBoard.dart';
 import 'package:financial_aid/viewModel/StudentViewModel/FilePickerViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -155,6 +156,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
                         ),
                       ),
                       TextFormField(
+                        keyboardType: TextInputType.text,
                         controller: _occupation,
                         validator: (String? val){
                           if(val!.isEmpty){
@@ -168,9 +170,17 @@ class _ApplicationFormState extends State<ApplicationForm> {
                         ),
                       ),
                       TextFormField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         validator: (String? val){
                           if(val!.isEmpty){
                             return "enter contact number";
+                          }else if(val!.length>11){
+                            return "Invalid Number";
+                          }else if(val!.length<11){
+                            return "Invalid Number";
                           }
                         },
                         controller: _contact,
@@ -181,6 +191,10 @@ class _ApplicationFormState extends State<ApplicationForm> {
                         ),
                       ),
                       TextFormField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         validator: (String? val){
                           if(val!.isEmpty){
                             return "enter salary";

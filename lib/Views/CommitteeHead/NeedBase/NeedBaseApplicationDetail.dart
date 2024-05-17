@@ -129,7 +129,7 @@ class _NeedBaseApplicationDetailsState
                                         EndPoint.houseAgreement + "null"
                                     ?
                                 e.split('.')[1]=="pdf"?
-                                const Image(image: AssetImage("Assets/pdf1.jpg"),fit: BoxFit.fill,):
+                                const Image(image: AssetImage("Assets/pdf2.png"),fit: BoxFit.fill,):
                                 e.split('.')[1]=="docx"?
                                 const Image(image: AssetImage("Assets/docx1.png"),fit: BoxFit.fill,):
                                 InstaImageViewer(

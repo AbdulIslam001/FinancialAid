@@ -6,6 +6,7 @@ import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/viewModel/StudentViewModel/FilePickerViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -125,6 +126,7 @@ class _ApplicationFormOneState extends State<ApplicationFormOne> {
                     },
                   ),
                   TextFormField(
+                    keyboardType: TextInputType.text,
                     validator: (String? value) {
                       if (value!.isEmpty) {
                         return "Reason is required";
@@ -166,6 +168,10 @@ class _ApplicationFormOneState extends State<ApplicationFormOne> {
                     },
                   ),*/
                   TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     controller: _requiredAmount,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),

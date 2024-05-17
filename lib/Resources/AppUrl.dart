@@ -37,6 +37,4 @@ class EndPoint{
   static String getPolicies=baseUrl+"api/Admin/getPolicies";
   static String unAssignedStudents=baseUrl+"api/Admin/unAssignedGraders";
 
-//  --------------------------
-
 }

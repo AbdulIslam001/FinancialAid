@@ -55,43 +55,45 @@ class StudentRecord extends StatelessWidget {
             child: ListView.builder(
               itemCount: studentList.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(left:CustomSize().customWidth(context)/40,right: CustomSize().customWidth(context)/40,top: CustomSize().customWidth(context)/100,bottom: CustomSize().customWidth(context)/100),
-                  child: GestureDetector(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return UpdatePassword(id: studentList[index].studentId,aridNo: studentList[index].aridNo, name: studentList[index].name);
-                      },));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(CustomSize().customWidth(context)/20),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          radius: CustomSize().customHeight(context) / 30,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                CustomSize().customHeight(context) / 30),
-                            child:EndPoint.imageUrl+studentList[index].profileImage==EndPoint.imageUrl+"null"||EndPoint.imageUrl+studentList[index].profileImage==EndPoint.imageUrl?(
-                             studentList[index].gender=='M'?Image.asset("Assets/male.png"):Image.asset("Assets/female.png"))
-                                :Image(
-                              image: NetworkImage(EndPoint.imageUrl + studentList[index].profileImage),
-                              width: CustomSize().customHeight(context) / 12,//CustomSize().customHeight(context)/15
-                              height: CustomSize().customHeight(context) / 12,
-                              fit: BoxFit.fill,
+                if(studentList[index].name.toLowerCase().contains(_search.text.toLowerCase()) || studentList[index].aridNo.toLowerCase().contains(_search.text.toLowerCase())){
+                  return Padding(
+                    padding: EdgeInsets.only(left:CustomSize().customWidth(context)/40,right: CustomSize().customWidth(context)/40,top: CustomSize().customWidth(context)/100,bottom: CustomSize().customWidth(context)/100),
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return UpdatePassword(id: studentList[index].studentId,aridNo: studentList[index].aridNo, name: studentList[index].name);
+                        },));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(CustomSize().customWidth(context)/20),
+                        ),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: CustomSize().customHeight(context) / 30,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  CustomSize().customHeight(context) / 30),
+                              child:EndPoint.imageUrl+studentList[index].profileImage==EndPoint.imageUrl+"null"||EndPoint.imageUrl+studentList[index].profileImage==EndPoint.imageUrl?(
+                                  studentList[index].gender=='M'?Image.asset("Assets/male.png"):Image.asset("Assets/female.png"))
+                                  :Image(
+                                image: NetworkImage(EndPoint.imageUrl + studentList[index].profileImage),
+                                width: CustomSize().customHeight(context) / 12,//CustomSize().customHeight(context)/15
+                                height: CustomSize().customHeight(context) / 12,
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
-                        ),
-                        title: Text(studentList[index].name),
-                        subtitle: Text(studentList[index].aridNo),
+                          title: Text(studentList[index].name),
+                          subtitle: Text(studentList[index].aridNo),
 
+                        ),
                       ),
                     ),
-                  ),
-                );
+                  );
+                }
               },),
           )
         ],
