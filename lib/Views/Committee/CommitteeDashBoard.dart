@@ -258,51 +258,53 @@ Future<List<Application>> getAllApplication()async{
                                   ],
                                   borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/80),
                                 ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: CustomSize().customHeight(context)/8,
-                                      width: CustomSize().customWidth(context)/1.12,
-                                      decoration: BoxDecoration(
-                                        color: Colors.blueGrey.withOpacity(0.2),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.white,
-                                            spreadRadius: CustomSize().customHeight(context)/1000,
-                                            blurRadius: CustomSize().customHeight(context)/100,
-                                            offset: Offset(CustomSize().customHeight(context)/1400,
-                                                CustomSize().customHeight(context)/1400),
-                                          ),
-                                        ],
+                                child: ListTile(
+                                  title: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: CustomSize().customHeight(context)/8,
+                                        width: CustomSize().customWidth(context)/1.12,
+                                        decoration: BoxDecoration(
+                                          color: Colors.blueGrey.withOpacity(0.2),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.white,
+                                              spreadRadius: CustomSize().customHeight(context)/1000,
+                                              blurRadius: CustomSize().customHeight(context)/100,
+                                              offset: Offset(CustomSize().customHeight(context)/1400,
+                                                  CustomSize().customHeight(context)/1400),
+                                            ),
+                                          ],
+                                        ),
+                                        child:
+                                        snapshot.data![index].agreement.split('.')[1]=="pdf"?
+                                        const Image(image: AssetImage("Assets/pdf2.png"),fit: BoxFit.fill,):
+                                        snapshot.data![index].agreement.split('.')[1]=="docx"?
+                                        const Image(image: AssetImage("Assets/docx1.png"))
+                                            :
+                                        EndPoint.houseAgreement+snapshot.data![index].agreement
+                                            !=EndPoint.houseAgreement ||
+                                            EndPoint.houseAgreement+snapshot.data![index].agreement
+                                                !="${EndPoint.houseAgreement}/null"?
+                                        Image(
+                                            height: CustomSize().customHeight(context)/4.5,
+                                            width: CustomSize().customWidth(context)/1.13,
+                                            image: NetworkImage(EndPoint.houseAgreement+snapshot.data![index].agreement??""),
+                                            fit: BoxFit.fill):
+                                        const Image(image: AssetImage("Assets/c1.png")),
                                       ),
-                                      child:
-                                      snapshot.data![index].agreement.split('.')[1]=="pdf"?
-                                      const Image(image: AssetImage("Assets/pdf1.jpg"),fit: BoxFit.fill,):
-                                      snapshot.data![index].agreement.split('.')[1]=="docx"?
-                                      const Image(image: AssetImage("Assets/docx1.png"))
-                                          :
-                                      EndPoint.houseAgreement+snapshot.data![index].agreement
-                                          !=EndPoint.houseAgreement ||
-                                          EndPoint.houseAgreement+snapshot.data![index].agreement
-                                              !="${EndPoint.houseAgreement}/null"?
-                                      Image(
-                                          height: CustomSize().customHeight(context)/4.5,
-                                          width: CustomSize().customWidth(context)/1.13,
-                                          image: NetworkImage(EndPoint.houseAgreement+snapshot.data![index].agreement??""),
-                                          fit: BoxFit.fill):
-                                      const Image(image: AssetImage("Assets/c1.png")),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80,top:CustomSize().customHeight(context)/80 ),
-                                      child:Text(snapshot.data?[index].name??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80,top:CustomSize().customHeight(context)/80 ),
-                                      child:Text(snapshot.data?[index].aridNo??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80 ),
+                                        child:Text(snapshot.data?[index].name??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80),
+                                        child:Text(snapshot.data?[index].aridNo??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

@@ -6,6 +6,7 @@ import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/Student/StudentDashBoard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 
 import '../../Components/CustomButton.dart';
@@ -80,9 +81,19 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                             EndPoint.houseAgreement + e.toString() !=
                                 EndPoint.houseAgreement + "null"
                         ? e.split('.')[1] == "pdf"
-                            ?const Image(
-                              image: AssetImage("Assets/pdf1.jpg"),
-                              fit: BoxFit.contain,
+                            ?const Row(
+                              children: [
+                                Center(
+                                  child: Image(
+                                    image: AssetImage("Assets/pdf2.png"),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 108.0,left: 50),
+                                  child: Icon(Icons.download),
+                                )
+                              ],
                             )
                             : e.split('.')[1] == "docx"
                                 ?const Image(
@@ -108,7 +119,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                         : Image(
                             height: CustomSize().customHeight(context) / 3.5,
                             width: CustomSize().customWidth(context),
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                             image: const AssetImage("Assets/c1.png")),
                   );
                 }).toList(),
@@ -308,6 +319,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                                     children: [
                                       const Text("Rejected"),
                                       TextFormField(
+                                        keyboardType: TextInputType.text,
                                         validator: (val) {
                                           if (val!.isEmpty) {
                                             return "Enter Reason for Rejection";
@@ -391,6 +403,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                                     children: [
                                       const Text("Accept"),
                                       TextFormField(
+                                        keyboardType: TextInputType.text,
                                         validator: (val) {
                                           if (val!.isEmpty) {
                                             return "Enter Reason for scholarship";
@@ -404,6 +417,10 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                                       ),
                                       TextFormField(
                                         controller: _amount,
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: <TextInputFormatter>[
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
                                         validator: (val) {
                                           if (val!.isEmpty) {
                                             return "Suggest Amount";

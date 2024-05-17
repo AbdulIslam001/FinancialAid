@@ -16,7 +16,7 @@ class InfoContainer extends StatelessWidget {
       padding: EdgeInsets.only( top: CustomSize().customHeight(context)/45),
       child: Center(
         child: Container(
-          height: CustomSize().customHeight(context)/4.5,
+          height: CustomSize().customHeight(context)/4,
           width: CustomSize().customWidth(context)/1.13,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/80),

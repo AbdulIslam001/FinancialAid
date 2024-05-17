@@ -9,6 +9,7 @@ import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/Committee/ApplicationDetails.dart';
 import 'package:financial_aid/viewModel/CommitteeHeadViewModel/ApplicationView.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:provider/provider.dart';
@@ -470,6 +471,10 @@ class _NeedBaseApplicationDetailsState
                                           Padding(
                                             padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
                                             child: TextFormField(
+                                              keyboardType: TextInputType.number,
+                                              inputFormatters: <TextInputFormatter>[
+                                                FilteringTextInputFormatter.digitsOnly,
+                                              ],
                                               onChanged: (val){},
                                               controller: _amount,
                                               decoration: InputDecoration(
