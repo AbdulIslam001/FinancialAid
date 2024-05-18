@@ -36,5 +36,6 @@ class EndPoint{
   static String addPolicies=baseUrl+"api/Admin/AddPolicies";
   static String getPolicies=baseUrl+"api/Admin/getPolicies";
   static String unAssignedStudents=baseUrl+"api/Admin/unAssignedGraders";
+  static String addBudget=baseUrl+"api/Admin/AddBudget";
 
 }

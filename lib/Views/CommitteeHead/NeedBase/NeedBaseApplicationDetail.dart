@@ -128,10 +128,38 @@ class _NeedBaseApplicationDetailsState
                                     EndPoint.houseAgreement + e.toString() !=
                                         EndPoint.houseAgreement + "null"
                                     ?
-                                e.split('.')[1]=="pdf"?
-                                const Image(image: AssetImage("Assets/pdf2.png"),fit: BoxFit.fill,):
-                                e.split('.')[1]=="docx"?
-                                const Image(image: AssetImage("Assets/docx1.png"),fit: BoxFit.fill,):
+                                e.split('.')[1] == "pdf"
+                                    ?const Row(
+                                  children: [
+                                    Center(
+                                      child: Image(
+                                        image: AssetImage("Assets/pdf2.png"),
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 108.0,left: 50),
+                                      child: Icon(Icons.download),
+                                    )
+                                  ],
+                                )
+                                    : e.split('.')[1] == "docx"
+                                    ? Row(
+                                  children: [
+                                    const Center(
+                                      child: Image(
+                                        image: AssetImage("Assets/docx1.png"),
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: CustomSize().customWidth(context)/3,left: CustomSize().customWidth(context)/5.5),
+                                      child: GestureDetector(
+                                          onTap: (){},
+                                          child: const Icon(Icons.download)),
+                                    )
+                                  ],
+                                ):
                                 InstaImageViewer(
                                   child: Image(
                                       height: CustomSize()

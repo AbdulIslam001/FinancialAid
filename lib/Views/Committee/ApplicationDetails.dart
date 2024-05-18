@@ -96,10 +96,20 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                               ],
                             )
                             : e.split('.')[1] == "docx"
-                                ?const Image(
-                                  image: AssetImage("Assets/docx1.png"),
-                                  fit: BoxFit.fill,
-                                )
+                                ?const Row(
+                      children: [
+                        Center(
+                          child: Image(
+                            image: AssetImage("Assets/docx1.png"),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 108.0,left: 50),
+                          child: Icon(Icons.download),
+                        )
+                      ],
+                    )
                                 : InstaImageViewer(
                                     child: Image(
                                         height:

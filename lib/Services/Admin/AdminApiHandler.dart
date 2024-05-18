@@ -175,5 +175,14 @@ class AdminApiHandler{
     var response=await http.post(uri);
     return response.statusCode;
   }
+
+  Future<int> addBudget(int amount)async{
+    String apiEndPoint="${EndPoint.addBudget}?amount=$amount";
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.post(uri);
+    return response.statusCode;
+  }
+
+
 }
 
