@@ -4,6 +4,7 @@ import 'package:financial_aid/Components/CustomButton.dart';
 import 'package:financial_aid/Models/ApplicationModel.dart';
 import 'package:financial_aid/Resources/CustomSize.dart';
 import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
+import 'package:financial_aid/Services/FileDownloader.dart';
 import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/Committee/ApplicationDetails.dart';
@@ -129,17 +130,21 @@ class _NeedBaseApplicationDetailsState
                                         EndPoint.houseAgreement + "null"
                                     ?
                                 e.split('.')[1] == "pdf"
-                                    ?const Row(
+                                    ?Row(
                                   children: [
-                                    Center(
+                                    const Center(
                                       child: Image(
                                         image: AssetImage("Assets/pdf2.png"),
                                         fit: BoxFit.contain,
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(top: 108.0,left: 50),
-                                      child: Icon(Icons.download),
+                                      padding:const EdgeInsets.only(top: 108.0,left: 50),
+                                      child: GestureDetector(
+                                          onTap: (){
+//                                            FileDownloader().downloadFile(EndPoint.houseAgreement + e.toString());
+                                          },
+                                          child: Icon(Icons.download)),
                                     )
                                   ],
                                 )
@@ -557,3 +562,6 @@ class _NeedBaseApplicationDetailsState
     );
   }
 }
+
+//flutter.compileSdkVersion
+//flutter.minSdkVersion

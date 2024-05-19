@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:financial_aid/Models/ApplicationModel.dart';
 import 'package:financial_aid/Resources/CustomSize.dart';
 import 'package:financial_aid/Services/Committee/CommitteeApiHandler.dart';
+import 'package:financial_aid/Services/FileDownloader.dart';
 import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/Student/StudentDashBoard.dart';
@@ -81,32 +82,38 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                             EndPoint.houseAgreement + e.toString() !=
                                 EndPoint.houseAgreement + "null"
                         ? e.split('.')[1] == "pdf"
-                            ?const Row(
+                            ?Row(
                               children: [
-                                Center(
+                                const Center(
                                   child: Image(
                                     image: AssetImage("Assets/pdf2.png"),
                                     fit: BoxFit.contain,
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(top: 108.0,left: 50),
-                                  child: Icon(Icons.download),
+                                  padding: const EdgeInsets.only(top: 108.0,left: 50),
+                                  child: GestureDetector(
+                                      onTap: (){
+                                        FileDownloader().downloadFile(EndPoint.houseAgreement + e.toString(), e.toString());
+                                      },
+                                      child: const Icon(Icons.download)),
                                 )
                               ],
                             )
                             : e.split('.')[1] == "docx"
-                                ?const Row(
+                                ? Row(
                       children: [
-                        Center(
+                        const Center(
                           child: Image(
                             image: AssetImage("Assets/docx1.png"),
                             fit: BoxFit.contain,
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 108.0,left: 50),
-                          child: Icon(Icons.download),
+                          padding: const EdgeInsets.only(top: 108.0,left: 50),
+                          child: GestureDetector(
+                              onTap: (){},
+                              child: const Icon(Icons.download)),
                         )
                       ],
                     )

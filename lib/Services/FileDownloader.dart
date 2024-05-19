@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+
 class FileDownloader{
 
   Future<bool> _requestPermission(Permission permission) async{
@@ -22,6 +23,7 @@ class FileDownloader{
   }
 
   Dio dio=Dio();
+  double progress=0.0;
   Future<bool> saveFile(String url , String fileName)async{
     Directory? directory;
     try{
@@ -33,7 +35,6 @@ class FileDownloader{
           for(int i=1;i<path.length;i++){
             if(path[i]!="Android"){
               newPath+="/"+path[i];
-
             }else{
               break;
             }
@@ -65,16 +66,23 @@ class FileDownloader{
     return false;
   }
 
-  downloadFile(String url , String fileName)async{
+  downloadFile(String url,String fileName)async{
 
-    bool downloaded=await saveFile(url,fileName);
-    if(downloaded){
-      print("downloaded");
-    }else{
-      print("error downloading");
-    }
+    String path=await _getApplicationDirectory(fileName);
+
+    await dio.download(
+        url,
+        path,
+      onReceiveProgress: (receivedByte,totalByte){
+          progress=receivedByte/totalByte;
+      }
+    );
 
   }
 
 
+  Future<String> _getApplicationDirectory(String fileName)async{
+    Directory? directory=await getExternalStorageDirectory();
+    return "${directory!.path}/$fileName";
+  }
 }

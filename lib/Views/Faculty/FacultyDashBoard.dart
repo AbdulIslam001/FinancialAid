@@ -2,19 +2,29 @@ import 'dart:convert';
 
 import 'package:financial_aid/Services/Faculty/FacultyAPiHandler.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Components/DrawerCustomButtons.dart';
+import '../../Models/GraderModel.dart';
 import '../../Resources/AppUrl.dart';
 import '../../Resources/CustomSize.dart';
 import '../../Services/Committee/CommitteeApiHandler.dart';
 import '../../Utilis/Routes/RouteName.dart';
 
-class FacultyDashBoard extends StatelessWidget {
+class FacultyDashBoard extends StatefulWidget {
   FacultyDashBoard({super.key});
+
+  @override
+  State<FacultyDashBoard> createState() => _FacultyDashBoardState();
+}
+
+class _FacultyDashBoardState extends State<FacultyDashBoard> {
   String name = "";
+
   String profileImage = "";
+
   Future<void> getFacultyInfo() async {
     Response res = await FacultyApiHandler().getFacultyInfo();
     if (res.statusCode == 200) {
@@ -22,6 +32,50 @@ class FacultyDashBoard extends StatelessWidget {
       name = obj["name"].toString();
       profileImage = obj["profilePic"].toString();
     }
+  }
+
+  final TextEditingController _reason=TextEditingController();
+
+  Future<List<GraderModel>> getAllGraders() async {
+    List<GraderModel> list = [];
+    Response res = await FacultyApiHandler().getGraderInformation();
+    if (res.statusCode == 200) {
+      dynamic obj = jsonDecode(res.body);
+      for (var i in obj) {
+        GraderModel g = GraderModel(
+            aridNo: i['arid_no'].toString(),
+            name: i['name'].toString(),
+            studentId: i['studentId'].toString(),
+            facultyId: i['facultyId'].toString(),
+            gender: i['gender'].toString(),
+            profileImage: i['profile_image'].toString());
+        list.add(g);
+      }
+    }
+    return list;
+  }
+
+  late final _ratingController;
+
+  late double _rating;
+
+  double _userRating = 3.0;
+
+  int _ratingBarMode = 1;
+
+  double _initialRating = 2.0;
+
+  bool _isRTLMode = false;
+
+  bool _isVertical = false;
+
+  IconData? _selectedIcon;
+
+  @override
+  void initState() {
+    super.initState();
+    _ratingController = TextEditingController(text: '3.0');
+    _rating = _initialRating;
   }
 
   @override
@@ -181,45 +235,122 @@ class FacultyDashBoard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              CircleAvatar(
-                radius: CustomSize().customHeight(context) / 13,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                      CustomSize().customHeight(context) / 13),
-                  child: Image(
-                    image: const AssetImage("Assets/pro.jpeg"),
-                    width: CustomSize().customHeight(context) / 6,
-                    height: CustomSize().customHeight(context) / 6,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-              Expanded(
-                  child: ListView.builder(
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return SizedBox(
-                            height: CustomSize().customHeight(context) / 2,
-                            width: CustomSize().customWidth(context),
-                            child: Center(child: Text(index.toString())),
-                          );
-                        },
-                      );
-                    },
-                    child: const Card(
-                      child: ListTile(
-                        title: Text("Adnan"),
-                        subtitle: Text("2020-arid-1213"),
+              FutureBuilder(
+                future: getFacultyInfo(),
+                builder: (context, snapshot) {
+                  return CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: CustomSize().customHeight(context) / 13,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          CustomSize().customHeight(context) / 13),
+                      child: EndPoint.imageUrl + profileImage ==
+                          "${EndPoint.imageUrl + profileImage}null" ||
+                          EndPoint.imageUrl + profileImage ==
+                              EndPoint.imageUrl + profileImage
+                          ? Icon(
+                        Icons.person,
+                        size: CustomSize().customHeight(context) / 10,
+                      )
+                          : Image(
+                        image: NetworkImage(
+                            EndPoint.imageUrl + profileImage),
+                        width: CustomSize().customHeight(context) / 6,
+                        height: CustomSize().customHeight(context) / 6,
+                        fit: BoxFit.fill,
                       ),
                     ),
                   );
                 },
-              ))
+              ),
+              FutureBuilder(
+                future: getAllGraders(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                        child: ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return SizedBox(
+                                  height:
+                                      CustomSize().customHeight(context) / 1.5,
+                                  width: CustomSize().customWidth(context),
+                                  child: Center(child: Column(
+                                    children: [
+                                      TextFormField(),
+                                      Text(snapshot.data![index].name.toString()),
+                                      RatingBarIndicator(
+                                        rating: _userRating,
+                                        itemBuilder: (context, index) => Icon(
+                                          _selectedIcon ?? Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        itemCount: 5,
+                                        itemSize: 50.0,
+                                        unratedColor: Colors.amber.withAlpha(50),
+                                        direction: _isVertical ? Axis.vertical : Axis.horizontal,
+                                      ),
+                                    ],
+                                  )),
+                                );
+                              },
+                            );
+                          },
+                          child: Card(
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: CustomSize().customHeight(context) / 30,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      CustomSize().customHeight(context) / 30),
+                                  child: EndPoint.imageUrl +
+                                                  snapshot.data![index]
+                                                      .profileImage ==
+                                              EndPoint.imageUrl + "null" ||
+                                          EndPoint.imageUrl +
+                                                  snapshot.data![index]
+                                                      .profileImage ==
+                                              EndPoint.imageUrl
+                                      ? (snapshot.data![index].gender == 'M'
+                                          ? Image.asset("Assets/male.png")
+                                          : Image.asset("Assets/female.png"))
+                                      : Image(
+                                          image: NetworkImage(
+                                              EndPoint.imageUrl +
+                                                  snapshot.data![index]
+                                                      .profileImage),
+                                          width: CustomSize()
+                                                  .customHeight(context) /
+                                              12, //CustomSize().customHeight(context)/15
+                                          height: CustomSize()
+                                                  .customHeight(context) /
+                                              12,
+                                          fit: BoxFit.fill,
+                                        ),
+                                ),
+                              ),
+                              title: Text(snapshot.data![index].name),
+                              subtitle: Text(snapshot.data![index].aridNo),
+                            ),
+                          ),
+                        );
+                      },
+                    ));
+                  } else {
+                    return const Column(
+                      children: [
+                        Center(child: CircularProgressIndicator()),
+                      ],
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),

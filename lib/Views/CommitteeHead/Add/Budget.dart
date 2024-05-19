@@ -95,7 +95,8 @@ class Budget extends StatelessWidget {
                               ],
                             )
                         );
-                      },);
+                      },
+                    );
                   },
                   child: const Icon(Icons.add_box_rounded)),
             )

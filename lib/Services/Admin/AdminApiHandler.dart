@@ -77,6 +77,7 @@ class AdminApiHandler{
     var response=await http.get(uri);
     return response;
   }
+
   Future<int> addCommitteeMember(int id)async{
     String apiEndPoint = EndPoint.AddCommitteeMember+"?id=${id.toString()}";
     Uri uri=Uri.parse(apiEndPoint);
