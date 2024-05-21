@@ -184,6 +184,12 @@ class AdminApiHandler{
     return response.statusCode;
   }
 
+  Future<http.Response> getMeritBaseShortListed()async{
+    String apiEndPoint=EndPoint.getMeritBaseShortListedStudent;
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.get(uri);
+    return response;
+  }
 
 }
 

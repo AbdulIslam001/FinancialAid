@@ -38,5 +38,6 @@ class EndPoint{
   static String unAssignedStudents=baseUrl+"api/Admin/unAssignedGraders";
   static String addBudget=baseUrl+"api/Admin/AddBudget";
   static String getGraderInfo=baseUrl+"api/Admin/gradersInformation";
-
+  static String rateGraderPerformance=baseUrl+"api/Faculty/RateGraderPerformance";
+  static String getMeritBaseShortListedStudent=baseUrl+"api/Admin/GetMeritBaseShortListedStudent";
 }

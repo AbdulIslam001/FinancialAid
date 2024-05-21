@@ -10,6 +10,7 @@ import 'package:financial_aid/Views/CommitteeHead/Add/Policy/Policy.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Student/StudentRecord.dart';
 import 'package:financial_aid/Views/CommitteeHead/CommitteeHeadDashBoard.dart';
 import 'package:financial_aid/Views/CommitteeHead/Graders/Grader.dart';
+import 'package:financial_aid/Views/CommitteeHead/MeritBase/MeritBaseStudents.dart';
 import 'package:financial_aid/Views/CommitteeHead/NeedBase/NeedBaseApplication.dart';
 import 'package:financial_aid/Views/CommitteeHead/NeedBase/NeedBaseApplicationDetail.dart';
 import 'package:financial_aid/Views/CommitteeHead/RejectedApplication.dart';
@@ -71,6 +72,8 @@ class RoutesNavigation {
       //   return MaterialPageRoute(builder: (context) => Policy());
       case RouteName.addPolicy:
         return MaterialPageRoute(builder: (context) => AddPolice());
+      case RouteName.meritBase:
+        return MaterialPageRoute(builder: (context) => MeritBaseStudent());
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(

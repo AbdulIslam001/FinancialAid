@@ -211,7 +211,9 @@ class _AcceptedApplicationState extends State<AcceptedApplication> {
                                                 ),
                                               ],
                                             ),
-                                            child:snapshot.data![index].agreement.split('.')[1]=="pdf"?
+                                            child:
+
+                                            snapshot.data![index].agreement.split('.')[1]=="pdf"?
                                             const Image(image: AssetImage("Assets/pdf2.png"),fit: BoxFit.fill,):
                                             snapshot.data![index].agreement.split('.')[1]=="docx"?
                                             const Image(image: AssetImage("Assets/docx1.png"))

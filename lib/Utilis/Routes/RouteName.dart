@@ -22,4 +22,6 @@ class RouteName{
   static const graders="Graders";
   static const policy="Policy";
   static const addPolicy="AddPolicy";
+  static const meritBase="MeritBaseShortListed";
+
 }

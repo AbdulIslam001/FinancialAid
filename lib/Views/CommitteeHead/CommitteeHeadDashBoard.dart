@@ -208,7 +208,9 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                   height: CustomSize().customHeight(context) / 100,
                 ),
                 OptionContainer(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, RouteName.meritBase);
+                    },
                     image: "Assets/mbl.png",
                     title: "Meritbase Shotlisting"),
                 OptionContainer(

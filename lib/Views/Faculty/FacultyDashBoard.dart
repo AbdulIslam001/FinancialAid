@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:financial_aid/Components/CustomButton.dart';
 import 'package:financial_aid/Services/Faculty/FacultyAPiHandler.dart';
+import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
@@ -55,29 +57,12 @@ class _FacultyDashBoardState extends State<FacultyDashBoard> {
     return list;
   }
 
-  late final _ratingController;
-
-  late double _rating;
-
-  double _userRating = 3.0;
-
-  int _ratingBarMode = 1;
-
-  double _initialRating = 2.0;
-
-  bool _isRTLMode = false;
-
-  bool _isVertical = false;
-
-  IconData? _selectedIcon;
-
   @override
   void initState() {
     super.initState();
-    _ratingController = TextEditingController(text: '3.0');
-    _rating = _initialRating;
   }
 
+  double rating=0.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -282,19 +267,71 @@ class _FacultyDashBoardState extends State<FacultyDashBoard> {
                                   width: CustomSize().customWidth(context),
                                   child: Center(child: Column(
                                     children: [
-                                      TextFormField(),
-                                      Text(snapshot.data![index].name.toString()),
-                                      RatingBarIndicator(
-                                        rating: _userRating,
-                                        itemBuilder: (context, index) => Icon(
-                                          _selectedIcon ?? Icons.star,
-                                          color: Colors.amber,
+                                      Padding(
+                                        padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,
+                                            right: CustomSize().customWidth(context)/20,
+                                            top: CustomSize().customWidth(context)/20),
+                                        child: TextFormField(
+                                          onChanged: (val){},
+                                          controller: _reason,
+                                          decoration: InputDecoration(
+                                            hintText: "Enter reason",
+                                            labelText: "Enter reason",
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                            ),
+                                          ),
                                         ),
-                                        itemCount: 5,
-                                        itemSize: 50.0,
-                                        unratedColor: Colors.amber.withAlpha(50),
-                                        direction: _isVertical ? Axis.vertical : Axis.horizontal,
                                       ),
+                                      SizedBox(
+                                        height: CustomSize().customHeight(context)/20,
+                                      ),
+                                      RatingBar.builder(
+                                        initialRating: 0,
+                                        allowHalfRating: true,
+                                        minRating: 1,
+                                        maxRating: 5,
+                                        direction: Axis.horizontal,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.only(left: CustomSize().customWidth(context)/50),
+                                        itemBuilder: (context, index) {
+                                          switch (index){
+                                            case 0:
+                                              return const Icon(Icons.sentiment_very_dissatisfied,color: Colors.amber,);
+                                            case 1:
+                                              return const Icon(Icons.sentiment_dissatisfied,color: Colors.amber,);
+                                            case 2:
+                                              return const Icon(Icons.sentiment_neutral,color: Colors.amber,);
+                                            case 3:
+                                              return const Icon(Icons.sentiment_satisfied,color: Colors.amber,);
+                                            case 4:
+                                              return const Icon(Icons.sentiment_very_satisfied,color: Colors.amber,);
+                                            default :
+                                              return const Text("");
+                                          }
+                                          return const Icon(Icons.star,color: Colors.amber,);
+                                      },
+                                        onRatingUpdate: (value) {
+                                          rating=value;
+                                          print(rating);
+                                      },),
+                                      SizedBox(
+                                        height: CustomSize().customHeight(context)/10,
+                                      ),
+                                      CustomButton(title: "Rate", loading: false,onTap: ()async{
+                                        int status=await FacultyApiHandler().rateGraderPerformance(
+                                            _reason.text.toString(),
+                                            snapshot.data![index].studentId.toString(),
+                                            snapshot.data![index].facultyId.toString(),
+                                            rating.toString());
+                                        if(context.mounted) {
+                                          if (status == 200) {
+                                            Navigator.pop(context);
+                                          }else{
+                                            Utilis.flushBarMessage("error", context);
+                                          }
+                                        }
+                                      },)
                                     ],
                                   )),
                                 );
