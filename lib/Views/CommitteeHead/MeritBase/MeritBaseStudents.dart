@@ -14,7 +14,9 @@ import '../../../Resources/CustomSize.dart';
 import '../../../Utilis/Routes/RouteName.dart';
 
 class MeritBaseStudent extends StatefulWidget {
-  MeritBaseStudent({super.key});
+  List<Student>? list;
+  bool? isTrue;
+  MeritBaseStudent({super.key,this.list,this.isTrue});
 
   @override
   State<MeritBaseStudent> createState() => _MeritBaseStudentState();
@@ -91,31 +93,6 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
                         if(snapshot.data![index].aridNo.toLowerCase().contains(_search.text.toLowerCase()) || snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase()) ){
                           return GestureDetector(
                             onTap: (){},
-                            onLongPress:(){
-                              showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) {
-                                return AlertDialog(
-                                  title: Column(
-                                    children: [
-                                      Text("want to remove${snapshot.data![index].name}",style: TextStyle(
-                                        fontSize: CustomSize().customWidth(context)/20,
-                                      )),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          CustomButton(title: "cancel", loading: false,onTap:(){
-                                            Navigator.pop(context);
-                                          },),
-                                          CustomButton(title: "yes", loading: false,onTap:(){},),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },);
-                            },
                             child: ListTile(
                               leading: CircleAvatar(
                                 backgroundColor: Colors.transparent,

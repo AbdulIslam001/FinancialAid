@@ -208,8 +208,18 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                   height: CustomSize().customHeight(context) / 100,
                 ),
                 OptionContainer(
-                    onTap: () {
-                      Navigator.pushNamed(context, RouteName.meritBase);
+                    onTap: () async{
+                      Response res=await AdminApiHandler().getMeritBaseShortListed();
+                      if(context.mounted)
+                      {
+                        if(res.statusCode==200)
+                        {
+
+                        }else{
+
+                        }
+                      }
+                      //Navigator.pushNamed(context, RouteName.meritBase);
                     },
                     image: "Assets/mbl.png",
                     title: "Meritbase Shotlisting"),

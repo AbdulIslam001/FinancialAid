@@ -8,6 +8,7 @@ import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
+import '../../../../Components/CustomButton.dart';
 import '../../../../Resources/CustomSize.dart';
 import '../../../../Utilis/Routes/RouteName.dart';
 
@@ -84,7 +85,31 @@ class _FacultyRecordState extends State<FacultyRecord> {
                       itemBuilder: (context, index) {
                         if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
                           return GestureDetector(
-                            onTap: (){},
+                              onLongPress:(){
+                                showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Column(
+                                        children: [
+                                          Text("want to remove${snapshot.data![index].name}",style: TextStyle(
+                                            fontSize: CustomSize().customWidth(context)/20,
+                                          )),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              CustomButton(title: "cancel", loading: false,onTap:(){
+                                                Navigator.pop(context);
+                                              },),
+                                              CustomButton(title: "yes", loading: false,onTap:(){},),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },);
+                              },
                               child: FacultyInfo(name: snapshot.data?[index].name??"", image: snapshot.data?[index].profileImage??""));
                         }
                       },);
