@@ -117,89 +117,96 @@ class _FacultyRecordState extends State<FacultyRecord> {
                                                 height: CustomSize().customHeight(context)/2.5,
                                                 child: Column(
                                                   children: [
-                                                    Expanded(
-                                                        child: ListView.builder(
-                                                          shrinkWrap: true,
-                                                          itemCount: list.length,
-                                                          itemBuilder: (context, index1) {
-                                                            return GestureDetector(
-                                                              onLongPress: (){
-                                                                showDialog(
-                                                                  barrierDismissible: false,
-                                                                  context: context, builder: (context) {
-                                                                  return AlertDialog(
-                                                                    title: SizedBox(
-                                                                      width: double.maxFinite,
-                                                                      height: CustomSize().customHeight(context)/3.5,
-                                                                      child: Column(
-                                                                        children: [
-                                                                          Text("want to remove ${list[index1].name} grader of ${snapshot.data![index].name}"),
-                                                                          Row(
-                                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    StatefulBuilder(builder: (context, setState) {
+                                                      return Expanded(
+                                                          child: ListView.builder(
+                                                            shrinkWrap: true,
+                                                            itemCount: list.length,
+                                                            itemBuilder: (context, index1) {
+                                                              return GestureDetector(
+                                                                onLongPress: (){
+                                                                  showDialog(
+                                                                    barrierDismissible: false,
+                                                                    context: context, builder: (context) {
+                                                                    return StatefulBuilder(builder: (context, setState) {
+                                                                      return AlertDialog(
+                                                                        title: SizedBox(
+                                                                          width: double.maxFinite,
+                                                                          height: CustomSize().customHeight(context)/3.5,
+                                                                          child: Column(
                                                                             children: [
-                                                                              CustomButton(title: "cancel", loading: false,onTap: (){
-                                                                                Navigator.pop(context);
-                                                                              }),
-                                                                              CustomButton(title: "yes", loading: false,onTap: ()async{
-                                                                                int status=await AdminApiHandler().removeGrader(int.parse(list[index1].studentId));
-                                                                                if(context.mounted){
-                                                                                  if(status==200){
+                                                                              Text("want to remove ${list[index1].name} grader of ${snapshot.data![index].name}"),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                                children: [
+                                                                                  CustomButton(title: "cancel", loading: false,onTap: (){
                                                                                     Navigator.pop(context);
-                                                                                  }else{
-                                                                                    Utilis.flushBarMessage("errot try again later", context);
-                                                                                  }
-                                                                                }
+                                                                                  }),
+                                                                                  CustomButton(title: "yes", loading: false,onTap: ()async{
+                                                                                    int status=await AdminApiHandler().removeGrader(int.parse(list[index1].studentId));
+                                                                                    if(context.mounted){
+                                                                                      if(status==200){
+                                                                                        Navigator.pop(context);
+                                                                                        Navigator.pop(context);
 
-                                                                              },)
+                                                                                      }else{
+                                                                                        Utilis.flushBarMessage("error try again later", context);
+                                                                                      }
+                                                                                    }
+                                                                                  },
+                                                                                  ),
+                                                                                ],
+                                                                              )
                                                                             ],
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                },);
-                                                              },
-                                                              child: Card(
-                                                                child: ListTile(
-                                                                  leading: CircleAvatar(
-                                                                    backgroundColor: Colors.transparent,
-                                                                    radius: CustomSize().customHeight(context) / 30,
-                                                                    child: ClipRRect(
-                                                                      borderRadius: BorderRadius.circular(
-                                                                          CustomSize().customHeight(context) / 30),
-                                                                      child: EndPoint.imageUrl +
-                                                                          list![index1]
-                                                                              .profileImage ==
-                                                                          EndPoint.imageUrl + "null" ||
-                                                                          EndPoint.imageUrl +
-                                                                              list![index1]
-                                                                                  .profileImage ==
-                                                                              EndPoint.imageUrl
-                                                                          ? (list[index1].gender == 'M'
-                                                                          ? Image.asset("Assets/male.png")
-                                                                          : Image.asset("Assets/female.png"))
-                                                                          : Image(
-                                                                        image: NetworkImage(
+                                                                          ),
+                                                                        ),
+                                                                      );
+
+                                                                    },);
+                                                                  },);
+                                                                },
+                                                                child: Card(
+                                                                  child: ListTile(
+                                                                    leading: CircleAvatar(
+                                                                      backgroundColor: Colors.transparent,
+                                                                      radius: CustomSize().customHeight(context) / 30,
+                                                                      child: ClipRRect(
+                                                                        borderRadius: BorderRadius.circular(
+                                                                            CustomSize().customHeight(context) / 30),
+                                                                        child: EndPoint.imageUrl +
+                                                                            list![index1]
+                                                                                .profileImage ==
+                                                                            EndPoint.imageUrl + "null" ||
                                                                             EndPoint.imageUrl +
                                                                                 list![index1]
-                                                                                    .profileImage),
-                                                                        width: CustomSize()
-                                                                            .customHeight(context) /
-                                                                            12, //CustomSize().customHeight(context)/15
-                                                                        height: CustomSize()
-                                                                            .customHeight(context) /
-                                                                            12,
-                                                                        fit: BoxFit.fill,
+                                                                                    .profileImage ==
+                                                                                EndPoint.imageUrl
+                                                                            ? (list[index1].gender == 'M'
+                                                                            ? Image.asset("Assets/male.png")
+                                                                            : Image.asset("Assets/female.png"))
+                                                                            : Image(
+                                                                          image: NetworkImage(
+                                                                              EndPoint.imageUrl +
+                                                                                  list![index1]
+                                                                                      .profileImage),
+                                                                          width: CustomSize()
+                                                                              .customHeight(context) /
+                                                                              12, //CustomSize().customHeight(context)/15
+                                                                          height: CustomSize()
+                                                                              .customHeight(context) /
+                                                                              12,
+                                                                          fit: BoxFit.fill,
+                                                                        ),
                                                                       ),
                                                                     ),
+                                                                    title: Text(list[index1].name),
+                                                                    subtitle: Text(list[index1].aridNo),
                                                                   ),
-                                                                  title: Text(list[index1].name),
-                                                                  subtitle: Text(list[index1].aridNo),
                                                                 ),
-                                                              ),
-                                                            );
-                                                          },
-                                                        )),
+                                                              );
+                                                            },
+                                                          ));
+                                                    },),
                                                   ],
                                                 ),
                                               ),

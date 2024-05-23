@@ -3,7 +3,9 @@
 import 'package:financial_aid/Resources/AppUrl.dart';
 import 'package:flutter/material.dart';
 
+import '../Resources/CustomColor.dart';
 import '../Resources/CustomSize.dart';
+import '../Views/CommitteeHead/Add/Faculty/FacultyRecord.dart';
 
 class FacultyInfo extends StatelessWidget {
   String name;

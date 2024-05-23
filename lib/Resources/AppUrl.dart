@@ -1,7 +1,7 @@
 
 
 class EndPoint{
-  static String baseUrl="http://192.168.100.14/FinancialAidAllocation/";
+  static String baseUrl="http://192.168.43.249/FinancialAidAllocation/";
   static String login=baseUrl+"api/User/Login";
   static String getStudentInfo=baseUrl+"api/Student/getStudentInfo";
   static String checkApplicationStatus=baseUrl+"api/Student/getStudentApplicationStatus";

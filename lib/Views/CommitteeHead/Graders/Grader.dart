@@ -5,18 +5,25 @@ import 'package:financial_aid/Models/ApplicationModel.dart';
 import 'package:financial_aid/Models/FacultyModel.dart';
 import 'package:financial_aid/Models/Student.dart';
 import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
+import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/FacultyRecord.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
+import '../../../Components/FacultyInfo.dart';
 import '../../../Resources/AppUrl.dart';
 import '../../../Resources/CustomColor.dart';
 import '../../../Resources/CustomSize.dart';
 
-class Graders extends StatelessWidget {
+class Graders extends StatefulWidget {
   const Graders({super.key});
 
+  @override
+  State<Graders> createState() => _GradersState();
+}
+
+class _GradersState extends State<Graders> {
   Future<List<FacultyModel>> getFacultyMembers() async {
     List<FacultyModel> fList = [];
     Response res = await AdminApiHandler().getAllFaculty();
@@ -34,6 +41,8 @@ class Graders extends StatelessWidget {
     }
     return fList;
   }
+
+  final TextEditingController _search = TextEditingController();
 
   Future<List<Student>> unAssignedGraders() async {
     List<Student> list = [];
@@ -135,10 +144,73 @@ class Graders extends StatelessWidget {
                         title: Text(snapshot.data![index].name),
                         subtitle: Text(snapshot.data![index].aridNo),
                         trailing: GestureDetector(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          onTap: () async{
+                            List<FacultyModel> list=[];
+                            Response res=await AdminApiHandler().getAllFaculty();
+                            if(res.statusCode==200 && context.mounted){
+                              dynamic obj=jsonDecode(res.body);
+                              FacultyModel f;
+                              for(var i in obj){
+                                f =FacultyModel(name: i["name"], profileImage: i["profilePic"],id: i["facultyId"],contact: i["contactNo"]);
+                                list.add(f);
+                              }
+                              showDialog(
+                                context: context, builder: (context) {
+                                return AlertDialog(
+                                  title: Column(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
+                                        child: TextFormField(
+                                          onChanged: (val){
+                                            setState((){});
+                                          },
+                                          controller: _search,
+                                          decoration: InputDecoration(
+                                            hintText: "search",
+                                            labelText: "search",
+                                            suffixIcon:Icon(Icons.search,size: CustomSize().customWidth(context)/10),
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: CustomSize().customHeight(context)/2.5,
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child:  ListView.builder(
+                                                itemCount: list.length,
+                                                itemBuilder: (context, index1) {
+                                                  if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
+                                                    return GestureDetector(
+                                                        onTap: ()async{
+                                                          int code=await AdminApiHandler().assignGrader(snapshot.data![index].studentId, list[index1].id);
+                                                          if(context.mounted){
+                                                            if(code==200 ){
+                                                              Navigator.pop(context);
+                                                            }else{
+                                                              Utilis.flushBarMessage("error try again", context);
+                                                            }
+                                                          }
+                                                        },
+                                                        child: FacultyInfo(name: list[index1].name, image: list[index1].profileImage));
+                                                  }
+                                                },),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },);
+                            }
+/*                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return FacultyRecord(name: snapshot.data![index].name,isShow: true,studentId:snapshot.data![index].studentId.toString(),);
-                            },));
+                            },));*/
                           },
                           child: Container(
                             height: CustomSize().customHeight(context) / 20,
