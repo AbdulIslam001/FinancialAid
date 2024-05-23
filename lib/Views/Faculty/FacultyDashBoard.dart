@@ -327,6 +327,8 @@ class _FacultyDashBoardState extends State<FacultyDashBoard> {
                                         if(context.mounted) {
                                           if (status == 200) {
                                             Navigator.pop(context);
+                                          }else if(status==302){
+                                            Utilis.flushBarMessage("Already Rated", context);
                                           }else{
                                             Utilis.flushBarMessage("error", context);
                                           }

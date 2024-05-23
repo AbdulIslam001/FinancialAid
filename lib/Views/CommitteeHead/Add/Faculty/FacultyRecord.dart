@@ -118,7 +118,7 @@ class _FacultyRecordState extends State<FacultyRecord> {
                               child: CircularProgressIndicator(),
                             )
                           ],
-                        )
+                        );
                       }
                   },);
                 },
