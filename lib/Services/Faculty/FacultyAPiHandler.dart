@@ -21,6 +21,12 @@ class FacultyApiHandler {
     var response = await http.get(uri);
     return response;
   }
+  Future<http.Response> graderInformation(int id) async {
+    String apiEndPoint = EndPoint.getGraderInfo+ "?id=$id";
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.get(uri);
+    return response;
+  }
   Future<int> rateGraderPerformance(String comment,String studentId,String facultyId,String rating) async {
     String apiEndPoint = EndPoint.rateGraderPerformance+"?facultyId=$facultyId&studentId=$studentId&rate=$rating&comment=$comment";
     Uri uri = Uri.parse(apiEndPoint);

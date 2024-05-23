@@ -197,6 +197,12 @@ class AdminApiHandler{
     var response=await http.post(uri);
     return response;
   }
+  Future<int> removeGrader(int id)async{
+    String apiEndPoint=EndPoint.removeGrader+"id=$id";
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.post(uri);
+    return response.statusCode;
+  }
 
 }
 
