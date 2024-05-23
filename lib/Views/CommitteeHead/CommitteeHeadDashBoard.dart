@@ -6,6 +6,7 @@ import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/FacultyRecord.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Policy/Policy.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Student/StudentRecord.dart';
+import 'package:financial_aid/Views/CommitteeHead/MeritBase/MeritBaseStudents.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -209,14 +210,36 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                 ),
                 OptionContainer(
                     onTap: () async{
+                      bool isTrue=false;
                       Response res=await AdminApiHandler().getMeritBaseShortListed();
                       if(context.mounted)
                       {
                         if(res.statusCode==200)
                         {
-
+                          List<Student> list=[];
+                          dynamic obj=jsonDecode(res.body);
+                          for(var i in obj){
+                            Student s= Student(aridNo: i['arid_no'].toString(),
+                                name: i['name'].toString(),
+                                semester: int.parse(i['semester'].toString()),
+                                cgpa: double.parse(i['cgpa'].toString()),
+                                section: i['section'].toString(),
+                                degree: i['degree'].toString(),
+                                fatherName: i['position'].toString(),
+                                gender: i['gender'].toString(),
+                                studentId: int.parse(i['student_id'].toString()),
+                                profileImage: i['profile_image'].toString());
+                            list.add(s);
+                          }
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return MeritBaseStudent(isTrue: true,list: list,);
+                          },));
+                        }else if(res.statusCode==400){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return MeritBaseStudent(isTrue: false);
+                          },));
                         }else{
-
+                          Utilis.flushBarMessage("error try again later", context);
                         }
                       }
                       //Navigator.pushNamed(context, RouteName.meritBase);

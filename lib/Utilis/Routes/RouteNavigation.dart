@@ -72,8 +72,8 @@ class RoutesNavigation {
       //   return MaterialPageRoute(builder: (context) => Policy());
       case RouteName.addPolicy:
         return MaterialPageRoute(builder: (context) => AddPolice());
-      case RouteName.meritBase:
-        return MaterialPageRoute(builder: (context) => MeritBaseStudent());
+/*      case RouteName.meritBase:
+        return MaterialPageRoute(builder: (context) => MeritBaseStudent());*/
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(

@@ -191,5 +191,12 @@ class AdminApiHandler{
     return response;
   }
 
+  Future<http.Response> doMeritBaseShortListing()async{
+    String apiEndPoint=EndPoint.meritBaseShortListing;
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.post(uri);
+    return response;
+  }
+
 }
 

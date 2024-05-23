@@ -3,6 +3,7 @@ import 'package:financial_aid/Utilis/Routes/RouteNavigation.dart';
 import 'package:financial_aid/viewModel/CommitteeHeadViewModel/ApplicationView.dart';
 import 'package:financial_aid/viewModel/CommitteeHeadViewModel/DegreeSelectionViewModel.dart';
 import 'package:financial_aid/viewModel/CommitteeViewModel/AddCommitteeViewModel.dart';
+import 'package:financial_aid/viewModel/CustomButtonViewModel.dart';
 import 'package:financial_aid/viewModel/LoginViewModel.dart';
 import 'package:financial_aid/viewModel/StudentViewModel/FilePickerViewModel.dart';
 import 'package:financial_aid/viewModel/StudentViewModel/StudentInfoViewModel.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=>AddCommitteeViewModel()),
         ChangeNotifierProvider(create: (_)=>FilePickerViewModel()),
         ChangeNotifierProvider(create: (_)=>ApplicationViewModel()),
-
+        ChangeNotifierProvider(create: (_)=>CustomButtonViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

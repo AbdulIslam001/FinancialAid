@@ -31,7 +31,7 @@ class EndPoint{
   static String accepted=baseUrl+"api/Admin/AcceptedApplication";
   static String rejected=baseUrl+"api/Admin/RejectedApplication";
   static String assignGrader=baseUrl+"api/Admin/AssignGrader";
-  static String meritBaseShortListing=baseUrl+"api/Admin/MeritBaseShortListing";
+  static String meritBaseShortListing=baseUrl+"api/Admin/MeritBase";
   static String addStudent=baseUrl+"api/Admin/AddStudent";
   static String addPolicies=baseUrl+"api/Admin/AddPolicies";
   static String getPolicies=baseUrl+"api/Admin/getPolicies";
