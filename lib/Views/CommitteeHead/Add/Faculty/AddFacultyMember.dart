@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../Components/CustomButton.dart';
 import '../../../../Resources/CustomSize.dart';
+import 'FacultyRecord.dart';
 
 class AddFacultyMember extends StatefulWidget {
   const AddFacultyMember({super.key});
@@ -136,7 +137,9 @@ class _AddFacultyMemberState extends State<AddFacultyMember> {
                       pickedImage!.absolute);
                   if(context.mounted){
                     if(code==200){
-                      Navigator.pushReplacementNamed(context, RouteName.facultyRecord);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return FacultyRecord(isShow: false);
+                      },));
                     }else{
                       Utilis.flushBarMessage("error try again", context);
                     }

@@ -91,7 +91,7 @@ class _FacultyDashBoardState extends State<FacultyDashBoard> {
                       child: EndPoint.imageUrl + profileImage ==
                                   "${EndPoint.imageUrl + profileImage}null" ||
                               EndPoint.imageUrl + profileImage ==
-                                  EndPoint.imageUrl + profileImage
+                                  EndPoint.imageUrl
                           ? Icon(
                               Icons.person,
                               size: CustomSize().customHeight(context) / 10,
@@ -145,7 +145,7 @@ class _FacultyDashBoardState extends State<FacultyDashBoard> {
               SizedBox(
                 height: CustomSize().customHeight(context) / 50,
               ),
-              DrawerCustomButtons(
+/*              DrawerCustomButtons(
                   title: "Balance",
                   onTab: () async {
                     Response res = await CommitteeApiHandler().getBalance();
@@ -178,7 +178,7 @@ class _FacultyDashBoardState extends State<FacultyDashBoard> {
                         },
                       );
                     }
-                  }),
+                  }),*/
               SizedBox(
                 height: CustomSize().customHeight(context) / 2.1,
               ),
@@ -232,7 +232,7 @@ class _FacultyDashBoardState extends State<FacultyDashBoard> {
                       child: EndPoint.imageUrl + profileImage ==
                           "${EndPoint.imageUrl + profileImage}null" ||
                           EndPoint.imageUrl + profileImage ==
-                              EndPoint.imageUrl + profileImage
+                              EndPoint.imageUrl
                           ? Icon(
                         Icons.person,
                         size: CustomSize().customHeight(context) / 10,

@@ -78,49 +78,26 @@ class _FacultyRecordState extends State<FacultyRecord> {
               child:FutureBuilder(
                 future: getFacultyMembers(),
                 builder: (context, snapshot) {
-                  return ListView.builder(
-                    itemCount: snapshot.data?.length,
-                    itemBuilder: (context, index) {
-                      if(snapshot.hasData){
+                  if(snapshot.hasData){
+                    return ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (context, index) {
                         if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
                           return GestureDetector(
-                              onTap: (){
-                                if(widget.isShow){
-                                  showDialog(context: context, builder: (context) {
-                                    return  AlertDialog(
-                                      title: const Column(
-                                        children: [
-                                          Text("Are you sure "),
-                                        ],
-                                      ),
-                                      actions: [
-                                        ElevatedButton(onPressed: ()async{
-                                          int code=await AdminApiHandler().assignGrader(int.parse(widget.studentId!), int.parse(snapshot.data![index].id.toString()));
-                                          if(code==200 && context.mounted){
-                                            Navigator.pushNamed(context, RouteName.graders);
-                                          }else if(context.mounted){
-                                            Utilis.flushBarMessage("try again later", context);
-                                          }
-                                        }, child: const Text("yes")),
-                                      ],
-                                    );
-                                  },);
-                                }else{
-
-                                }
-                              },
+                            onTap: (){},
                               child: FacultyInfo(name: snapshot.data?[index].name??"", image: snapshot.data?[index].profileImage??""));
                         }
-                      }else{
-                        return const Column(
-                          children: [
-                            Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          ],
-                        );
-                      }
-                  },);
+                      },);
+                  }else{
+                    return const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      ],
+                    );
+                  }
                 },
               )
           )
