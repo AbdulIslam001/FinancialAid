@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:financial_aid/Components/ApplicationView.dart';
 import 'package:financial_aid/Components/CustomButton.dart';
 import 'package:financial_aid/Models/ApplicationModel.dart';
@@ -13,8 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
+import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
-
+import 'package:path/path.dart' as Path;
 import '../../../Resources/AppUrl.dart';
 
 class NeedBaseApplicationDetails extends StatefulWidget {
@@ -33,9 +37,73 @@ TextEditingController _amount= TextEditingController();
 
 class _NeedBaseApplicationDetailsState
     extends State<NeedBaseApplicationDetails> {
-  int i = 0;
+
+  ////////////////
+  bool dowloading = false;
+  bool fileExists = false;
+  double progress = 0;
+  String fileName = "";
+  late String filePath;
+  late CancelToken cancelToken;
+  var getPathFile = DirectoryPath();
+
+  startDownload(String url) async {
+    cancelToken = CancelToken();
+    var storePath = await getPathFile.getPath();
+    filePath = '$storePath/$fileName';
+    setState(() {
+      dowloading = true;
+      progress = 0;
+    });
+
+    try {
+      await Dio().download(url, filePath,
+          onReceiveProgress: (count, total) {
+            setState(() {
+              progress = (count / total);
+            });
+          }, cancelToken: cancelToken);
+      setState(() {
+        dowloading = false;
+        fileExists = true;
+      });
+    } catch (e) {
+      print(e);
+      setState(() {
+        dowloading = false;
+      });
+    }
+  }
+
+  cancelDownload() {
+    cancelToken.cancel();
+    setState(() {
+      dowloading = false;
+    });
+  }
+
+  checkFileExit() async {
+    var storePath = await getPathFile.getPath();
+    filePath = '$storePath/$fileName';
+    bool fileExistCheck = await File(filePath).exists();
+    setState(() {
+      fileExists = fileExistCheck;
+    });
+  }
+
+  openfile() {
+    OpenFile.open(filePath);
+    print("fff $filePath");
+  }
 
 
+
+
+
+
+
+
+  ///////////////////////
   @override
   Widget build(BuildContext context) {
     _reason.text = widget.application.reason;
@@ -143,10 +211,13 @@ class _NeedBaseApplicationDetailsState
                                     Padding(
                                       padding:const EdgeInsets.only(top: 108.0,left: 50),
                                       child: GestureDetector(
-                                          onTap: (){
-//                                            FileDownloader().downloadFile(EndPoint.houseAgreement + e.toString());
+                                          onTap: ()async{
+                                              fileName = Path.basename(EndPoint.houseAgreement + e.toString());
+                                            await checkFileExit();
+                                            startDownload(EndPoint.houseAgreement + e.toString());
+                                            openfile();
                                           },
-                                          child: Icon(Icons.download)),
+                                          child:const Icon(Icons.download)),
                                     )
                                   ],
                                 )
@@ -162,7 +233,12 @@ class _NeedBaseApplicationDetailsState
                                     Padding(
                                       padding: EdgeInsets.only(top: CustomSize().customWidth(context)/3,left: CustomSize().customWidth(context)/5.5),
                                       child: GestureDetector(
-                                          onTap: (){},
+                                          onTap: ()async{
+                                            fileName = Path.basename(EndPoint.houseAgreement + e.toString());
+                                            await checkFileExit();
+                                            startDownload(EndPoint.houseAgreement + e.toString());
+                                            openfile();
+                                          },
                                           child: const Icon(Icons.download)),
                                     )
                                   ],

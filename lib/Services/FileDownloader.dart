@@ -86,3 +86,34 @@ class FileDownloader{
     return "${directory!.path}/$fileName";
   }
 }
+
+
+class CheckPermission{
+
+  isStoragePermission()async{
+    var isStorage=await Permission.storage.status;
+    if(!isStorage.isGranted){
+      await Permission.storage.request();
+      if(!isStorage.isGranted){
+        return false;
+      }else{
+        return true;
+      }
+    }
+  }
+}
+
+class DirectoryPath{
+
+  getPath()async{
+    Directory? dir=await getExternalStorageDirectory();
+    final filePath=Directory("${dir!.path}/files");
+    if(await filePath.exists()){
+      return filePath.path;
+    }else{
+      filePath.create(recursive: true);
+      return filePath.path;
+    }
+  }
+
+}

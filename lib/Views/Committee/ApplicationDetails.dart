@@ -1,4 +1,7 @@
+import 'dart:io';
+import 'package:path/path.dart' as Path;
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:financial_aid/Models/ApplicationModel.dart';
 import 'package:financial_aid/Resources/CustomSize.dart';
 import 'package:financial_aid/Services/Committee/CommitteeApiHandler.dart';
@@ -9,6 +12,7 @@ import 'package:financial_aid/Views/Student/StudentDashBoard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
+import 'package:open_file/open_file.dart';
 
 import '../../Components/CustomButton.dart';
 import '../../Resources/AppUrl.dart';
@@ -26,6 +30,63 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
   final TextEditingController _why = TextEditingController();
   final TextEditingController _amount = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool dowloading = false;
+  bool fileExists = false;
+  double progress = 0;
+  String fileName = "";
+  late String filePath;
+  late CancelToken cancelToken;
+  var getPathFile = DirectoryPath();
+
+  startDownload(String url) async {
+    cancelToken = CancelToken();
+    var storePath = await getPathFile.getPath();
+    filePath = '$storePath/$fileName';
+    setState(() {
+      dowloading = true;
+      progress = 0;
+    });
+
+    try {
+      await Dio().download(url, filePath,
+          onReceiveProgress: (count, total) {
+            setState(() {
+              progress = (count / total);
+            });
+          }, cancelToken: cancelToken);
+      setState(() {
+        dowloading = false;
+        fileExists = true;
+      });
+    } catch (e) {
+      print(e);
+      setState(() {
+        dowloading = false;
+      });
+    }
+  }
+
+  cancelDownload() {
+    cancelToken.cancel();
+    setState(() {
+      dowloading = false;
+    });
+  }
+
+  checkFileExit() async {
+    var storePath = await getPathFile.getPath();
+    filePath = '$storePath/$fileName';
+    bool fileExistCheck = await File(filePath).exists();
+    setState(() {
+      fileExists = fileExistCheck;
+    });
+  }
+
+  openfile() {
+    OpenFile.open(filePath);
+    print("fff $filePath");
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +154,11 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 108.0,left: 50),
                                   child: GestureDetector(
-                                      onTap: (){
-                                        FileDownloader().downloadFile(EndPoint.houseAgreement + e.toString(), e.toString());
+                                      onTap: ()async{
+                                        fileName = Path.basename(EndPoint.houseAgreement + e.toString());
+                                        await checkFileExit();
+                                        startDownload(EndPoint.houseAgreement + e.toString());
+                                        openfile();
                                       },
                                       child: const Icon(Icons.download)),
                                 )
@@ -112,7 +176,12 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                         Padding(
                           padding: const EdgeInsets.only(top: 108.0,left: 50),
                           child: GestureDetector(
-                              onTap: (){},
+                              onTap: ()async{
+                                fileName = Path.basename(EndPoint.houseAgreement + e.toString());
+                                await checkFileExit();
+                                startDownload(EndPoint.houseAgreement + e.toString());
+                                openfile();
+                              },
                               child: const Icon(Icons.download)),
                         )
                       ],
