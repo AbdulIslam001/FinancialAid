@@ -105,7 +105,6 @@ class _FacultyRecordState extends State<FacultyRecord> {
                                       list.add(g);
                                     }
                                     showDialog(
-                                      barrierDismissible: false,
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
@@ -210,7 +209,7 @@ class _FacultyRecordState extends State<FacultyRecord> {
                                                   ],
                                                 ),
                                               ),
-                                              Row(
+                                              /*Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: [
                                                   CustomButton(title: "cancel", loading: false,onTap:(){
@@ -218,7 +217,7 @@ class _FacultyRecordState extends State<FacultyRecord> {
                                                   },),
                                                   CustomButton(title: "yes", loading: false,onTap:(){},),
                                                 ],
-                                              )
+                                              )*/
                                             ],
                                           ),
                                         );

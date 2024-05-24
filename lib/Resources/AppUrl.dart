@@ -41,4 +41,5 @@ class EndPoint{
   static String rateGraderPerformance=baseUrl+"api/Faculty/RateGraderPerformance";
   static String getMeritBaseShortListedStudent=baseUrl+"api/Admin/GetMeritBaseShortListedStudent";
   static String removeGrader=baseUrl+"api/Admin/Removegrader";
+  static String canRateGrader=baseUrl+"api/Faculty/CanRateGrader";
 }

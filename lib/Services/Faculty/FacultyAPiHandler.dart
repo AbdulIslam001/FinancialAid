@@ -33,4 +33,10 @@ class FacultyApiHandler {
     var response = await http.post(uri);
     return response.statusCode;
   }
+  Future<int> canRateGrader() async {
+    String apiEndPoint = EndPoint.canRateGrader;
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.get(uri);
+    return response.statusCode;
+  }
 }

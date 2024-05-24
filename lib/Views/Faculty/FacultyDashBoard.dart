@@ -257,88 +257,96 @@ class _FacultyDashBoardState extends State<FacultyDashBoard> {
                       itemCount: snapshot.data?.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return SizedBox(
-                                  height:
+                          onTap: () async{
+                            int code=await FacultyApiHandler().canRateGrader();
+                            if(context.mounted){
+                              if(code==200){
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return SizedBox(
+                                      height:
                                       CustomSize().customHeight(context) / 1.5,
-                                  width: CustomSize().customWidth(context),
-                                  child: Center(child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,
-                                            right: CustomSize().customWidth(context)/20,
-                                            top: CustomSize().customWidth(context)/20),
-                                        child: TextFormField(
-                                          onChanged: (val){},
-                                          controller: _reason,
-                                          decoration: InputDecoration(
-                                            hintText: "Enter reason",
-                                            labelText: "Enter reason",
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                      width: CustomSize().customWidth(context),
+                                      child: Center(child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,
+                                                right: CustomSize().customWidth(context)/20,
+                                                top: CustomSize().customWidth(context)/20),
+                                            child: TextFormField(
+                                              onChanged: (val){},
+                                              controller: _reason,
+                                              decoration: InputDecoration(
+                                                hintText: "Enter reason",
+                                                labelText: "Enter reason",
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: CustomSize().customHeight(context)/20,
-                                      ),
-                                      RatingBar.builder(
-                                        initialRating: 0,
-                                        allowHalfRating: true,
-                                        minRating: 1,
-                                        maxRating: 5,
-                                        direction: Axis.horizontal,
-                                        itemCount: 5,
-                                        itemPadding: EdgeInsets.only(left: CustomSize().customWidth(context)/50),
-                                        itemBuilder: (context, index) {
-                                          switch (index){
-                                            case 0:
-                                              return const Icon(Icons.sentiment_very_dissatisfied,color: Colors.amber,);
-                                            case 1:
-                                              return const Icon(Icons.sentiment_dissatisfied,color: Colors.amber,);
-                                            case 2:
-                                              return const Icon(Icons.sentiment_neutral,color: Colors.amber,);
-                                            case 3:
-                                              return const Icon(Icons.sentiment_satisfied,color: Colors.amber,);
-                                            case 4:
-                                              return const Icon(Icons.sentiment_very_satisfied,color: Colors.amber,);
-                                            default :
-                                              return const Text("");
-                                          }
-                                          return const Icon(Icons.star,color: Colors.amber,);
-                                      },
-                                        onRatingUpdate: (value) {
-                                          rating=value;
-                                          print(rating);
-                                      },),
-                                      SizedBox(
-                                        height: CustomSize().customHeight(context)/10,
-                                      ),
-                                      CustomButton(title: "Rate", loading: false,onTap: ()async{
-                                        int status=await FacultyApiHandler().rateGraderPerformance(
-                                            _reason.text.toString(),
-                                            snapshot.data![index].studentId.toString(),
-                                            snapshot.data![index].facultyId.toString(),
-                                            rating.toString());
-                                        if(context.mounted) {
-                                          if (status == 200) {
-                                            Navigator.pop(context);
-                                          }else if(status==302){
-                                            Utilis.flushBarMessage("Already Rated", context);
-                                          }else{
-                                            Utilis.flushBarMessage("error", context);
-                                          }
-                                        }
-                                      },)
-                                    ],
-                                  )),
+                                          SizedBox(
+                                            height: CustomSize().customHeight(context)/20,
+                                          ),
+                                          RatingBar.builder(
+                                            initialRating: 0,
+                                            allowHalfRating: true,
+                                            minRating: 1,
+                                            maxRating: 5,
+                                            direction: Axis.horizontal,
+                                            itemCount: 5,
+                                            itemPadding: EdgeInsets.only(left: CustomSize().customWidth(context)/50),
+                                            itemBuilder: (context, index) {
+                                              switch (index){
+                                                case 0:
+                                                  return const Icon(Icons.sentiment_very_dissatisfied,color: Colors.amber,);
+                                                case 1:
+                                                  return const Icon(Icons.sentiment_dissatisfied,color: Colors.amber,);
+                                                case 2:
+                                                  return const Icon(Icons.sentiment_neutral,color: Colors.amber,);
+                                                case 3:
+                                                  return const Icon(Icons.sentiment_satisfied,color: Colors.amber,);
+                                                case 4:
+                                                  return const Icon(Icons.sentiment_very_satisfied,color: Colors.amber,);
+                                                default :
+                                                  return const Text("");
+                                              }
+                                              return const Icon(Icons.star,color: Colors.amber,);
+                                            },
+                                            onRatingUpdate: (value) {
+                                              rating=value;
+                                            },),
+                                          SizedBox(
+                                            height: CustomSize().customHeight(context)/10,
+                                          ),
+                                          CustomButton(title: "Rate", loading: false,onTap: ()async{
+                                            int status=await FacultyApiHandler().rateGraderPerformance(
+                                                _reason.text.toString(),
+                                                snapshot.data![index].studentId.toString(),
+                                                snapshot.data![index].facultyId.toString(),
+                                                rating.toString());
+                                            if(context.mounted) {
+                                              if (status == 200) {
+                                                Navigator.pop(context);
+                                              }else if(status==302){
+                                                Utilis.flushBarMessage("Already Rated", context);
+                                              }else{
+                                                Utilis.flushBarMessage("error", context);
+                                              }
+                                            }
+                                          },)
+                                        ],
+                                      )),
+                                    );
+                                  },
                                 );
-                              },
-                            );
+                              }else if(code==400){
+                                Utilis.flushBarMessage("Can't Rate now", context);
+                              }else{
+                                Utilis.flushBarMessage("error try again later", context);
+                              }
+                            }
                           },
                           child: Card(
                             child: ListTile(
