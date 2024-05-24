@@ -18,12 +18,12 @@ class Budget extends StatelessWidget {
   Future<List<BudgetModel>> getAllBudget() async {
     List<BudgetModel> list = [];
     Response res = await AdminApiHandler().getAllBudget();
-
-
     if (res.statusCode == 200) {
+
       dynamic obj = jsonDecode(res.body);
+      BudgetModel b;
       for (var i in obj) {
-        BudgetModel b = BudgetModel(
+        b = BudgetModel(
             id: i["budgetId"],
             amount: i["budgetAmount"].toString(),
             remainingAmount: i["remainingAmount"].toString(),
@@ -125,18 +125,26 @@ class Budget extends StatelessWidget {
             child: FutureBuilder(
               future: getAllBudget(),
               builder: (context, snapshot) {
-                return ListView.builder(
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (context, index) {
-                    if(snapshot.data?[index].status=='A'){
-                      return BudgetInfoContainer(
-                        amount: snapshot.data?[index].amount??'',
-                        remainingAmount: snapshot.data?[index].remainingAmount??'',
-                        session: snapshot.data?[index].session??'',
-                      );
-                    }
-                  },
-                );
+                if(snapshot.hasData){
+                  return ListView.builder(
+                    itemCount: snapshot.data?.length,
+                    itemBuilder: (context, index) {
+                        return BudgetInfoContainer(
+                          amount: snapshot.data![index].amount,
+                          remainingAmount: snapshot.data![index].remainingAmount,
+                          session: snapshot.data![index].session,
+                        );
+                    },
+                  );
+                }else{
+                  return const Column(
+                    children: [
+                      Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    ],
+                  );
+                }
               },
             ),
           ),

@@ -141,9 +141,7 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                         }
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return StudentRecord(
-                              studentList: studentList,
-                            );
+                            return StudentRecord();
                           },
                         ));
                       }

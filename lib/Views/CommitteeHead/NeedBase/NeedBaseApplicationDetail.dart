@@ -233,7 +233,8 @@ class _NeedBaseApplicationDetailsState
                                           image: const AssetImage("Assets/c1.png")),
                                 ),
                               ),
-*//*                              Positioned(
+*/
+/*                              Positioned(
                                   right: CustomSize().customWidth(context) / 70,
                                   top: CustomSize().customWidth(context) / 4,
                                   child: GestureDetector(
