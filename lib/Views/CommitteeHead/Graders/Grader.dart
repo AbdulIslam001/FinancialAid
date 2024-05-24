@@ -156,54 +156,65 @@ class _GradersState extends State<Graders> {
                               }
                               showDialog(
                                 context: context, builder: (context) {
-                                return AlertDialog(
-                                  title: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
-                                        child: TextFormField(
-                                          onChanged: (val){
-                                            setState((){});
-                                          },
-                                          controller: _search,
-                                          decoration: InputDecoration(
-                                            hintText: "search",
-                                            labelText: "search",
-                                            suffixIcon:Icon(Icons.search,size: CustomSize().customWidth(context)/10),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                return SingleChildScrollView(
+                                  child: AlertDialog(
+                                    title: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            GestureDetector(
+                                                onTap:(){
+                                                  Navigator.pop(context);
+                                                },
+                                                child:const Icon(Icons.arrow_back_ios_new))
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
+                                          child: TextFormField(
+                                            onChanged: (val){
+                                              setState((){});
+                                            },
+                                            controller: _search,
+                                            decoration: InputDecoration(
+                                              hintText: "search",
+                                              labelText: "search",
+                                              suffixIcon:Icon(Icons.search,size: CustomSize().customWidth(context)/10),
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: CustomSize().customHeight(context)/2.5,
-                                        child: Column(
-                                          children: [
-                                            Expanded(
-                                              child:  ListView.builder(
-                                                itemCount: list.length,
-                                                itemBuilder: (context, index1) {
-                                                  if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
-                                                    return GestureDetector(
-                                                        onTap: ()async{
-                                                          int code=await AdminApiHandler().assignGrader(snapshot.data![index].studentId, list[index1].id);
-                                                          if(context.mounted){
-                                                            if(code==200 ){
-                                                              Navigator.pop(context);
-                                                            }else{
-                                                              Utilis.flushBarMessage("error try again", context);
+                                        SizedBox(
+                                          height: CustomSize().customHeight(context)/2.5,
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                child:  ListView.builder(
+                                                  itemCount: list.length,
+                                                  itemBuilder: (context, index1) {
+                                                    if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
+                                                      return GestureDetector(
+                                                          onTap: ()async{
+                                                            int code=await AdminApiHandler().assignGrader(snapshot.data![index].studentId, list[index1].id);
+                                                            if(context.mounted){
+                                                              if(code==200 ){
+                                                                Navigator.pop(context);
+                                                              }else{
+                                                                Utilis.flushBarMessage("error try again", context);
+                                                              }
                                                             }
-                                                          }
-                                                        },
-                                                        child: FacultyInfo(name: list[index1].name, image: list[index1].profileImage));
-                                                  }
-                                                },),
-                                            ),
-                                          ],
+                                                          },
+                                                          child: FacultyInfo(name: list[index1].name, image: list[index1].profileImage));
+                                                    }
+                                                  },),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 );
                               },);
