@@ -44,11 +44,11 @@ Future<List<Application>> getAllApplication()async{
     Response res=await CommitteeApiHandler().getAllApplications();
     if(res.statusCode==200){
       List<EvidenceDocument> evidenceList=[];
-      String ss='';
-      String dc='';
-      String hg='';
       dynamic response=jsonDecode(res.body);
       for(var obj in response){
+        String ss='';
+        String dc='';
+        List<String> hg=[];
         for(int i =0 ; i<obj["EvidenceDocuments"].length;i++){
           if(obj["EvidenceDocuments"][i]["document_type"] !=null && obj["EvidenceDocuments"][i]["image"] !=null){
             if(obj["EvidenceDocuments"][i]["document_type"]=="salaryslip"){
@@ -56,7 +56,7 @@ Future<List<Application>> getAllApplication()async{
             }else if(obj["EvidenceDocuments"][i]["document_type"]=="deathcertificate"){
               dc=obj["EvidenceDocuments"][i]["image"];
             }else if(obj["EvidenceDocuments"][i]["document_type"]=="houseAgreement"){
-              hg=obj["EvidenceDocuments"][i]["image"];
+              hg.add(obj["EvidenceDocuments"][i]["image"]);
             }
           }
           EvidenceDocument ed= EvidenceDocument(docs: obj["EvidenceDocuments"][i]["image"], type: obj["EvidenceDocuments"][i]["document_type"]);
@@ -207,12 +207,22 @@ Future<List<Application>> getAllApplication()async{
                 child: FutureBuilder(
                   future: getAllApplication(),
                   builder: (context, snapshot) {
-                    return Column(
-                      children: [
-                        Center(child: Text("Remaining Application",style: TextStyle(fontSize: CustomSize().customHeight(context)/30,fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),)),
-                        Center(child: Text(snapshot.data?.length.toString()??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/30,fontStyle: FontStyle.italic),)),
-                      ],
-                    );
+                    if(snapshot.hasData){
+                      return Column(
+                        children: [
+                          Center(child: Text("Remaining Application",style: TextStyle(fontSize: CustomSize().customHeight(context)/30,fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),)),
+                          Center(child: Text(snapshot.data?.length.toString()??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/30,fontStyle: FontStyle.italic),)),
+                        ],
+                      );
+                    }else{
+                      return const Column(
+                        children: [
+                          Center(
+                              child: CircularProgressIndicator()
+                          ),
+                        ],
+                      );
+                    }
                   },
                 ),
               ),
@@ -291,19 +301,19 @@ Future<List<Application>> getAllApplication()async{
                                           ],
                                         ),
                                         child:
-                                        snapshot.data![index].agreement.split('.')[1]=="pdf"?
+                                        snapshot.data![index].agreement[0].split('.')[1]=="pdf"?
                                         const Image(image: AssetImage("Assets/pdf2.png"),fit: BoxFit.fill,):
-                                        snapshot.data![index].agreement.split('.')[1]=="docx"?
+                                        snapshot.data![index].agreement[0].split('.')[1]=="docx"?
                                         const Image(image: AssetImage("Assets/docx1.png"))
                                             :
-                                        EndPoint.houseAgreement+snapshot.data![index].agreement
+                                        EndPoint.houseAgreement+snapshot.data![index].agreement[0]
                                             !=EndPoint.houseAgreement ||
-                                            EndPoint.houseAgreement+snapshot.data![index].agreement
+                                            EndPoint.houseAgreement+snapshot.data![index].agreement[0]
                                                 !="${EndPoint.houseAgreement}/null"?
                                         Image(
                                             height: CustomSize().customHeight(context)/4.5,
                                             width: CustomSize().customWidth(context)/1.13,
-                                            image: NetworkImage(EndPoint.houseAgreement+snapshot.data![index].agreement??""),
+                                            image: NetworkImage(EndPoint.houseAgreement+snapshot.data![index].agreement[0]),
                                             fit: BoxFit.fill):
                                         const Image(image: AssetImage("Assets/c1.png")),
                                       ),

@@ -44,9 +44,11 @@ class _NeedBaseApplicationDetailsState
         widget.application.salarySlip != '') {
       docsList.add(widget.application.salarySlip??"");
     }
-    if (widget.application.agreement != null ||
-        widget.application.agreement != '') {
-      docsList.add(widget.application.agreement);
+    for(int i=0;i<widget.application.agreement.length ;i++){
+      if (widget.application.agreement != null ||
+          widget.application.agreement != '') {
+        docsList.add(widget.application.agreement[i]);
+      }
     }
     if (widget.application.deathCertificate != null ||
         widget.application.deathCertificate != '') {

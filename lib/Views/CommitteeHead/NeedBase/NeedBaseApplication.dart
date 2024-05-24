@@ -24,11 +24,11 @@ class NeedBaseApplications extends StatelessWidget {
     Response res=await AdminApiHandler().getApplications();
     if(res.statusCode==200){
 //      List<EvidenceDocument> evidenceList=[];
-      String ss='';
-      String dc='';
-      String hg='';
       dynamic response=jsonDecode(res.body);
       for(var obj in response){
+        String ss='';
+        String dc='';
+        List<String> hg=[];
         for(int i =0 ; i<obj["re"]["EvidenceDocuments"].length;i++){
           if(obj["re"]["EvidenceDocuments"][i]["document_type"] !=null && obj["re"]["EvidenceDocuments"][i]["image"] !=null){
             if(obj["re"]["EvidenceDocuments"][i]["document_type"]=="salaryslip"){
@@ -36,7 +36,7 @@ class NeedBaseApplications extends StatelessWidget {
             }else if(obj["re"]["EvidenceDocuments"][i]["document_type"]=="deathcertificate"){
               dc=obj["re"]["EvidenceDocuments"][i]["image"];
             }else if(obj["re"]["EvidenceDocuments"][i]["document_type"]=="houseAgreement"){
-              hg=obj["re"]["EvidenceDocuments"][i]["image"];
+              hg.add(obj["re"]["EvidenceDocuments"][i]["image"]);
             }
           }
 /*          EvidenceDocument ed= EvidenceDocument(docs: obj["re"]["EvidenceDocuments"][i]["image"], type: obj["re"]["EvidenceDocuments"][i]["document_type"]);
@@ -197,18 +197,18 @@ class NeedBaseApplications extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-                                          child: snapshot.data![index].agreement.split('.')[1]=="pdf"?
+                                          child: snapshot.data![index].agreement[0].split('.')[1]=="pdf"?
                                           const Image(image: AssetImage("Assets/pdf2.png"),fit: BoxFit.fill,):
-                                          snapshot.data![index].agreement.split('.')[1]=="docx"?
+                                          snapshot.data![index].agreement[0].split('.')[1]=="docx"?
                                           const Image(image: AssetImage("Assets/docx1.png"))
-                                              : EndPoint.houseAgreement+snapshot.data![index].agreement
+                                              : EndPoint.houseAgreement+snapshot.data![index].agreement[0]
                                               !=EndPoint.houseAgreement ||
-                                              EndPoint.houseAgreement+snapshot.data![index].agreement
+                                              EndPoint.houseAgreement+snapshot.data![index].agreement[0]
                                                   !="${EndPoint.houseAgreement}/null"?
                                           Image(
                                               height: CustomSize().customHeight(context)/4.5,
                                               width: CustomSize().customWidth(context)/1.13,
-                                              image: NetworkImage(EndPoint.houseAgreement+snapshot.data![index].agreement??""),
+                                              image: NetworkImage(EndPoint.houseAgreement+snapshot.data![index].agreement[0]),
                                               fit: BoxFit.fill):
                                           const Image(image: AssetImage("Assets/c1.png")),
                                         ),

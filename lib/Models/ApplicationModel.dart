@@ -32,7 +32,7 @@ String applicationDate;
   String? gContact;
   String? gRelation;
   String house;
-  String agreement;
+  List<String> agreement;
   String reason;
   String amount;
   String applicationID;

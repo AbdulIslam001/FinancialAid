@@ -26,11 +26,11 @@ class _RejectApplicationState extends State<RejectApplication> {
     List<Application> applicationList = [];
     Response res = await AdminApiHandler().rejectedApplication();
     if (res.statusCode == 200) {
-      String ss = '';
-      String dc = '';
-      String hg = '';
       dynamic response = jsonDecode(res.body);
       for (var obj in response) {
+        String ss = '';
+        String dc = '';
+        List<String> hg = [];
         for (int i = 0; i < obj["re"]["EvidenceDocuments"].length; i++) {
           if (obj["re"]["EvidenceDocuments"][i]["document_type"] != null &&
               obj["re"]["EvidenceDocuments"][i]["image"] != null) {
@@ -263,7 +263,7 @@ class _RejectApplicationState extends State<RejectApplication> {
                                           ),
                                         ],
                                       ),
-                                      child: snapshot.data![index].agreement
+                                      child: snapshot.data![index].agreement[0]
                                                   .split('.')[1] ==
                                               "pdf"
                                           ? const Image(
@@ -271,7 +271,7 @@ class _RejectApplicationState extends State<RejectApplication> {
                                                   AssetImage("Assets/pdf2.png"),
                                               fit: BoxFit.fill,
                                             )
-                                          : snapshot.data![index].agreement
+                                          : snapshot.data![index].agreement[0]
                                                       .split('.')[1] ==
                                                   "docx"
                                               ? const Image(
@@ -280,19 +280,19 @@ class _RejectApplicationState extends State<RejectApplication> {
                                               : EndPoint.houseAgreement +
                                                               snapshot
                                                                   .data![index]
-                                                                  .agreement !=
+                                                                  .agreement[0] !=
                                                           EndPoint
                                                               .houseAgreement ||
                                                       EndPoint.houseAgreement +
                                                               snapshot
                                                                   .data![index]
-                                                                  .agreement !=
+                                                                  .agreement[0] !=
                                                           "${EndPoint.houseAgreement}/null"
                                                   ? Image(
                                                       height:
                                                           CustomSize().customHeight(context) / 4.5,
                                                       width: CustomSize().customWidth(context) / 1.13,
-                                                      image: NetworkImage(EndPoint.houseAgreement + snapshot.data![index].agreement ?? ""),
+                                                      image: NetworkImage(EndPoint.houseAgreement + snapshot.data![index].agreement[0]),
                                                       fit: BoxFit.fill)
                                                   : const Image(image: AssetImage("Assets/c1.png")),
                                     ),
