@@ -230,7 +230,7 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                             list.add(s);
                           }
                           Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return MeritBaseStudent(isTrue: true,list: list,);
+                            return MeritBaseStudent(isTrue: true);
                           },));
                         }else if(res.statusCode==400){
                           Navigator.push(context, MaterialPageRoute(builder: (context) {

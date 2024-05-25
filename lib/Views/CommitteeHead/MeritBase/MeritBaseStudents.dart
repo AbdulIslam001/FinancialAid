@@ -16,9 +16,9 @@ import '../../../Resources/CustomSize.dart';
 import '../../../Utilis/Routes/RouteName.dart';
 
 class MeritBaseStudent extends StatefulWidget {
-  List<Student>? list;
+//  List<Student>? list;
   bool isTrue;
-  MeritBaseStudent({super.key,this.list,required this.isTrue});
+  MeritBaseStudent({super.key,required this.isTrue});
 
   @override
   State<MeritBaseStudent> createState() => _MeritBaseStudentState();
@@ -76,7 +76,7 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
                 Response response=await AdminApiHandler().doMeritBaseShortListing();
                 if(response.statusCode==200)
                 {
-                  List<Student>list=[];
+                  /*List<Student>list=[];
                   dynamic obj=jsonDecode(response.body);
                   for(var i in obj){
                     Student s= Student(aridNo: i['arid_no'].toString(),
@@ -93,9 +93,11 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
                   }
                   if(context.mounted){
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                      return MeritBaseStudent(isTrue: true,list: list,);
+                      return MeritBaseStudent(isTrue: true,);//list: list,);
                     },));
-                  }
+                  }*/
+                  widget.isTrue=true;
+                  setState(() {});
                 }
                 value.setLoading(false);
               });
@@ -121,63 +123,53 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
               ),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: widget.list?.length,
-                itemBuilder: (context, index) {
-                  if(widget.list![index].aridNo.toLowerCase().contains(_search.text.toLowerCase()) || widget.list![index].name.toLowerCase().contains(_search.text.toLowerCase()) ){
-                    return GestureDetector(
-                      onTap: (){},
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          radius: CustomSize().customHeight(context) / 30,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                CustomSize().customHeight(context) / 30),
-                            child: EndPoint.imageUrl +
-                                widget.list![index].profileImage ==
-                                "${EndPoint.imageUrl}null" ||
-                                EndPoint.imageUrl +
-                                    widget.list![index].profileImage ==
-                                    EndPoint.imageUrl
-                                ? (widget.list![index].gender == 'M'
-                                ? Image.asset("Assets/male.png")
-                                : Image.asset("Assets/female.png"))
-                                : Image(
-                              image: NetworkImage(EndPoint.imageUrl +
-                                  widget.list![index].profileImage),
-                              width: CustomSize().customHeight(context) /
-                                  12, //CustomSize().customHeight(context)/15
-                              height:
-                              CustomSize().customHeight(context) / 12,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        title: Text(widget.list![index].name),
-                        subtitle: Text(widget.list![index].aridNo),
-                        /*trailing: SizedBox(
-                            height: CustomSize().customHeight(context) / 20,
-                            width: CustomSize().customWidth(context) / 6,
-                            child: Center(
-                              child: Row(
-                                children: [
-                                  GestureDetector(child: Icon(Icons.check,color: Colors.green,size: CustomSize().customWidth(context) / 15,)),
-                                  SizedBox(
-                                    width: CustomSize().customWidth(context) / 30,
+          FutureBuilder(
+            future: getMeritBaseShortListed(),
+            builder: (context, snapshot) {
+              if(snapshot.hasData){
+                var data = snapshot.data ?? [];
+                var filteredList = data.where((item) => item.name.toLowerCase().contains(_search.text.toLowerCase())).toList();
+                return Expanded(
+                    child: ListView.builder(
+                        itemCount: filteredList.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: (){},
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: CustomSize().customHeight(context) / 30,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      CustomSize().customHeight(context) / 30),
+                                  child: EndPoint.imageUrl +
+                                      filteredList[index].profileImage ==
+                                      "${EndPoint.imageUrl}null" ||
+                                      EndPoint.imageUrl +
+                                          filteredList[index].profileImage ==
+                                          EndPoint.imageUrl
+                                      ? (filteredList[index].gender == 'M'
+                                      ? Image.asset("Assets/male.png")
+                                      : Image.asset("Assets/female.png"))
+                                      : Image(
+                                    image: NetworkImage(EndPoint.imageUrl +
+                                        filteredList[index].profileImage),
+                                    width: CustomSize().customHeight(context) /
+                                        12, //CustomSize().customHeight(context)/15
+                                    height:
+                                    CustomSize().customHeight(context) / 12,
+                                    fit: BoxFit.fill,
                                   ),
-                                  GestureDetector(child: Icon(Icons.close,color: Colors.red,size: CustomSize().customWidth(context) / 15,))
-                                ],
-                              )
+                                ),
+                              ),
+                              title: Text(filteredList[index].name),
+                              subtitle: Text(filteredList[index].aridNo),
+
                             ),
-                          ),*/
-                      ),
-                    );
-                  }
-                }
-            ),
-            /*FutureBuilder(
+                          );
+                        }
+                    ),
+                    /*FutureBuilder(
               future: getMeritBaseShortListed(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -219,7 +211,26 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
                               title: Text(snapshot.data?[index].name??""),
                               subtitle: Text(snapshot.data?[index].aridNo??""),
                               */
-            /*trailing: SizedBox(
+
+                  );
+              }else{
+                return const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  ],
+                );
+              }
+          },),
+        ],
+      ),
+    );
+  }
+}
+
+/*trailing: SizedBox(
                             height: CustomSize().customHeight(context) / 20,
                             width: CustomSize().customWidth(context) / 6,
                             child: Center(
@@ -234,7 +245,7 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
                               )
                             ),
                           ),*/
-            /*
+/*
                             ),
                           );
                         }
@@ -250,9 +261,19 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
                 }
               },
             ),*/
-          )
-        ],
-      ),
-    );
-  }
-}
+
+/*trailing: SizedBox(
+                            height: CustomSize().customHeight(context) / 20,
+                            width: CustomSize().customWidth(context) / 6,
+                            child: Center(
+                              child: Row(
+                                children: [
+                                  GestureDetector(child: Icon(Icons.check,color: Colors.green,size: CustomSize().customWidth(context) / 15,)),
+                                  SizedBox(
+                                    width: CustomSize().customWidth(context) / 30,
+                                  ),
+                                  GestureDetector(child: Icon(Icons.close,color: Colors.red,size: CustomSize().customWidth(context) / 15,))
+                                ],
+                              )
+                            ),
+                          ),*/

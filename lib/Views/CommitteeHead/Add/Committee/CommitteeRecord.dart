@@ -86,16 +86,14 @@ class _CommitteeRecordState extends State<CommitteeRecord> {
             future: getFacultyMembers(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                var data = snapshot.data ?? [];
+                var filteredList = data.where((item) => item.name.toLowerCase().contains(_search.text.toLowerCase())).toList();
                 return ListView.builder(
-                  itemCount: snapshot.data?.length,
+                  itemCount: filteredList.length,
                   itemBuilder: (context, index) {
-                    if (snapshot.data![index].name
-                        .toLowerCase()
-                        .contains(_search.text.toLowerCase())) {
-                      return FacultyInfo(
-                          name: snapshot.data?[index].name ?? "",
-                          image: snapshot.data?[index].profileImage ?? "");
-                    }
+                    return FacultyInfo(
+                        name: filteredList[index].name ?? "",
+                        image: filteredList[index].profileImage ?? "");
                   },
                 );
               } else {

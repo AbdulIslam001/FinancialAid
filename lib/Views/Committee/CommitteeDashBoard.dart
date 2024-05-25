@@ -250,17 +250,18 @@ Future<List<Application>> getAllApplication()async{
                 future: getAllApplication(),
                 builder: (context, snapshot) {
                   if(snapshot.hasData){
+                    var data = snapshot.data ?? [];
+                    var filteredList = data.where((item) => item.name.toLowerCase().contains(_search.text.toLowerCase())).toList();
                     return ListView.builder(
-                      itemCount: snapshot.data?.length,
+                      itemCount: filteredList.length,
                       itemBuilder: (context, index) {
-                        if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase()) || snapshot.data![index].aridNo.toLowerCase().contains(_search.text.toLowerCase())){}
                         return Padding(
                           padding: EdgeInsets.all(CustomSize().customHeight(context)/80),
                           child: Center(
                             child: GestureDetector(
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return ApplicationDetails(application: snapshot.data![index],);
+                                  return ApplicationDetails(application: filteredList[index],);
                                 },));
                               },
                               child: Container(
@@ -301,29 +302,29 @@ Future<List<Application>> getAllApplication()async{
                                           ],
                                         ),
                                         child:
-                                        snapshot.data![index].agreement[0].split('.')[1]=="pdf"?
+                                        filteredList[index].agreement[0].split('.')[1]=="pdf"?
                                         const Image(image: AssetImage("Assets/pdf2.png"),fit: BoxFit.fill,):
-                                        snapshot.data![index].agreement[0].split('.')[1]=="docx"?
+                                        filteredList[index].agreement[0].split('.')[1]=="docx"?
                                         const Image(image: AssetImage("Assets/docx1.png"))
                                             :
-                                        EndPoint.houseAgreement+snapshot.data![index].agreement[0]
+                                        EndPoint.houseAgreement+filteredList[index].agreement[0]
                                             !=EndPoint.houseAgreement ||
-                                            EndPoint.houseAgreement+snapshot.data![index].agreement[0]
+                                            EndPoint.houseAgreement+filteredList[index].agreement[0]
                                                 !="${EndPoint.houseAgreement}/null"?
                                         Image(
                                             height: CustomSize().customHeight(context)/4.5,
                                             width: CustomSize().customWidth(context)/1.13,
-                                            image: NetworkImage(EndPoint.houseAgreement+snapshot.data![index].agreement[0]),
+                                            image: NetworkImage(EndPoint.houseAgreement+filteredList[index].agreement[0]),
                                             fit: BoxFit.fill):
                                         const Image(image: AssetImage("Assets/c1.png")),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80 ),
-                                        child:Text(snapshot.data?[index].name??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
+                                        child:Text(filteredList[index].name??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(left:CustomSize().customHeight(context)/80),
-                                        child:Text(snapshot.data?[index].aridNo??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
+                                        child:Text(filteredList[index].aridNo??"",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
                                       ),
                                     ],
                                   ),

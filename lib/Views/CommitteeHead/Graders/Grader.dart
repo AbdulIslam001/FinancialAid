@@ -42,8 +42,7 @@ class _GradersState extends State<Graders> {
     return fList;
   }
 
-  final TextEditingController _search = TextEditingController();
-
+  List<Student> _list = [];
   Future<List<Student>> unAssignedGraders() async {
     List<Student> list = [];
     Response res = await AdminApiHandler().getUnAssignedStudent();
@@ -62,14 +61,17 @@ class _GradersState extends State<Graders> {
             studentId: int.parse(i["student_id"].toString()),
             profileImage: i["profile_image"].toString());
         list.add(s);
+        _list.add(s);
       }
     }
     return list;
   }
 
   @override
+  final TextEditingController _search = TextEditingController();
+  final TextEditingController _search1 = TextEditingController();
+
   Widget build(BuildContext context) {
-    final TextEditingController _search = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -90,7 +92,9 @@ class _GradersState extends State<Graders> {
                 right: CustomSize().customWidth(context) / 20,
                 top: CustomSize().customWidth(context) / 30),
             child: TextFormField(
-              onChanged: (val) {},
+              onChanged: (val) {
+                setState(() {});
+              },
               controller: _search,
               decoration: InputDecoration(
                 hintText: "search",
@@ -108,9 +112,12 @@ class _GradersState extends State<Graders> {
             child: FutureBuilder(
               future: unAssignedGraders(),
               builder: (context, snapshot) {
+//                List<Student> filteredList = [];
                 if (snapshot.hasData) {
+                  var data = snapshot.data ?? [];
+                  var filteredList = data.where((item) => item.name.toLowerCase().contains(_search.text.toLowerCase())).toList();
                   return ListView.builder(
-                    itemCount: snapshot.data!.length,
+                    itemCount: filteredList.length,
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: CircleAvatar(
@@ -120,19 +127,17 @@ class _GradersState extends State<Graders> {
                             borderRadius: BorderRadius.circular(
                                 CustomSize().customHeight(context) / 30),
                             child: EndPoint.imageUrl +
-                                            snapshot
-                                                .data![index].profileImage ==
+                                filteredList[index].profileImage ==
                                         "${EndPoint.imageUrl}null" ||
                                     EndPoint.imageUrl +
-                                            snapshot
-                                                .data![index].profileImage ==
+                                        filteredList[index].profileImage ==
                                         EndPoint.imageUrl
-                                ? (snapshot.data![index].gender == 'M'
+                                ? (filteredList[index].gender == 'M'
                                     ? Image.asset("Assets/male.png")
                                     : Image.asset("Assets/female.png"))
                                 : Image(
                                     image: NetworkImage(EndPoint.imageUrl +
-                                        snapshot.data![index].profileImage),
+                                        filteredList[index].profileImage),
                                     width: CustomSize().customHeight(context) /
                                         12, //CustomSize().customHeight(context)/15
                                     height:
@@ -141,8 +146,8 @@ class _GradersState extends State<Graders> {
                                   ),
                           ),
                         ),
-                        title: Text(snapshot.data![index].name),
-                        subtitle: Text(snapshot.data![index].aridNo),
+                        title: Text(filteredList[index].name),
+                        subtitle: Text(filteredList[index].aridNo),
                         trailing: GestureDetector(
                           onTap: () async{
                             List<FacultyModel> list=[];
@@ -173,9 +178,8 @@ class _GradersState extends State<Graders> {
                                           padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
                                           child: TextFormField(
                                             onChanged: (val){
-                                              setState((){});
                                             },
-                                            controller: _search,
+                                            controller: _search1,
                                             decoration: InputDecoration(
                                               hintText: "search",
                                               labelText: "search",

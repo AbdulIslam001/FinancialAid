@@ -176,162 +176,152 @@ class _RejectApplicationState extends State<RejectApplication> {
             future: getAllApplication(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                var data = snapshot.data ?? [];
+                var filteredList = data.where((item) => item.name.toLowerCase().contains(_search.text.toLowerCase())).toList();
                 return ListView.builder(
-                  itemCount: snapshot.data?.where((item) {
-                        return item.applicationStatus?.toString() == 'Rejected';
-                      }).length ??
-                      0,
+                  itemCount: filteredList.length,
                   itemBuilder: (context, index) {
-                    if (snapshot.data![index].aridNo
-                            .toLowerCase()
-                            .contains(_search.text.toLowerCase()) ||
-                        snapshot.data![index].name
-                            .toLowerCase()
-                            .contains(_search.text.toLowerCase())) {
-                      return Padding(
-                        padding: EdgeInsets.all(
-                            CustomSize().customHeight(context) / 80),
-                        child: Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return NeedBaseApplicationDetails(
-                                      application: snapshot.data![index],
-                                      isTrue: true,
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            child: ListTile(
-                              title: Container(
-                                height:
-                                    CustomSize().customHeight(context) / 4.5,
-                                width: CustomSize().customWidth(context) / 1.13,
-                                decoration: BoxDecoration(
-                                  color: Colors.blueGrey.withOpacity(0.2),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.white,
-                                      spreadRadius:
-                                          CustomSize().customHeight(context) /
+                    return Padding(
+                      padding: EdgeInsets.all(
+                          CustomSize().customHeight(context) / 80),
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return NeedBaseApplicationDetails(
+                                    application: filteredList[index],
+                                    isTrue: true,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          child: ListTile(
+                            title: Container(
+                              height:
+                              CustomSize().customHeight(context) / 4.5,
+                              width: CustomSize().customWidth(context) / 1.13,
+                              decoration: BoxDecoration(
+                                color: Colors.blueGrey.withOpacity(0.2),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.white,
+                                    spreadRadius:
+                                    CustomSize().customHeight(context) /
+                                        1000,
+                                    blurRadius:
+                                    CustomSize().customHeight(context) /
+                                        100,
+                                    offset: Offset(
+                                        CustomSize().customHeight(context) /
+                                            1400,
+                                        CustomSize().customHeight(context) /
+                                            1400),
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(
+                                    CustomSize().customHeight(context) / 80),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height:
+                                    CustomSize().customHeight(context) /
+                                        8,
+                                    width: CustomSize().customWidth(context) /
+                                        1.12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blueGrey.withOpacity(0.2),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white,
+                                          spreadRadius: CustomSize()
+                                              .customHeight(context) /
                                               1000,
-                                      blurRadius:
-                                          CustomSize().customHeight(context) /
+                                          blurRadius: CustomSize()
+                                              .customHeight(context) /
                                               100,
-                                      offset: Offset(
-                                          CustomSize().customHeight(context) /
-                                              1400,
-                                          CustomSize().customHeight(context) /
-                                              1400),
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadius.circular(
-                                      CustomSize().customHeight(context) / 80),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height:
-                                          CustomSize().customHeight(context) /
-                                              8,
-                                      width: CustomSize().customWidth(context) /
-                                          1.12,
-                                      decoration: BoxDecoration(
-                                        color: Colors.blueGrey.withOpacity(0.2),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.white,
-                                            spreadRadius: CustomSize()
-                                                    .customHeight(context) /
-                                                1000,
-                                            blurRadius: CustomSize()
-                                                    .customHeight(context) /
-                                                100,
-                                            offset: Offset(
-                                                CustomSize()
-                                                        .customHeight(context) /
-                                                    1400,
-                                                CustomSize()
-                                                        .customHeight(context) /
-                                                    1400),
-                                          ),
-                                        ],
-                                      ),
-                                      child: snapshot.data![index].agreement[0]
-                                                  .split('.')[1] ==
-                                              "pdf"
-                                          ? const Image(
-                                              image:
-                                                  AssetImage("Assets/pdf2.png"),
-                                              fit: BoxFit.fill,
-                                            )
-                                          : snapshot.data![index].agreement[0]
-                                                      .split('.')[1] ==
-                                                  "docx"
-                                              ? const Image(
-                                                  image: AssetImage(
-                                                      "Assets/docx1.png"))
-                                              : EndPoint.houseAgreement +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .agreement[0] !=
-                                                          EndPoint
-                                                              .houseAgreement ||
-                                                      EndPoint.houseAgreement +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .agreement[0] !=
-                                                          "${EndPoint.houseAgreement}/null"
-                                                  ? Image(
-                                                      height:
-                                                          CustomSize().customHeight(context) / 4.5,
-                                                      width: CustomSize().customWidth(context) / 1.13,
-                                                      image: NetworkImage(EndPoint.houseAgreement + snapshot.data![index].agreement[0]),
-                                                      fit: BoxFit.fill)
-                                                  : const Image(image: AssetImage("Assets/c1.png")),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: CustomSize()
+                                          offset: Offset(
+                                              CustomSize()
                                                   .customHeight(context) /
-                                              80),
-                                      child: Text(
-                                        snapshot.data?[index].name ?? "",
-                                        style: TextStyle(
-                                            fontSize: CustomSize()
-                                                    .customHeight(context) /
-                                                50,
-                                            fontStyle: FontStyle.italic),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: CustomSize()
+                                                  1400,
+                                              CustomSize()
                                                   .customHeight(context) /
-                                              80),
-                                      child: Text(
-                                        snapshot.data?[index].aridNo ?? "",
-                                        style: TextStyle(
-                                            fontSize: CustomSize()
-                                                    .customHeight(context) /
-                                                50,
-                                            fontStyle: FontStyle.italic),
-                                      ),
+                                                  1400),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                    child: filteredList[index].agreement[0]
+                                        .split('.')[1] ==
+                                        "pdf"
+                                        ? const Image(
+                                      image:
+                                      AssetImage("Assets/pdf2.png"),
+                                      fit: BoxFit.fill,
+                                    )
+                                        : filteredList[index].agreement[0]
+                                        .split('.')[1] ==
+                                        "docx"
+                                        ? const Image(
+                                        image: AssetImage(
+                                            "Assets/docx1.png"))
+                                        : EndPoint.houseAgreement +
+                                        filteredList[index]
+                                            .agreement[0] !=
+                                        EndPoint
+                                            .houseAgreement ||
+                                        EndPoint.houseAgreement +
+                                            filteredList[index]
+                                                .agreement[0] !=
+                                            "${EndPoint.houseAgreement}/null"
+                                        ? Image(
+                                        height:
+                                        CustomSize().customHeight(context) / 4.5,
+                                        width: CustomSize().customWidth(context) / 1.13,
+                                        image: NetworkImage(EndPoint.houseAgreement + filteredList[index].agreement[0]),
+                                        fit: BoxFit.fill)
+                                        : const Image(image: AssetImage("Assets/c1.png")),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: CustomSize()
+                                            .customHeight(context) /
+                                            80),
+                                    child: Text(
+                                      filteredList[index].name ?? "",
+                                      style: TextStyle(
+                                          fontSize: CustomSize()
+                                              .customHeight(context) /
+                                              50,
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: CustomSize()
+                                            .customHeight(context) /
+                                            80),
+                                    child: Text(
+                                      filteredList[index].aridNo ?? "",
+                                      style: TextStyle(
+                                          fontSize: CustomSize()
+                                              .customHeight(context) /
+                                              50,
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ),
-                      );
-                    }
+                      ),
+                    );
                   },
                 );
               } else {
