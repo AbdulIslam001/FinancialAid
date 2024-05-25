@@ -204,5 +204,15 @@ class AdminApiHandler{
     return response.statusCode;
   }
 
+
+  Future<int> addSession(String title,String start,String end)async{
+    List<String> last=start.split('/');
+    String lastDate=last[0].toString()+"/"+(int.parse(last[1])+1).toString()+"/"+last[2].toString();
+    String apiEndPoint="${EndPoint.addSession}?name=$title-${DateTime(DateTime.now().year).toString().split('-')[0]}&startDate=$start&EndDate=$end&lastDate=${lastDate}";
+    Uri uri=Uri.parse(apiEndPoint);
+    var response=await http.post(uri);
+    return response.statusCode;
+  }
+
 }
 

@@ -5,6 +5,7 @@ import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/FacultyRecord.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Policy/Policy.dart';
+import 'package:financial_aid/Views/CommitteeHead/Add/Session.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Student/StudentRecord.dart';
 import 'package:financial_aid/Views/CommitteeHead/MeritBase/MeritBaseStudents.dart';
 import 'package:flutter/material.dart';
@@ -172,13 +173,24 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                 padding: EdgeInsets.only(
                     top: CustomSize().customWidth(context) / 20),
                 child: DrawerCustomButtons(
+                    title: "Session",
+                    onTab: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return AddSession();
+                      },));
+                    }),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: CustomSize().customWidth(context) / 20),
+                child: DrawerCustomButtons(
                     title: "Committee",
                     onTab: () {
                       Navigator.pushNamed(context, RouteName.committeeRecord);
                     }),
               ),
               SizedBox(
-                height: CustomSize().customHeight(context) / 5,
+                height: CustomSize().customHeight(context) / 8,
               ),
               DrawerCustomButtons(
                   title: "Logout",

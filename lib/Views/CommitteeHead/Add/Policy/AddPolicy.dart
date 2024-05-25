@@ -39,7 +39,7 @@ class _AddPoliceState extends State<AddPolice> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
-        title:const Text("Add Police"),
+        title:const Text("Add Policy"),
       ),
       body: SingleChildScrollView(
         child: Column(
