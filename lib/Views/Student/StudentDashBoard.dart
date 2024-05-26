@@ -206,7 +206,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                 OptionContainer(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder:(context) {
-                        return Policy(show: false);
+                        return Policy(show: false,isAdd: false,type: 'NeedBase',);
                       },));
                     },
                     image: "Assets/c1.png",
@@ -223,7 +223,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                 OptionContainer(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder:(context) {
-                        return Policy(show: false);
+                        return Policy(show: false,isAdd: false,type: 'MeritBase',);
                       },));
                     },
                     image: "Assets/c1.png",

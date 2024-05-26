@@ -11,17 +11,17 @@ import '../../../../Utilis/Routes/RouteName.dart';
 
 class Policy extends StatefulWidget {
   bool show;
-  Policy({super.key,required this.show});
+  bool isAdd;
+  String type;
+  Policy({super.key,required this.show , required this.isAdd,required this.type});
 
   @override
   State<Policy> createState() => _PolicyState();
 }
 
-List<PolicyModel> policyList = [];
-Future<void> getPolicies() async {
+
+Future<List<PolicyModel>> getPolicies() async {
   List<PolicyModel> list = [];
-
-
   Response res = await AdminApiHandler().getPolicies();
   if (res.statusCode == 200) {
     dynamic obj = jsonDecode(res.body);
@@ -36,8 +36,8 @@ Future<void> getPolicies() async {
           val2: i['c']['val2'].toString());
       list.add(p);
     }
-    policyList = list;
   }
+  return list;
 }
 
 class _PolicyState extends State<Policy> {
@@ -45,7 +45,7 @@ class _PolicyState extends State<Policy> {
   @override
   void initState() {
     // TODO: implement initState
-    getPolicies();
+//    getPolicies();
     super.initState();
   }
 
@@ -56,11 +56,11 @@ class _PolicyState extends State<Policy> {
         backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
         actions: [
-          GestureDetector(
+          widget.isAdd?GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, RouteName.addPolicy);
               },
-              child: const Icon(Icons.add)),
+              child: const Icon(Icons.add)):
           SizedBox(
             width: CustomSize().customWidth(context) / 20,
           )
@@ -93,20 +93,33 @@ class _PolicyState extends State<Policy> {
             child: FutureBuilder(
               future: getPolicies(),
               builder: (context, snapshot) {
-                return ListView.builder(
-                  itemCount: policyList.length,
-                  itemBuilder: (context, index) {
-                    return PolicyInfoContainer(
-                      show: widget.show,
-                      val1: policyList[index].val1,
-                      session: policyList[index].session ?? "",
-                      description: policyList[index].description,
-                      policy: policyList[index].policy,
-                      policyFor: policyList[index].policyFor,
-                      val2: policyList[index].strength.toString(),
-                    );
-                  },
-                );
+                if(snapshot.hasData){
+                  var data = snapshot.data ?? [];
+                  var filteredList = data.where((item) => item.policyFor.toLowerCase()==widget.type.toLowerCase().toString()).toList();
+                  return ListView.builder(
+                    itemCount: filteredList.length,
+                    itemBuilder: (context, index) {
+                      return PolicyInfoContainer(
+                        show: widget.show,
+                        val1: filteredList[index].val1,
+                        session: filteredList[index].session ?? "",
+                        description: filteredList[index].description,
+                        policy: filteredList[index].policy,
+                        policyFor: filteredList[index].policyFor,
+                        val2: filteredList[index].strength.toString(),
+                      );
+                    },
+                  );
+                }else{
+                  return const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    ],
+                  );
+                }
               },
             ),
           )

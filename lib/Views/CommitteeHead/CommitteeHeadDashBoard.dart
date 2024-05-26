@@ -153,7 +153,7 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                     top: CustomSize().customWidth(context) / 20),
                 child: DrawerCustomButtons(title: "Policies", onTab: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Policy(show: true);
+                    return Policy(show: true,isAdd: true,type: 'All',);
 
                   },));
                 }),
