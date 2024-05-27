@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:financial_aid/Components/CustomButton.dart';
 import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
+import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/viewModel/CustomButtonViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -73,10 +74,13 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
               builder: (context, value, child) {
               return CustomButton(title: "Short List",loading: value.loading,onTap: ()async{
                 value.setLoading(true);
-                Response response=await AdminApiHandler().doMeritBaseShortListing();
-                if(response.statusCode==200)
-                {
-                  /*List<Student>list=[];
+                int code=await AdminApiHandler().checkBalance();
+                if(context.mounted){
+                  if(code==200 ){
+                    Response response=await AdminApiHandler().doMeritBaseShortListing();
+                    if(response.statusCode==200)
+                    {
+                      /*List<Student>list=[];
                   dynamic obj=jsonDecode(response.body);
                   for(var i in obj){
                     Student s= Student(aridNo: i['arid_no'].toString(),
@@ -96,8 +100,14 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
                       return MeritBaseStudent(isTrue: true,);//list: list,);
                     },));
                   }*/
-                  widget.isTrue=true;
-                  setState(() {});
+                      widget.isTrue=true;
+                      setState(() {});
+                    }
+                  }else if(code == 406){
+                    Utilis.flushBarMessage("Remaining Balance is Low", context);
+                  }else{
+                    Utilis.flushBarMessage("Error try again later", context);
+                  }
                 }
                 value.setLoading(false);
               });

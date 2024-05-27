@@ -95,7 +95,12 @@ class _PolicyState extends State<Policy> {
               builder: (context, snapshot) {
                 if(snapshot.hasData){
                   var data = snapshot.data ?? [];
-                  var filteredList = data.where((item) => item.policyFor.toLowerCase()==widget.type.toLowerCase().toString()).toList();
+                  var filteredList = data;
+                  if(widget.type=='All'){
+                    filteredList = data;
+                  }else{
+                    filteredList = data.where((item) => item.policyFor.toLowerCase()==widget.type.toLowerCase().toString()).toList();
+                  }
                   return ListView.builder(
                     itemCount: filteredList.length,
                     itemBuilder: (context, index) {
