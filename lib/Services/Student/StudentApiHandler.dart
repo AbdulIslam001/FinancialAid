@@ -52,6 +52,14 @@ class StudentApiHandle {
     return response.statusCode;
   }
 
+  Future<http.Response> checkCgpaPolicy()async{
+
+    String apiEndPoint=EndPoint.checkCgpaPolicy;
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.get(uri);
+    return response;
+  }
+
   Future<http.Response> applicationStatus()async{
     SharedPreferences sp = await SharedPreferences.getInstance();
     String apiEndPoint =
@@ -72,6 +80,5 @@ class StudentApiHandle {
     request.files.add(imageFile);
     var response = await request.send();
     return response.statusCode;
-
   }
 }

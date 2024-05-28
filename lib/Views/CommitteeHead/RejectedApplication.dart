@@ -42,7 +42,7 @@ class _RejectApplicationState extends State<RejectApplication> {
               dc = obj["re"]["EvidenceDocuments"][i]["image"];
             } else if (obj["re"]["EvidenceDocuments"][i]["document_type"] ==
                 "houseAgreement") {
-              hg = obj["re"]["EvidenceDocuments"][i]["image"];
+              hg.add(obj["re"]["EvidenceDocuments"][i]["image"]);
             }
           }
         }

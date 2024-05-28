@@ -109,8 +109,8 @@ class _ApplicationFormState extends State<ApplicationForm> {
                     controller: _cgpa,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
-                      labelText: 'Arid no',
-                      hintText: 'Arid no',
+                      labelText: 'Cgpa',
+                      hintText: 'cgpa',
                     ),
                   ),
                   TextFormField(

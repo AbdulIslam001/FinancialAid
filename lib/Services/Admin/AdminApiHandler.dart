@@ -74,6 +74,13 @@ class AdminApiHandler {
     return response;
   }
 
+  Future<http.Response> unAssignedFaculty() async {
+    String apiEndPoint = EndPoint.unAssignedFacultyMember;
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.get(uri);
+    return response;
+  }
+
   Future<http.Response> getCommitteeMembers() async {
     String apiEndPoint = EndPoint.getCommitteeMembers;
     Uri uri = Uri.parse(apiEndPoint);

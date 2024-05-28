@@ -4,6 +4,7 @@ import 'package:financial_aid/Components/InfoContainer.dart';
 import 'package:financial_aid/Components/OptionContainer.dart';
 import 'package:financial_aid/Resources/AppUrl.dart';
 import 'package:financial_aid/Resources/CustomSize.dart';
+import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
 import 'package:financial_aid/Services/Student/StudentApiHandler.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Policy/Policy.dart';
@@ -165,7 +166,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
             Consumer<StudentInfoViewModel>(
               builder: (context, value, child) {
               return Visibility(
-                visible: applicationStatus == 'Not Submitted' ? true : false,
+                visible: applicationStatus == 'Not Submitted' ? false : true,
                 child: const Text("Apply before 01/03/2024"),
               );
             },),
@@ -177,28 +178,33 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 OptionContainer(
-                    onTap: () {
+                    onTap: () async{
                       if (applicationStatus == 'Pending') {
                         Utilis.flushBarMessage(
                             "Application already submitted", context);
                       } else {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) {
-                            return ApplicationForm(
-                                aridNo: aridNo,
-                                cgpa: cgpa,
-                                name: name,
-                                fatherName: fatherName,
-                                semester: semester);
-                          },
-                        ));
-                        /*if(double.parse(cgpa)>2){
-                          Utilis.flushBarMessage("Cgpa is less then the required cgpa", context);
-                        }else{
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return ApplicationForm(aridNo: aridNo,cgpa: cgpa,name: name, fatherName: fatherName, semester: semester);
-                          },));
-                        }*/
+                        Response res=await StudentApiHandle().checkCgpaPolicy();
+                        if(context.mounted){
+                          if(res.statusCode==200){
+                            dynamic obj=jsonDecode(res.body);
+                            if(double.parse(cgpa)>=double.parse(obj['val1'].toString())){
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return ApplicationForm(
+                                      aridNo: aridNo,
+                                      cgpa: cgpa,
+                                      name: name,
+                                      fatherName: fatherName,
+                                      semester: semester);
+                                },
+                              ));
+                            }else{
+                              Utilis.flushBarMessage("Your cgpa does not match the criteria", context);
+                            }
+                          }else{
+                            Utilis.flushBarMessage("error try again later", context);
+                          }
+                        }
                       }
                     },
                     image: "Assets/scholarship.png",

@@ -170,6 +170,7 @@ class _GradersState extends State<Graders> {
                                             GestureDetector(
                                                 onTap:(){
                                                   Navigator.pop(context);
+//                                                Navigator.pushNamed(context, RouteName.graders);
                                                 },
                                                 child:const Icon(Icons.arrow_back_ios_new))
                                           ],
@@ -205,6 +206,8 @@ class _GradersState extends State<Graders> {
                                                             if(context.mounted){
                                                               if(code==200 ){
                                                                 Navigator.pop(context);
+                                                                setState(() {
+                                                                });
                                                               }else{
                                                                 Utilis.flushBarMessage("error try again", context);
                                                               }

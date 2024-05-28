@@ -189,18 +189,18 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                                 : InstaImageViewer(
                                     child: Image(
                                         height:
-                                            CustomSize().customHeight(context) /
-                                                3.5,
+                                        CustomSize().customHeight(context) /
+                                            3.5,
                                         width:
-                                            CustomSize().customWidth(context),
+                                        CustomSize().customWidth(context),
                                         image: NetworkImage(e.startsWith("s")
                                             ? EndPoint.salarySlip + e.toString()
                                             : e.startsWith("d")
-                                                ? EndPoint.deathCertificate +
-                                                    e.toString()
-                                                : EndPoint.houseAgreement +
-                                                    e.toString()),
-                                        fit: BoxFit.fill),
+                                            ? EndPoint.deathCertificate +
+                                            e.toString()
+                                            : EndPoint.houseAgreement +
+                                            e.toString()),
+                                        fit: BoxFit.fill)
                                   )
                         : Image(
                             height: CustomSize().customHeight(context) / 3.5,

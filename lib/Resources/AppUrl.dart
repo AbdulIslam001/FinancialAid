@@ -44,5 +44,8 @@ class EndPoint{
   static String canRateGrader=baseUrl+"api/Faculty/CanRateGrader";
   static String addSession=baseUrl+"api/Admin/AddSession";
   static String meritBaseAmmount=baseUrl+"api/Admin/MeritBaseAmmount";
+  static String unAssignedFacultyMember=baseUrl+"api/Admin/UnAssignedFaculty";
+  static String checkCgpaPolicy=baseUrl+"api/Student/checkCgpaPolicy";
+
   //MeritBaseAmmount
 }
