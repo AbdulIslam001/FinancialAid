@@ -7,6 +7,7 @@ import 'package:financial_aid/viewModel/CustomButtonViewModel.dart';
 import 'package:financial_aid/viewModel/LoginViewModel.dart';
 import 'package:financial_aid/viewModel/StudentViewModel/FilePickerViewModel.dart';
 import 'package:financial_aid/viewModel/StudentViewModel/StudentInfoViewModel.dart';
+import 'package:financial_aid/viewModel/ViewSuggestionViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=>FilePickerViewModel()),
         ChangeNotifierProvider(create: (_)=>ApplicationViewModel()),
         ChangeNotifierProvider(create: (_)=>CustomButtonViewModel()),
+        ChangeNotifierProvider(create: (_)=>ViewSuggestionViewModel()),
+
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

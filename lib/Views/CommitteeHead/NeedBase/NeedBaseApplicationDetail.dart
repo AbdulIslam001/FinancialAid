@@ -12,11 +12,13 @@ import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/Committee/ApplicationDetails.dart';
 import 'package:financial_aid/viewModel/CommitteeHeadViewModel/ApplicationView.dart';
+import 'package:financial_aid/viewModel/ViewSuggestionViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:open_file/open_file.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as Path;
 import '../../../Resources/AppUrl.dart';
@@ -104,8 +106,21 @@ class _NeedBaseApplicationDetailsState
 
 
   ///////////////////////
+  List<bool> _isShow=[];
   @override
   Widget build(BuildContext context) {
+    for(int l=0;l<widget.application.suggestion!.length;l++){
+      _isShow.add(false);
+    }
+    int accepted =0;
+    int rejected=0;
+    for(int a=0;a<widget.application.isApplication!.length;a++){
+      if(widget.application.isApplication![a]=='Accepted'){
+        accepted++;
+      }else if(widget.application.isApplication![a]=='Rejected'){
+        rejected++;
+      }
+    }
     _reason.text = widget.application.reason;
     List<String> docsList = [];
     if (widget.application.salarySlip != null ||
@@ -137,6 +152,32 @@ class _NeedBaseApplicationDetailsState
             builder: (context, value, child) {
               return Column(
                 children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: CustomSize().customWidth(context)/10),
+                    child: Row(
+                      children: [
+                        TextButton(onPressed: (){}, child:const Text("Track Record")),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: CustomSize().customHeight(context)/100),
+                    child: PieChart(
+                      legendOptions: const LegendOptions(
+                          legendPosition: LegendPosition.left),
+                      dataMap: {
+                        'Accepted':accepted.toDouble(),
+                        'Rejected':rejected.toDouble(),
+                      },
+                      chartRadius: CustomSize().customWidth(context) / 3,
+                      chartValuesOptions: const ChartValuesOptions(
+                          showChartValuesInPercentage: true),
+                      centerText: "Accepted : $accepted/Rejected : $rejected",
+                      animationDuration: const Duration(milliseconds: 1000),
+                      chartType: ChartType.ring,
+                      colorList: const [Colors.green, Colors.red],
+                    ),
+                  ),
                   Center(
                     child: GestureDetector(
                       onTap: () {
@@ -268,84 +309,6 @@ class _NeedBaseApplicationDetailsState
                               );
                             }).toList(),
                           ),
-/*                          Stack(
-                            children: [
-                              Positioned(
-                                child: Container(
-                                  height:
-                                      CustomSize().customHeight(context) / 3.5,
-                                  width: CustomSize().customWidth(context),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(
-                                            CustomSize().customHeight(context) /
-                                                30),
-                                        bottomRight: Radius.circular(
-                                            CustomSize().customHeight(context) /
-                                                30)),
-                                    //  border: Border.all()
-                                  ),
-                                  child: EndPoint.documentUrl + docsList[i] !=
-                                              EndPoint.documentUrl ||
-                                          EndPoint.documentUrl + docsList[i] !=
-                                              EndPoint.documentUrl + "null"
-                                      ? InstaImageViewer(
-                                        child: Image(
-                                            height: CustomSize()
-                                                    .customHeight(context) /
-                                                3.5,
-                                            width:
-                                                CustomSize().customWidth(context),
-                                            image: NetworkImage(
-                                                EndPoint.documentUrl + docsList[i] ??
-                                                    ""),
-                                            fit: BoxFit.fill),
-                                      )
-                                      : Image(
-                                          height: CustomSize()
-                                                  .customHeight(context) /
-                                              3.5,
-                                          width:
-                                              CustomSize().customWidth(context),
-                                          fit: BoxFit.fill,
-                                          image: const AssetImage("Assets/c1.png")),
-                                ),
-                              ),
-*/
-/*                              Positioned(
-                                  right: CustomSize().customWidth(context) / 70,
-                                  top: CustomSize().customWidth(context) / 4,
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        if (i! > docsList.length) {
-                                          i++;
-                                        }
-                                        setState(() {});
-                                      },
-                                      child: Icon(
-                                        Icons.navigate_next_outlined,
-                                        size:
-                                            CustomSize().customWidth(context) /
-                                                7,
-                                      ))),
-                              Positioned(
-                                  left: CustomSize().customWidth(context) / 70,
-                                  top: CustomSize().customWidth(context) / 4,
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        if (i != 0) {
-                                          i--;
-                                        }
-                                        setState(() {});
-                                      },
-                                      child: Icon(
-                                        Icons.navigate_before_outlined,
-                                        size:
-                                            CustomSize().customWidth(context) /
-                                                7,
-                                      ))),*//*
-                            ],
-                          ),*/
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -475,7 +438,7 @@ class _NeedBaseApplicationDetailsState
                         ],
                       )),
                   SizedBox(
-                    height: CustomSize().customHeight(context) / 1.3,
+                    height: CustomSize().customHeight(context) / 1.7,
                     width: CustomSize().customWidth(context) / 1.2,
                     child: Column(
                       children: [
@@ -485,12 +448,49 @@ class _NeedBaseApplicationDetailsState
                             itemCount: widget.application.suggestion?.length,
                             itemBuilder: (context, ind) {
                               return Padding(
-                                padding: EdgeInsets.only(
-                                    top:
-                                        CustomSize().customWidth(context) / 100,
-                                    bottom: CustomSize().customWidth(context) /
-                                        50),
-                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      top:
+                                      CustomSize().customWidth(context) / 100,
+                                      bottom: CustomSize().customWidth(context) /
+                                          50),
+                                  child: ListTile(
+                                    title: Padding(
+                                      padding: EdgeInsets.all(
+                                          CustomSize().customWidth(context) /
+                                              100),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(widget
+                                                  .application.committeeMemberName![ind]
+                                                  .toString(),
+                                              ),
+                                              Text(widget
+                                                  .application.isApplication![ind].toString(),style: TextStyle(
+                                                  color:widget
+                                                      .application.isApplication![ind].toLowerCase().toString()=="accepted"?Colors.green:Colors.red
+                                              )),
+                                              TextButton(onPressed: (){
+                                                _isShow[ind]=!_isShow[ind];
+                                                setState(() {
+
+                                                });
+                                              }, child:_isShow[ind]?const Text("hide"):const Text("View")),
+                                            ],
+                                          ),
+                                          Visibility(
+                                            visible: _isShow[ind],
+                                            child :Text(widget
+                                                .application.suggestion![ind]
+                                                .toString()),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                /*Container(
                                     height: CustomSize().customHeight(context) / 7,
                                     width: CustomSize().customWidth(context) / 1.2,
                                     decoration: BoxDecoration(
@@ -517,14 +517,9 @@ class _NeedBaseApplicationDetailsState
                                         ),
                                       ],
                                     ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(
-                                          CustomSize().customWidth(context) /
-                                              100),
-                                      child: Text(widget
-                                          .application.suggestion![ind]
-                                          .toString()),
-                                    )),
+                                    child:
+
+                                ),*/
                               );
                             },
                           ),
@@ -642,5 +637,83 @@ class _NeedBaseApplicationDetailsState
   }
 }
 
-//flutter.compileSdkVersion
-//flutter.minSdkVersion
+
+/*                          Stack(
+                            children: [
+                              Positioned(
+                                child: Container(
+                                  height:
+                                      CustomSize().customHeight(context) / 3.5,
+                                  width: CustomSize().customWidth(context),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(
+                                            CustomSize().customHeight(context) /
+                                                30),
+                                        bottomRight: Radius.circular(
+                                            CustomSize().customHeight(context) /
+                                                30)),
+                                    //  border: Border.all()
+                                  ),
+                                  child: EndPoint.documentUrl + docsList[i] !=
+                                              EndPoint.documentUrl ||
+                                          EndPoint.documentUrl + docsList[i] !=
+                                              EndPoint.documentUrl + "null"
+                                      ? InstaImageViewer(
+                                        child: Image(
+                                            height: CustomSize()
+                                                    .customHeight(context) /
+                                                3.5,
+                                            width:
+                                                CustomSize().customWidth(context),
+                                            image: NetworkImage(
+                                                EndPoint.documentUrl + docsList[i] ??
+                                                    ""),
+                                            fit: BoxFit.fill),
+                                      )
+                                      : Image(
+                                          height: CustomSize()
+                                                  .customHeight(context) /
+                                              3.5,
+                                          width:
+                                              CustomSize().customWidth(context),
+                                          fit: BoxFit.fill,
+                                          image: const AssetImage("Assets/c1.png")),
+                                ),
+                              ),
+*/
+/*                              Positioned(
+                                  right: CustomSize().customWidth(context) / 70,
+                                  top: CustomSize().customWidth(context) / 4,
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        if (i! > docsList.length) {
+                                          i++;
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: Icon(
+                                        Icons.navigate_next_outlined,
+                                        size:
+                                            CustomSize().customWidth(context) /
+                                                7,
+                                      ))),
+                              Positioned(
+                                  left: CustomSize().customWidth(context) / 70,
+                                  top: CustomSize().customWidth(context) / 4,
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        if (i != 0) {
+                                          i--;
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: Icon(
+                                        Icons.navigate_before_outlined,
+                                        size:
+                                            CustomSize().customWidth(context) /
+                                                7,
+                                      ))),*//*
+                            ],
+                          ),*/
+

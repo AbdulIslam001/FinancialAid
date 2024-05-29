@@ -395,7 +395,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                           title: "Reject",
                           loading: false,
                           onTap: () {
-                            String status = "rejected";
+                            String status = "Rejected";
                             showDialog(
                               barrierDismissible: false,
                               context: context,
@@ -479,7 +479,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                           title: "Accept",
                           loading: false,
                           onTap: () {
-                            String status = "Accept";
+                            String status = "Accepted";
                             showDialog(
                               barrierDismissible: false,
                               context: context,
