@@ -175,7 +175,7 @@ class _AcceptedApplicationState extends State<AcceptedApplication> {
                             child: GestureDetector(
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return NeedBaseApplicationDetails(application: filteredList[index],isTrue: true,);
+                                  return NeedBaseApplicationDetails(application: filteredList[index],isTrue: true,trackRecord: false,);
                                 },));
                               },
                               child: ListTile(

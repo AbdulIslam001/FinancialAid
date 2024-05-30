@@ -40,8 +40,9 @@ String applicationDate;
   String? applicationStatus;
   List<String>? committeeMemberName;
   List<String>? isApplication;
+  String? session;
 
-  Application({this.applicationStatus,this.committeeMemberName,this.isApplication,
+  Application({this.applicationStatus,this.session,this.committeeMemberName,this.isApplication,
     required this.applicationDate,required this.applicationID,this.suggestion,
   required this.profileImage,required this.name,required this.status,required this.semester,required this.degree,required this.fatherName,required this.section,required this.amount,required this.gender,required this.aridNo,required this.cgpa,
     required this.studentId, required this.reason, required this.house,

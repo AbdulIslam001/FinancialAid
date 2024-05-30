@@ -8,6 +8,8 @@ import 'package:financial_aid/Resources/AppUrl.dart';
 import 'package:http/http.dart'as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Models/ApplicationModel.dart';
+
 
 class AdminApiHandler {
 
@@ -238,5 +240,11 @@ class AdminApiHandler {
     Uri uri = Uri.parse(apiEndPoint);
     var response = await http.get(uri);
     return response.statusCode;
+  }
+  Future<http.Response> getApplicationHistory(int id) async {
+    String apiEndPoint = "${EndPoint.getApplicationHistory}?id=$id";
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.get(uri);
+    return response;
   }
 }

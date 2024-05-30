@@ -259,6 +259,7 @@ class _RejectApplicationState extends State<RejectApplication> {
                                   return NeedBaseApplicationDetails(
                                     application: filteredList[index],
                                     isTrue: true,
+                                    trackRecord: false,
                                   );
                                 },
                               ),

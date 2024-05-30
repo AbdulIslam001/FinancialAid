@@ -46,6 +46,7 @@ class EndPoint{
   static String meritBaseAmmount=baseUrl+"api/Admin/MeritBaseAmmount";
   static String unAssignedFacultyMember=baseUrl+"api/Admin/UnAssignedFaculty";
   static String checkCgpaPolicy=baseUrl+"api/Student/checkCgpaPolicy";
+  static String getApplicationHistory=baseUrl+"api/Admin/ApplicationHistory";
 
   //MeritBaseAmmount
 }

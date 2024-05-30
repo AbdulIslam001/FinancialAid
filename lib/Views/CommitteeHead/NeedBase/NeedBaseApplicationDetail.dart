@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -11,11 +12,13 @@ import 'package:financial_aid/Services/FileDownloader.dart';
 import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/Committee/ApplicationDetails.dart';
+import 'package:financial_aid/viewModel/CommitteeHeadViewModel/ApplicationHistory.dart';
 import 'package:financial_aid/viewModel/CommitteeHeadViewModel/ApplicationView.dart';
 import 'package:financial_aid/viewModel/ViewSuggestionViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:open_file/open_file.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -26,7 +29,8 @@ import '../../../Resources/AppUrl.dart';
 class NeedBaseApplicationDetails extends StatefulWidget {
   Application application;
   bool isTrue;
-  NeedBaseApplicationDetails({super.key, required this.application,required this.isTrue});
+  bool trackRecord;
+  NeedBaseApplicationDetails({super.key, required this.application,required this.isTrue,required this.trackRecord});
 
   @override
   State<NeedBaseApplicationDetails> createState() =>
@@ -102,11 +106,10 @@ class _NeedBaseApplicationDetailsState
 
 
 
-
-
-
   ///////////////////////
   List<bool> _isShow=[];
+  bool isVisible=false;
+
   @override
   Widget build(BuildContext context) {
     for(int l=0;l<widget.application.suggestion!.length;l++){
@@ -144,22 +147,94 @@ class _NeedBaseApplicationDetailsState
       }
     }
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Text(widget.application.name),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding:
-              EdgeInsets.only(top: CustomSize().customHeight(context) / 13),
+              EdgeInsets.only(top: CustomSize().customHeight(context) / 200),
           child: Consumer<ApplicationViewModel>(
             builder: (context, value, child) {
               return Column(
                 children: [
-                  Padding(
+                  widget.trackRecord?Padding(
                     padding: EdgeInsets.only(left: CustomSize().customWidth(context)/10),
                     child: Row(
                       children: [
-                        TextButton(onPressed: (){}, child:const Text("Track Record")),
+                        TextButton(
+                            onPressed: ()async{
+                              List<Application> list=await ApplicationHistory().getAllApplication(int.parse(widget.application.applicationID));
+                              if(context.mounted){
+                                if(list.isNotEmpty)
+                                {
+                                  int totalAccepted=0;
+                                  int totalRejected=0;
+                                  for(var item in list){
+                                    if(item.session!=null && item.applicationStatus?.toLowerCase().toString()=='rejected'){
+                                      totalRejected++;
+                                    }else if(item.session!=null && item.applicationStatus?.toLowerCase().toString()=='accepted'){
+                                      totalAccepted++;
+                                    }
+                                  }
+                                  showDialog(context: context, builder: (context) {
+                                    return AlertDialog(
+                                      title: SizedBox(
+                                        height: CustomSize().customHeight(context)/2,
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(bottom: CustomSize().customHeight(context)/100),
+                                              child: PieChart(
+                                                legendOptions: const LegendOptions(
+                                                    legendPosition: LegendPosition.left),
+                                                dataMap: {
+                                                  'Accepted':totalAccepted.toDouble(),
+                                                  'Rejected':totalRejected.toDouble(),
+                                                },
+                                                chartRadius: CustomSize().customWidth(context) / 3,
+                                                chartValuesOptions: const ChartValuesOptions(
+                                                    showChartValuesInPercentage: true),
+                                                centerText: "Accepted : $totalAccepted/Rejected : $totalRejected",
+                                                animationDuration: const Duration(milliseconds: 1000),
+                                                chartType: ChartType.ring,
+                                                colorList: const [Colors.green, Colors.red],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child:  ListView.builder(
+                                                itemCount: list.length,
+                                                itemBuilder: (context, index1) {
+                                                  return Card(
+                                                    child: ListTile(
+                                                      title: Text(list[index1].name),
+                                                      subtitle: Text(list[index1].aridNo),
+                                                      trailing: Column(
+                                                        children: [
+                                                          Text(list[index1].session??""),
+                                                          Text(list[index1].applicationStatus??"",style:const TextStyle(color:Colors.red)),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },);
+                                }
+                                else{
+                                  Utilis.flushBarMessage("No record Exist", context);
+                                }
+                              }
+                        }, child:const Text("Track Record")),
                       ],
                     ),
-                  ),
+                  ):const SizedBox(),
                   Padding(
                     padding: EdgeInsets.only(bottom: CustomSize().customHeight(context)/100),
                     child: PieChart(
@@ -438,7 +513,7 @@ class _NeedBaseApplicationDetailsState
                         ],
                       )),
                   SizedBox(
-                    height: CustomSize().customHeight(context) / 1.7,
+                    height: CustomSize().customHeight(context) / 2,
                     width: CustomSize().customWidth(context) / 1.2,
                     child: Column(
                       children: [
