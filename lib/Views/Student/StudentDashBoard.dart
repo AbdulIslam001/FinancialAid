@@ -46,8 +46,6 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
     }
   }
 
-
-
   Future<void> getStudentData() async {
     Response res = await StudentApiHandle().getStudentInfo();
     dynamic obj = jsonDecode(res.body);
@@ -72,6 +70,8 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
       } else {
         applicationStatus = 'Not Submitted';
       }
+    }else if(res.statusCode==404){
+      applicationStatus = 'Not Submitted';
     }
   }
 
@@ -160,23 +160,28 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            FutureBuilder(future: getSession(), builder: (context, snapshot) {
+           /* FutureBuilder(future: getSession(), builder: (context, snapshot) {
               return Padding(
                 padding: EdgeInsets.only(left:CustomSize().customWidth(context)/100),
                 child: Center(child: Text(session,style: TextStyle(fontSize: CustomSize().customHeight(context)/40,fontStyle: FontStyle.italic,),)),
               );
-            },),
+            },),*/
             FutureBuilder(
-              future: getStudentData(),
+              future: getSession(),
               builder: (context, snapshot) {
-                return Consumer<StudentInfoViewModel>(
-                  builder: (context, value, child) {
-                    return InfoContainer(
-                        name: name, aridNo: aridNo, status: applicationStatus);
-                  },
-                );
-              },
-            ),
+              return   FutureBuilder(
+                future: getStudentData(),
+                builder: (context, snapshot) {
+                  return Consumer<StudentInfoViewModel>(
+                    builder: (context, value, child) {
+                      return InfoContainer(
+                          session: session,
+                          name: name, aridNo: aridNo, status: applicationStatus);
+                    },
+                  );
+                },
+              );
+            },),
             SizedBox(
               height: CustomSize().customHeight(context) / 100,
             ),
