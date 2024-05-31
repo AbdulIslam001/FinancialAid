@@ -45,11 +45,12 @@ class _RejectApplicationState extends State<RejectApplication> {
         List<String>? isApplication=[];
         List<String>? committeeMemberName=[];
         List<String> suggestionList=[];
+        List<String> suggestedAmount=[];
         for(int j=0;j<obj["Suggestions"].length;j++){
           suggestionList.add(obj["Suggestions"][j]["comment"].toString());
           committeeMemberName.add(obj["Suggestions"][j]["CommitteeMemberName"].toString());
           isApplication.add(obj["Suggestions"][j]["status"].toString());
-
+          suggestedAmount.add(obj["Suggestions"][j]["amount"].toString());
         }
         Application a = Application(
           isApplication: isApplication,
@@ -81,6 +82,7 @@ class _RejectApplicationState extends State<RejectApplication> {
           applicationDate: obj["applicationDate"].toString(),
           suggestion: suggestionList,
           committeeMemberName: committeeMemberName,
+          suggestedAmount: suggestedAmount,
         );
         applicationList.add(a);
       }

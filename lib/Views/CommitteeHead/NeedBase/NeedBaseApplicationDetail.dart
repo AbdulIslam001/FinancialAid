@@ -175,7 +175,7 @@ class _NeedBaseApplicationDetailsState
                                   for(var item in list){
                                     if(item.session!=null && item.applicationStatus?.toLowerCase().toString()=='rejected'){
                                       totalRejected++;
-                                    }else if(item.session!=null && item.applicationStatus?.toLowerCase().toString()=='accepted'){
+                                    }else if(item.session!=null && item .applicationStatus?.toLowerCase().toString()=='accepted'){
                                       totalAccepted++;
                                     }
                                   }
@@ -536,14 +536,23 @@ class _NeedBaseApplicationDetailsState
                                       child: Column(
                                         children: [
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(widget
-                                                  .application.committeeMemberName![ind]
-                                                  .toString(),
+                                              Column(
+                                                children: [
+                                                  Text(widget
+                                                      .application.committeeMemberName![ind]
+                                                      .toString(),
+                                                  ),
+                                                  Text(widget
+                                                      .application.isApplication![ind].toString(),style: TextStyle(
+                                                      color:widget
+                                                          .application.isApplication![ind].toLowerCase().toString()=="accepted"?Colors.green:Colors.red
+                                                  )),
+                                                ],
                                               ),
                                               Text(widget
-                                                  .application.isApplication![ind].toString(),style: TextStyle(
+                                                  .application.suggestedAmount?[ind].toString()!=null.toString()?widget.application.suggestedAmount![ind].toString():"",style: TextStyle(
                                                   color:widget
                                                       .application.isApplication![ind].toLowerCase().toString()=="accepted"?Colors.green:Colors.red
                                               )),

@@ -9,12 +9,18 @@ import 'package:http/http.dart';
 import '../../../Components/BudgetInfoContainer.dart';
 import '../../../Components/CustomButton.dart';
 import '../../../Resources/CustomSize.dart';
+import '../../../Services/Committee/CommitteeApiHandler.dart';
 import '../../../Utilis/FlushBar.dart';
 import '../../../Utilis/Routes/RouteName.dart';
 
-class Budget extends StatelessWidget {
+class Budget extends StatefulWidget {
   Budget({super.key});
 
+  @override
+  State<Budget> createState() => _BudgetState();
+}
+
+class _BudgetState extends State<Budget> {
   Future<List<BudgetModel>> getAllBudget() async {
     List<BudgetModel> list = [];
     Response res = await AdminApiHandler().getAllBudget();
@@ -35,8 +41,25 @@ class Budget extends StatelessWidget {
     }
     return list;
   }
+
+  String remainingBalance="";
+
+  Future<String> getRemainingBalance()async{
+    Response res=await CommitteeApiHandler().getBalance();
+    remainingBalance=res.body.toString();
+    return res.body.toString();
+  }
+
   final TextEditingController _search=TextEditingController();
+
   final TextEditingController _amount= TextEditingController();
+@override
+  void initState() {
+    // TODO: implement initState
+   getRemainingBalance();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,57 +69,68 @@ class Budget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(right: CustomSize().customWidth(context)/20),
               child:GestureDetector(
-                  onTap: (){
-                    showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                            title:Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly,
-                                    ],
-                                    onChanged: (val){},
-                                    controller: _amount,
-                                    decoration: InputDecoration(
-                                      hintText: "enter amount",
-                                      labelText: "enter amount",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                  onTap: ()async{
+                    Response res=await CommitteeApiHandler().getBalance();
+                    int remainingBalance=0;
+                    if(res.statusCode==200){
+                      remainingBalance = int.parse(res.body);
+                    }
+                    if(context.mounted){
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                              title:Column(
+                                children: [
+                                  Text("Balance $remainingBalance"),
+                                  Padding(
+                                    padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly,
+                                      ],
+                                      onChanged: (val){},
+                                      controller: _amount,
+                                      decoration: InputDecoration(
+                                        hintText: "enter amount",
+                                        labelText: "enter amount",
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    CustomButton(title: "cancel", loading: false,onTap: (){
-                                      Navigator.pop(context);
-                                    },),
-                                    CustomButton(title: "Add", loading: false,onTap: ()async {
-                                      int res=await AdminApiHandler().addBudget(int.parse(_amount.text));
-                                      if(context.mounted){
-                                        if(res==200){
-                                          Navigator.pop(context);
-                                          Utilis.flushBarMessage("Budget Added", context);
-                                        }else{
-                                          Utilis.flushBarMessage("try again later", context);
+                                  SizedBox(
+                                    height: CustomSize().customHeight(context)/20,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      CustomButton(title: "cancel", loading: false,onTap: (){
+                                        Navigator.pop(context);
+                                      },),
+                                      CustomButton(title: "Add", loading: false,onTap: ()async {
+                                        int res=await AdminApiHandler().addBudget(int.parse(_amount.text));
+                                        if(context.mounted){
+                                          if(res==200){
+                                            Navigator.pop(context);
+                                            Utilis.flushBarMessage("Budget Added", context);
+                                          }else{
+                                            Utilis.flushBarMessage("try again later", context);
+                                          }
+                                          Navigator.pushReplacementNamed(context, RouteName.budget);
                                         }
-                                        Navigator.pushReplacementNamed(context, RouteName.budget);
-                                      }
-                                    },),
-                                  ],
-                                )
-                              ],
-                            )
-                        );
-                      },
-                    );
+                                      },),
+                                    ],
+                                  )
+                                ],
+                              )
+                          );
+                        },
+                      );
+                    }
                   },
                   child: const Icon(Icons.add_box_rounded)),
             )
@@ -106,6 +140,33 @@ class Budget extends StatelessWidget {
           centerTitle: true),
       body: Column(
         children: [
+          FutureBuilder(future: getRemainingBalance(), builder: (context, snapshot) {
+            return Container(
+              height: CustomSize().customHeight(context)/8,
+              width: CustomSize().customWidth(context)/1.13,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/80),
+                color: Colors.blueGrey.withOpacity(0.2),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white,
+                    spreadRadius: CustomSize().customHeight(context)/1000,
+                    blurRadius: CustomSize().customHeight(context)/100,
+                    offset: Offset(CustomSize().customHeight(context)/1400,
+                        CustomSize().customHeight(context)/1400),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:[
+                  Text("Remaining Balance",style: TextStyle(fontSize: CustomSize().customHeight(context)/30,fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),),
+                  Text(remainingBalance,style: TextStyle(fontSize: CustomSize().customHeight(context)/30,fontStyle: FontStyle.italic),),
+                ],
+              ),
+            );
+          },),
           Padding(
             padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
             child: TextFormField(

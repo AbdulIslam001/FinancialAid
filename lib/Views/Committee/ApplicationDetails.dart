@@ -440,6 +440,7 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                                               onTap: () async {
                                                 if (_formKey.currentState!
                                                     .validate()) {
+                                                  _amount.text="0";
                                                   int code =
                                                       await CommitteeApiHandler()
                                                           .giveSuggestion(
@@ -448,7 +449,9 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                                                               int.parse(widget
                                                                   .application
                                                                   .applicationID
-                                                                  .toString()));
+                                                                  .toString()),
+                                                        int.parse(_amount.text.toString())
+                                                      );
                                                   if (code == 200 &&
                                                       context.mounted) {
                                                     Navigator.pushReplacementNamed(
@@ -548,7 +551,9 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                                                               int.parse(widget
                                                                   .application
                                                                   .applicationID
-                                                                  .toString()));
+                                                                  .toString()),
+                                                        int.parse(_amount.text.toString())
+                                                      );
                                                   if (code == 200 &&
                                                       context.mounted) {
                                                     Navigator.pushReplacementNamed(

@@ -34,6 +34,20 @@ String applicationStatus = "";
 String profileImage = "";
 
 class _StudentDashBoardState extends State<StudentDashBoard> {
+
+
+  String session='';
+
+  Future<void> getSession() async {
+    Response res = await AdminApiHandler().getSession();
+    if (res.statusCode == 200) {
+      dynamic obj = jsonDecode(res.body);
+      session = obj['session1'].toString();
+    }
+  }
+
+
+
   Future<void> getStudentData() async {
     Response res = await StudentApiHandle().getStudentInfo();
     dynamic obj = jsonDecode(res.body);
@@ -146,9 +160,12 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: CustomSize().customHeight(context) / 100,
-            ),
+            FutureBuilder(future: getSession(), builder: (context, snapshot) {
+              return Padding(
+                padding: EdgeInsets.only(left:CustomSize().customWidth(context)/100),
+                child: Center(child: Text(session,style: TextStyle(fontSize: CustomSize().customHeight(context)/40,fontStyle: FontStyle.italic,),)),
+              );
+            },),
             FutureBuilder(
               future: getStudentData(),
               builder: (context, snapshot) {
@@ -187,19 +204,21 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                         if(context.mounted){
                           if(res.statusCode==200){
                             dynamic obj=jsonDecode(res.body);
-                            if(double.parse(cgpa)>=double.parse(obj['val1'].toString())){
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
+                            if(obj ==null){
+                              Utilis.flushBarMessage("No Policy Exist", context);
+                            }else{
+                              if(double.parse(cgpa)>=double.parse(obj['val1'].toString())){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
                                   return ApplicationForm(
                                       aridNo: aridNo,
                                       cgpa: cgpa,
                                       name: name,
                                       fatherName: fatherName,
                                       semester: semester);
-                                },
-                              ));
-                            }else{
-                              Utilis.flushBarMessage("Your cgpa does not match the criteria", context);
+                                },));
+                              }else{
+                                Utilis.flushBarMessage("Your cgpa does not match the criteria", context);
+                              }
                             }
                           }else{
                             Utilis.flushBarMessage("error try again later", context);

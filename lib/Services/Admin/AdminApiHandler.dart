@@ -14,6 +14,12 @@ import '../../Models/ApplicationModel.dart';
 class AdminApiHandler {
 
 //////////////Student//////////////////
+  Future<http.Response> getSession() async {
+    String apiEndPoint = EndPoint.getSession;
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.get(uri);
+    return response;
+  }
 
 
   Future<http.Response> getAllStudent() async {

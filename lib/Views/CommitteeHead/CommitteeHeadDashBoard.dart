@@ -31,6 +31,16 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
   String profileImage = '';
   bool isTrue = false;
 
+  String session='';
+
+  Future<void> getSession() async {
+    Response res = await AdminApiHandler().getSession();
+    if (res.statusCode == 200) {
+      dynamic obj = jsonDecode(res.body);
+      session = obj['session1'].toString();
+    }
+  }
+
   Future<void> getAdminData() async {
     Response res = await AdminApiHandler().getAdminInfo();
     if (res.statusCode == 200) {
@@ -40,9 +50,9 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
       if (profileImage != null || profileImage != '') {
         isTrue = true;
       }
-    } else if (context.mounted) {
+    }/* else if (context.mounted) {
       Utilis.flushBarMessage("try again later", context);
-    }
+    }*/
   }
 
   @override
@@ -211,6 +221,12 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            FutureBuilder(future: getSession(), builder: (context, snapshot) {
+              return Padding(
+                padding: EdgeInsets.only(left:CustomSize().customWidth(context)/100),
+                child: Center(child: Text(session,style: TextStyle(fontSize: CustomSize().customHeight(context)/40,fontStyle: FontStyle.italic),)),
+              );
+            },),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,

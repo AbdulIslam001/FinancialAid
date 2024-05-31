@@ -42,10 +42,10 @@ Future<http.Response> switchRole()async{
     return response;
   }
 
-  Future<int> giveSuggestion(String comment,String status,int applicationId)async{
+  Future<int> giveSuggestion(String comment,String status,int applicationId, int amount)async{
     SharedPreferences sp =await SharedPreferences.getInstance();
     int id= int .parse(sp.getInt('id').toString());
-    String apiEndPoint=EndPoint.giveSuggestion+"?committeeId=$id&status=$status&applicationId=$applicationId&comment=$comment";
+    String apiEndPoint=EndPoint.giveSuggestion+"?committeeId=$id&status=$status&applicationId=$applicationId&comment=$comment&amount=$amount";
     Uri uri=Uri.parse(apiEndPoint);
     var response=await http.post(uri);
     return response.statusCode;

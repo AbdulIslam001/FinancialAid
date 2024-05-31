@@ -13,6 +13,7 @@ import '../../Components/ApplicationView.dart';
 import '../../Components/DrawerCustomButtons.dart';
 import '../../Resources/AppUrl.dart';
 import '../../Resources/CustomSize.dart';
+import '../../Services/Admin/AdminApiHandler.dart';
 import '../../Utilis/Routes/RouteName.dart';
 import 'ApplicationDetails.dart';
 
@@ -29,6 +30,16 @@ class _CommitteeDashBoardState extends State<CommitteeDashBoard> {
   String name="";
 
   String profileImage="";
+
+  String session='';
+
+  Future<void> getSession() async {
+    Response res = await AdminApiHandler().getSession();
+    if (res.statusCode == 200) {
+      dynamic obj = jsonDecode(res.body);
+      session = obj['session1'].toString();
+    }
+  }
 
   Future<void> getCommitteeInfo()async{
     Response res= await CommitteeApiHandler().committeeMemberInfo();
@@ -185,6 +196,12 @@ Future<List<Application>> getAllApplication()async{
       ),
       body:Column(
         children: [
+          FutureBuilder(future: getSession(), builder: (context, snapshot) {
+            return Padding(
+              padding: EdgeInsets.only(left:CustomSize().customWidth(context)/100),
+              child: Center(child: Text(session,style: TextStyle(fontSize: CustomSize().customHeight(context)/40,fontStyle: FontStyle.italic,),)),
+            );
+          },),
           Padding(
             padding: EdgeInsets.only( top: CustomSize().customHeight(context)/45),
             child: Center(
