@@ -8,6 +8,7 @@ import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/FacultyRecord.dart
 import 'package:financial_aid/Views/CommitteeHead/Add/Policy/AddPolicy.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Policy/Policy.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Student/StudentRecord.dart';
+import 'package:financial_aid/Views/CommitteeHead/AllocationDetails.dart';
 import 'package:financial_aid/Views/CommitteeHead/CommitteeHeadDashBoard.dart';
 import 'package:financial_aid/Views/CommitteeHead/Graders/Grader.dart';
 import 'package:financial_aid/Views/CommitteeHead/MeritBase/MeritBaseStudents.dart';
@@ -32,6 +33,8 @@ class RoutesNavigation {
     switch (settings.name) {
       case RouteName.splashScreen:
         return MaterialPageRoute(builder: (context) => SplashScreen());
+/*      case RouteName.allocationDetails:
+        return MaterialPageRoute(builder: (context) => AllocationDetails());*/
       case RouteName.login:
         return MaterialPageRoute(builder: (context) => Login());
       case RouteName.committeeDashBoard:

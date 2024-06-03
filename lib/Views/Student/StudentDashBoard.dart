@@ -166,21 +166,24 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                 child: Center(child: Text(session,style: TextStyle(fontSize: CustomSize().customHeight(context)/40,fontStyle: FontStyle.italic,),)),
               );
             },),*/
-            FutureBuilder(
-              future: getSession(),
+            FutureBuilder(future: getApplicationStatus(),
               builder: (context, snapshot) {
-              return   FutureBuilder(
-                future: getStudentData(),
+              return FutureBuilder(
+                future: getSession(),
                 builder: (context, snapshot) {
-                  return Consumer<StudentInfoViewModel>(
-                    builder: (context, value, child) {
-                      return InfoContainer(
-                          session: session,
-                          name: name, aridNo: aridNo, status: applicationStatus);
+                  return   FutureBuilder(
+                    future: getStudentData(),
+                    builder: (context, snapshot) {
+                      return Consumer<StudentInfoViewModel>(
+                        builder: (context, value, child) {
+                          return InfoContainer(
+                              session: session,
+                              name: name, aridNo: aridNo, status: applicationStatus);
+                        },
+                      );
                     },
                   );
-                },
-              );
+                },);
             },),
             SizedBox(
               height: CustomSize().customHeight(context) / 100,

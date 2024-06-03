@@ -38,7 +38,7 @@ class StudentApiHandle {
       http.MultipartFile ss=await http.MultipartFile.
       fromPath("docs",docs!.path);
       request.files.add(ss);
-    }else if(status != 'Alive'){
+    }else if(status == 'Deceased'){
       http.MultipartFile ss=await http.MultipartFile.
       fromPath("docs",docs!.path);
       request.files.add(ss);

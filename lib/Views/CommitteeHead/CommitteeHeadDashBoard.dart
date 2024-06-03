@@ -7,6 +7,7 @@ import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/FacultyRecord.dart
 import 'package:financial_aid/Views/CommitteeHead/Add/Policy/Policy.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Session.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Student/StudentRecord.dart';
+import 'package:financial_aid/Views/CommitteeHead/AllocationDetails.dart';
 import 'package:financial_aid/Views/CommitteeHead/MeritBase/MeritBaseStudents.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -199,19 +200,31 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                       Navigator.pushNamed(context, RouteName.committeeRecord);
                     }),
               ),
-              SizedBox(
-                height: CustomSize().customHeight(context) / 8,
+              Padding(
+                padding: EdgeInsets.only(
+                    top: CustomSize().customWidth(context) / 20),
+                child: DrawerCustomButtons(
+                    title: "Allocation\nSheet",
+                    onTab: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return AllocationDetails(session: session);
+                      },));
+                    }),
               ),
-              DrawerCustomButtons(
-                  title: "Logout",
-                  onTab: () async {
-                    SharedPreferences sp =
-                        await SharedPreferences.getInstance();
-                    sp.clear();
-                    if (context.mounted) {
-                      Navigator.pushReplacementNamed(context, RouteName.login);
-                    }
-                  }),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: CustomSize().customWidth(context) / 20),
+                child: DrawerCustomButtons(
+                    title: "Logout",
+                    onTab: () async {
+                      SharedPreferences sp =
+                          await SharedPreferences.getInstance();
+                      if (context.mounted) {
+                        sp.clear();
+                        Navigator.pushReplacementNamed(context, RouteName.login);
+                      }
+                    }),
+              ),
             ],
           ),
         ),

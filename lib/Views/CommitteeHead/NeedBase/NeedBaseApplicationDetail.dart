@@ -166,7 +166,7 @@ class _NeedBaseApplicationDetailsState
                       children: [
                         TextButton(
                             onPressed: ()async{
-                              List<Application> list=await ApplicationHistory().getAllApplication(int.parse(widget.application.applicationID));
+                              List<Application> list=await ApplicationHistory().getAllApplication(int.parse(widget.application.studentId));
                               if(context.mounted){
                                 if(list.isNotEmpty)
                                 {

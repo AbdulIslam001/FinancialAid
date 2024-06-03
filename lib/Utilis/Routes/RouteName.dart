@@ -23,5 +23,6 @@ class RouteName{
   static const policy="Policy";
   static const addPolicy="AddPolicy";
   static const meritBase="MeritBaseShortListed";
+  static const allocationDetails="AllocationDetails";
 
 }

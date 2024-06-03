@@ -134,7 +134,8 @@ class _ApplicationFormState extends State<ApplicationForm> {
 
                         });
                       },title:const Text("Alive"))),
-                      Expanded(child: RadioListTile(value: "Deceased",groupValue: gVal, onChanged: (val){
+                      Expanded(child: RadioListTile(
+                          value: "Deceased",groupValue: gVal, onChanged: (val){
                         gVal=val.toString();
                         status=false;
                         setState(() {

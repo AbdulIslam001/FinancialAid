@@ -209,15 +209,25 @@ class _ApplicationFormOneState extends State<ApplicationFormOne> {
                                     int? id=sp.getInt('id');
                                     int code=await StudentApiHandle().sendApplication(
                                         value.length,
-                                        value.slipStatus,widget.status,
-                                          widget.fatherOccupation!, widget.contactNo!,
-                                          widget.salary!, widget.docs?.absolute,
+                                        value.slipStatus,
+                                        widget.status,
+                                          widget.fatherOccupation!,
+                                        widget.contactNo!,
+                                          widget.salary!,
+                                        widget.docs?.absolute,
                                           widget.guardianName,
-                                          widget.guardianContact, widget.guardianRelation, gVal.toString(),
-                                          value.houseAgreement, _reason.text.toString(), _requiredAmount.text.toString(),
+                                          widget.guardianContact,
+                                        widget.guardianRelation,
+                                        gVal.toString(),
+                                          value.houseAgreement,
+                                        _reason.text.toString(),
+                                        _requiredAmount.text.toString(),
                                           id.toString());
                                       if(code==200 && context.mounted){
                                         Utilis.flushBarMessage("Application Submitted", context);
+                                        value.setAgreementStatus(false);
+                                        value.setSlipStatus(false);
+                                        value.setCertificateStatus(false);
                                         Navigator.pushReplacementNamed(context, RouteName.studentDashBoard);
                                     }else if(code==401 && context.mounted){
                                         Utilis.flushBarMessage("Already submitted", context);
