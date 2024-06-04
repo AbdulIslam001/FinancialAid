@@ -8,9 +8,15 @@ class Student {
   String fatherName;
   String gender;
   int studentId;
+  int? position;
   String profileImage;
+  String? prevCgpa;
+  String? amount;
   Student({
+    this.amount,
       required this.aridNo,
+    this.position,
+    this.prevCgpa,
       required this.name,
       required this.semester,
       required this.cgpa,

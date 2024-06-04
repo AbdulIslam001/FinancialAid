@@ -5,6 +5,7 @@ import 'package:financial_aid/viewModel/CommitteeHeadViewModel/DegreeSelectionVi
 import 'package:financial_aid/viewModel/CommitteeViewModel/AddCommitteeViewModel.dart';
 import 'package:financial_aid/viewModel/CustomButtonViewModel.dart';
 import 'package:financial_aid/viewModel/LoginViewModel.dart';
+import 'package:financial_aid/viewModel/NeedBaseTotalAmount.dart';
 import 'package:financial_aid/viewModel/StudentViewModel/FilePickerViewModel.dart';
 import 'package:financial_aid/viewModel/StudentViewModel/StudentInfoViewModel.dart';
 import 'package:financial_aid/viewModel/ViewSuggestionViewModel.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=>ApplicationViewModel()),
         ChangeNotifierProvider(create: (_)=>CustomButtonViewModel()),
         ChangeNotifierProvider(create: (_)=>ViewSuggestionViewModel()),
+        ChangeNotifierProvider(create: (_)=>NeedBaseTotalAmount()),
 
       ],
       child: MaterialApp(
