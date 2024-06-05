@@ -10,7 +10,7 @@ class Student {
   int studentId;
   int? position;
   String profileImage;
-  String? prevCgpa;
+  double? prevCgpa;
   String? amount;
   Student({
     this.amount,

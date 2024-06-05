@@ -36,7 +36,7 @@ class _RejectApplicationState extends State<RejectApplication> {
             if(obj["EvidenceDocuments"][i]["document_type"]=="salaryslip"){
               ss=obj["EvidenceDocuments"][i]["image"];
             }else if(obj["EvidenceDocuments"][i]["document_type"]=="deathcertificate"){
-              dc=obj["re"]["EvidenceDocuments"][i]["image"];
+              dc=obj["EvidenceDocuments"][i]["image"];
             }else if(obj["EvidenceDocuments"][i]["document_type"]=="houseAgreement"){
               hg.add(obj["EvidenceDocuments"][i]["image"]);
             }

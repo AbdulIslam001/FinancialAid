@@ -39,11 +39,11 @@ class _NeedBaseApplicationsState extends State<NeedBaseApplications> {
         for(int i =0 ; i<obj["EvidenceDocuments"].length;i++){
           if(obj["EvidenceDocuments"][i]["document_type"] !=null && obj["EvidenceDocuments"][i]["image"] !=null){
             if(obj["EvidenceDocuments"][i]["document_type"]=="salaryslip"){
-              ss=obj["EvidenceDocuments"][i]["image"];
+              ss=obj["EvidenceDocuments"][i]["image"].toString();
             }else if(obj["EvidenceDocuments"][i]["document_type"]=="deathcertificate"){
-              dc=obj["re"]["EvidenceDocuments"][i]["image"];
+              dc=obj["EvidenceDocuments"][i]["image"].toString();
             }else if(obj["EvidenceDocuments"][i]["document_type"]=="houseAgreement"){
-              hg.add(obj["EvidenceDocuments"][i]["image"]);
+              hg.add(obj["EvidenceDocuments"][i]["image"].toString());
             }
           }
 /*          EvidenceDocument ed= EvidenceDocument(docs: obj["re"]["EvidenceDocuments"][i]["image"], type: obj["re"]["EvidenceDocuments"][i]["document_type"]);
