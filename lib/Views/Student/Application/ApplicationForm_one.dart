@@ -199,29 +199,30 @@ class _ApplicationFormOneState extends State<ApplicationFormOne> {
                               title: "Apply",
                               loading: value.loading,
                               onTap: () async{
-                                value.setLoading(true);
-                                if (_formOneKey.currentState!.validate() && context.mounted) {
-                                  if (!value.houseAgreementStatus) {
-                                    Utilis.flushBarMessage(
-                                        "house agreement required", context);
-                                  }else{
-                                    SharedPreferences sp = await SharedPreferences.getInstance();
-                                    int? id=sp.getInt('id');
-                                    int code=await StudentApiHandle().sendApplication(
-                                        value.length,
-                                        value.slipStatus,
-                                        widget.status,
+                                if(!value.loading){
+                                  value.setLoading(true);
+                                  if (_formOneKey.currentState!.validate() && context.mounted) {
+                                    if (!value.houseAgreementStatus) {
+                                      Utilis.flushBarMessage(
+                                          "house agreement required", context);
+                                    }else{
+                                      SharedPreferences sp = await SharedPreferences.getInstance();
+                                      int? id=sp.getInt('id');
+                                      int code=await StudentApiHandle().sendApplication(
+                                          value.length,
+                                          value.slipStatus,
+                                          widget.status,
                                           widget.fatherOccupation!,
-                                        widget.contactNo!,
+                                          widget.contactNo!,
                                           widget.salary!,
-                                        widget.docs?.absolute,
+                                          widget.docs?.absolute,
                                           widget.guardianName,
                                           widget.guardianContact,
-                                        widget.guardianRelation,
-                                        gVal.toString(),
+                                          widget.guardianRelation,
+                                          gVal.toString(),
                                           value.houseAgreement,
-                                        _reason.text.toString(),
-                                        _requiredAmount.text.toString(),
+                                          _reason.text.toString(),
+                                          _requiredAmount.text.toString(),
                                           id.toString());
                                       if(code==200 && context.mounted){
                                         Utilis.flushBarMessage("Application Submitted", context);
@@ -229,15 +230,18 @@ class _ApplicationFormOneState extends State<ApplicationFormOne> {
                                         value.setSlipStatus(false);
                                         value.setCertificateStatus(false);
                                         Navigator.pushReplacementNamed(context, RouteName.studentDashBoard);
-                                    }else if(code==401 && context.mounted){
+                                      }else if(code==401 && context.mounted){
                                         Utilis.flushBarMessage("Already submitted", context);
                                       }else if(context.mounted)
                                       {
                                         Utilis.flushBarMessage("error! try again later", context);
                                       }
+                                    }
                                   }
+                                  value.setLoading(false);
+                                }else{
+                                  Utilis.flushBarMessage("khoot maro na tum jasa khasi tu nai hoin ky 2 sec ma farigh", context);
                                 }
-                                value.setLoading(false);
                               },
                             );
                           },
