@@ -2,7 +2,6 @@
 import "dart:convert";
 
 import "package:financial_aid/Resources/CustomSize.dart";
-import "package:financial_aid/viewModel/NeedBaseTotalAmount.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart";
 import "package:provider/provider.dart";
@@ -10,6 +9,7 @@ import "package:provider/provider.dart";
 import "../../Models/ApplicationModel.dart";
 import "../../Models/Student.dart";
 import "../../Services/Admin/AdminApiHandler.dart";
+import "../../viewModel/NeedBaseTotalAmount.dart";
 
 
     class AllocationDetails extends StatefulWidget {
@@ -21,6 +21,8 @@ import "../../Services/Admin/AdminApiHandler.dart";
 }
 
 class _AllocationDetailsState extends State<AllocationDetails> {
+  NeedBaseTotalAmount nb=NeedBaseTotalAmount();
+
       int needBaseTotalAmount=0;
       int meritBaseTotalAmount=0;
 
@@ -35,7 +37,7 @@ class _AllocationDetailsState extends State<AllocationDetails> {
       int totalMeritBase=0;
       int mBoysAmount=0;
       int mGirlsAmount=0;
-      Future<List<Application>> acceptedApplication1()async{
+/*      Future<List<Application>> acceptedApplication1()async{
         List<Application> applicationList=[];
         Response res=await AdminApiHandler().acceptedApplication();
         if(res.statusCode==200){
@@ -50,6 +52,8 @@ class _AllocationDetailsState extends State<AllocationDetails> {
               nGirlsAmount+=int.parse(obj["amount"].toString());
             }
             totalNeedBase+=nGirlsAmount+nBoysAmount;
+            print("NeedBase Amount : " +obj["amount"].toString());
+            print("Total NeedBase Amount : "+totalNeedBase.toString());
 
             String ss='';
             String dc='';
@@ -132,8 +136,10 @@ class _AllocationDetailsState extends State<AllocationDetails> {
               mGirl++;
               mGirlsAmount+=int.parse(i["amount"].toString());
             }
+            print("Amount : " + i["amount"].toString());
 
             totalMeritBase+=mGirlsAmount+mBoysAmount;
+            print("Total Amount : $totalMeritBase");
 
             Student s= Student(aridNo: i['arid_no'].toString(),
                 name: i['name'].toString(),
@@ -152,15 +158,20 @@ class _AllocationDetailsState extends State<AllocationDetails> {
           }
         }
         return list;
-      }
+      }*/
 
       Future<List<Application>> acceptedApplication()async{
         List<Application> applicationList=[];
         Response res=await AdminApiHandler().acceptedApplication();
         if(res.statusCode==200){
+          needBaseTotalAmount=0;
+          nGirl=0;
+          nBoy=0;
+          totalNeedBase=0;
+          nGirlsAmount=0;
+          nBoysAmount=0;
           dynamic response=jsonDecode(res.body);
           for(var obj in response){
-
             if(obj["gender"].toString()=="M"){
               nBoy++;
               nBoysAmount+=int.parse(obj["amount"].toString());
@@ -168,9 +179,8 @@ class _AllocationDetailsState extends State<AllocationDetails> {
               nGirl++;
               nGirlsAmount+=int.parse(obj["amount"].toString());
             }
-            totalNeedBase+=nGirlsAmount+nBoysAmount;
-
-            needBaseTotalAmount+=int.parse(obj["amount"].toString());
+        //    totalNeedBase+=nGirlsAmount+nBoysAmount;
+            totalNeedBase+=int.parse(obj["amount"].toString());
             String ss='';
             String dc='';
             List<String> hg=[];
@@ -242,9 +252,14 @@ class _AllocationDetailsState extends State<AllocationDetails> {
         Response res=await AdminApiHandler().getMeritBaseShortListed();
         if(res.statusCode==200)
         {
+          meritBaseTotalAmount=0;
+          mGirl=0;
+          mBoy=0;
+          totalMeritBase=0;
+          mBoysAmount=0;
+          mGirlsAmount=0;
           dynamic obj=jsonDecode(res.body);
           for(var i in obj){
-
             if(i["gender"].toString()=="M"){
               mBoy++;
               mBoysAmount+=int.parse(i["amount"].toString());
@@ -253,9 +268,8 @@ class _AllocationDetailsState extends State<AllocationDetails> {
               mGirlsAmount+=int.parse(i["amount"].toString());
             }
 
-            totalMeritBase+=mGirlsAmount+mBoysAmount;
-
-            meritBaseTotalAmount+=int.parse(i["amount"].toString());
+//            totalMeritBase+=mGirlsAmount+mBoysAmount;
+            totalMeritBase+=int.parse(i["amount"].toString());
             Student s= Student(aridNo: i['arid_no'].toString(),
                 name: i['name'].toString(),
                 semester: int.parse(i['semester'].toString()),
@@ -319,7 +333,32 @@ class _AllocationDetailsState extends State<AllocationDetails> {
                         builder: (context, snapshot) {
                           if(snapshot.hasData)
                           {
-                            return Consumer<NeedBaseTotalAmount>(
+                            return DataTable(
+                              columnSpacing: CustomSize().customWidth(context)/40,
+                              columns: const [
+                                DataColumn(label: Text("Arid No")),
+                                DataColumn(label: Text("Name")),
+                                DataColumn(label: Text("Discipline")),
+                                DataColumn(label: Text("Gender")),
+                                DataColumn(label: Text("current\ncgpa")),
+                                DataColumn(label: Text("previous\ncgpa")),
+                                DataColumn(label: Text("Fee\nExempted")),
+                              ],rows:snapshot.data!.map((item) {
+//                                  needBaseTotalAmount+=item.exemptedAmount!;
+                              return DataRow(
+                                  cells: [
+                                    DataCell(Text(item.aridNo.toString())),
+                                    DataCell(Text(item.name.toString())),
+                                    DataCell(Text(item.degree.toString())),
+                                    DataCell(Text(item.gender.toString())),
+                                    DataCell(Text(item.cgpa.toString())),
+                                    DataCell(Text(item.prevCgpa.toString())),
+                                    DataCell(Text(item.exemptedAmount.toString())),
+                                  ]);
+                            }).toList(),
+
+                            );
+                            /*return Consumer<NeedBaseTotalAmount>(
                               builder: (context, value, child) {
                               return DataTable(
                                 columnSpacing: CustomSize().customWidth(context)/40,
@@ -346,7 +385,7 @@ class _AllocationDetailsState extends State<AllocationDetails> {
                               }).toList(),
 
                               );
-                              },);
+                              },);*/
                           }else{
                             return const Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -360,7 +399,7 @@ class _AllocationDetailsState extends State<AllocationDetails> {
                       ),
                     ),
                     FutureBuilder(
-                      future: getMeritBaseShortListed(),
+                      future: acceptedApplication(),
                       builder: (context, snapshot) {
                       return Padding(
                           padding: EdgeInsets.only(
@@ -370,7 +409,7 @@ class _AllocationDetailsState extends State<AllocationDetails> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text("Total Amount : $needBaseTotalAmount",style: TextStyle(fontSize: CustomSize().customHeight(context)/50),),
+                              Text("Total Amount : $totalNeedBase",style: TextStyle(fontSize: CustomSize().customHeight(context)/50),),
                             ],
                           )
                       );
@@ -436,7 +475,7 @@ class _AllocationDetailsState extends State<AllocationDetails> {
                         ),
                       ),
                       FutureBuilder(
-                        future: getMeritBaseShortListed1(),
+                        future: getMeritBaseShortListed(),
                         builder: (context, snapshot) {
                           return Padding(
                               padding: EdgeInsets.only(
@@ -446,7 +485,7 @@ class _AllocationDetailsState extends State<AllocationDetails> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text("Total Amount : $meritBaseTotalAmount",style: TextStyle(fontSize: CustomSize().customHeight(context)/50),),
+                                  Text("Total Amount : $totalMeritBase",style: TextStyle(fontSize: CustomSize().customHeight(context)/50),),
                                 ],
                               )
                           );
@@ -457,226 +496,255 @@ class _AllocationDetailsState extends State<AllocationDetails> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child:Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: CustomSize().customWidth(context)/5),
-                        child: Text("${widget.session} Allocation Summary",style:const TextStyle(fontWeight: FontWeight.bold,)),
-                      ),
-                      Container(
-                        height:CustomSize().customHeight(context)/15,
-                        width:CustomSize().customWidth(context)/1,
-                        child: Row(
-                          children: [
-                            Container(
-                              height:CustomSize().customHeight(context)/6,
-                              width:CustomSize().customWidth(context)/5,
-                              child: const Center(
-                                child:Text("AidType"),
+                      FutureBuilder(
+                        future: acceptedApplication(),
+                        builder: (context, snapshot) {
+                        return FutureBuilder(
+                          future: getMeritBaseShortListed(),
+                          builder: (context, snapshot) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: CustomSize().customWidth(context)/5),
+                                child: Text("${widget.session} Allocation Summary",style:const TextStyle(fontWeight: FontWeight.bold,)),
                               ),
-                            ),
-                            Container(
-                              height:CustomSize().customHeight(context)/25,
-                              width:CustomSize().customWidth(context)/5,
-                              child: const Center(
-                                child:Text("Gender"),
+                              Container(
+                                height:CustomSize().customHeight(context)/15,
+                                width:CustomSize().customWidth(context)/1,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height:CustomSize().customHeight(context)/6,
+                                      width:CustomSize().customWidth(context)/5,
+                                      child: const Center(
+                                        child:Text("AidType"),
+                                      ),
+                                    ),
+                                    Container(
+                                      height:CustomSize().customHeight(context)/25,
+                                      width:CustomSize().customWidth(context)/5,
+                                      child: const Center(
+                                        child:Text("Gender"),
+                                      ),
+                                    ),
+                                    Container(
+                                      height:CustomSize().customHeight(context)/25,
+                                      width:CustomSize().customWidth(context)/6,
+
+                                      child: const Center(
+                                        child:Text("Strength"),
+                                      ),
+                                    ),
+                                    Container(
+                                      height:CustomSize().customHeight(context)/25,
+                                      width:CustomSize().customWidth(context)/5,
+                                      child: const Center(
+                                        child:Text("Amount"),
+                                      ),
+                                    ),
+                                    Container(
+                                      height:CustomSize().customHeight(context)/11,
+                                      width:CustomSize().customWidth(context)/5,
+
+                                      child: const Center(
+                                        child:Text("Total"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              height:CustomSize().customHeight(context)/25,
-                              width:CustomSize().customWidth(context)/6,
+                              Container(
+                                height:CustomSize().customHeight(context)/10,
+                                width:CustomSize().customWidth(context)/1,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height:CustomSize().customHeight(context)/6,
+                                      width:CustomSize().customWidth(context)/5,
+                                      child: const Center(
+                                        child:Text("MeritBase Amount"),
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/5,
+                                          child: const Center(
+                                            child:Text("Female"),
+                                          ),
+                                        ),
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/5,
 
-                              child: const Center(
-                                child:Text("Strength"),
+                                          child: const Center(
+                                            child:Text("Male"),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/8,
+
+                                          child: Center(
+                                            child:Text(mGirl.toString()),
+                                          ),
+                                        ),
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/8,
+
+                                          child: Center(
+                                            child:Text(mBoy.toString()),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/5,
+                                          child: Center(
+                                            child:Text(mGirlsAmount.toString()),
+                                          ),
+                                        ),
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/5,
+
+                                          child: Center(
+                                            child:Text(mBoysAmount.toString()),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height:CustomSize().customHeight(context)/11,
+                                          width:CustomSize().customWidth(context)/4,
+                                          child: Center(
+                                            child:Text(totalMeritBase.toString()),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              height:CustomSize().customHeight(context)/25,
-                              width:CustomSize().customWidth(context)/5,
-                              child: const Center(
-                                child:Text("Amount"),
+                              Container(
+                                height:CustomSize().customHeight(context)/10,
+                                width:CustomSize().customWidth(context)/1,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height:CustomSize().customHeight(context)/6,
+                                      width:CustomSize().customWidth(context)/5,
+                                      child: const Center(
+                                        child:Text("NeedBase Amount"),
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/5,
+                                          child: const Center(
+                                            child:Text("Female"),
+                                          ),
+                                        ),
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/5,
+
+                                          child: const Center(
+                                            child:Text("Male"),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/8,
+
+                                          child: Center(
+                                            child:Text(nGirl.toString()),
+                                          ),
+                                        ),
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/8,
+
+                                          child: Center(
+                                            child:Text(nBoy.toString()),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/5,
+                                          child: Center(
+                                            child:Text(nGirlsAmount.toString()),
+                                          ),
+                                        ),
+                                        Container(
+                                          height:CustomSize().customHeight(context)/25,
+                                          width:CustomSize().customWidth(context)/5,
+
+                                          child: Center(
+                                            child:Text(nBoysAmount.toString()),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height:CustomSize().customHeight(context)/11,
+                                          width:CustomSize().customWidth(context)/5,
+
+                                          child: Center(
+                                            child:Text(totalNeedBase.toString()),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              height:CustomSize().customHeight(context)/11,
-                              width:CustomSize().customWidth(context)/5,
-
-                              child: const Center(
-                                child:Text("Total"),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height:CustomSize().customHeight(context)/10,
-                        width:CustomSize().customWidth(context)/1,
-                        child: Row(
-                          children: [
-                            Container(
-                              height:CustomSize().customHeight(context)/6,
-                              width:CustomSize().customWidth(context)/5,
-                              child: const Center(
-                                child:Text("MeritBase Amount"),
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/5,
-                                  child: const Center(
-                                    child:Text("Female"),
-                                  ),
-                                ),
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/5,
-
-                                  child: const Center(
-                                    child:Text("Male"),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/8,
-
-                                  child: Center(
-                                    child:Text(mGirl.toString()),
-                                  ),
-                                ),
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/8,
-
-                                  child: Center(
-                                    child:Text(mBoy.toString()),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/5,
-                                  child: Center(
-                                    child:Text(mGirlsAmount.toString()),
-                                  ),
-                                ),
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/5,
-
-                                  child: Center(
-                                    child:Text(mBoysAmount.toString()),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  height:CustomSize().customHeight(context)/11,
-                                  width:CustomSize().customWidth(context)/4,
-                                  child: Center(
-                                    child:Text(totalMeritBase.toString()),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height:CustomSize().customHeight(context)/10,
-                        width:CustomSize().customWidth(context)/1,
-                        child: Row(
-                          children: [
-                            Container(
-                              height:CustomSize().customHeight(context)/6,
-                              width:CustomSize().customWidth(context)/5,
-                              child: const Center(
-                                child:Text("NeedBase Amount"),
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/5,
-                                  child: const Center(
-                                    child:Text("Female"),
-                                  ),
-                                ),
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/5,
-
-                                  child: const Center(
-                                    child:Text("Male"),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/8,
-
-                                  child: Center(
-                                    child:Text(nGirl.toString()),
-                                  ),
-                                ),
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/8,
-
-                                  child: Center(
-                                    child:Text(nBoy.toString()),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/5,
-                                  child: Center(
-                                    child:Text(nGirlsAmount.toString()),
-                                  ),
-                                ),
-                                Container(
-                                  height:CustomSize().customHeight(context)/25,
-                                  width:CustomSize().customWidth(context)/5,
-
-                                  child: Center(
-                                    child:Text(nBoysAmount.toString()),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  height:CustomSize().customHeight(context)/11,
-                                  width:CustomSize().customWidth(context)/5,
-
-                                  child: Center(
-                                    child:Text(totalNeedBase.toString()),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                            ],
+                          );
+                        },);
+                      },),
+                      FutureBuilder(
+                        future: getMeritBaseShortListed(),
+                        builder: (context, snapshot) {
+                          return Padding(
+                              padding: EdgeInsets.only(
+                                  right:CustomSize().customWidth(context)/5,
+                                  bottom:CustomSize().customWidth(context)/15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text("Total Amount : ${totalMeritBase+totalNeedBase}",style: TextStyle(fontSize: CustomSize().customHeight(context)/50),),
+                                ],
+                              )
+                          );
+                        },),
                     ],
                   ),
                   /*FutureBuilder(

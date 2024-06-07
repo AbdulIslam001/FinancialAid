@@ -11,11 +11,14 @@ import 'package:financial_aid/Views/CommitteeHead/Add/Policy/Policy.dart';
 import 'package:financial_aid/Views/Student/Application/ApplicationForm.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Components/DrawerCustomButtons.dart';
+import '../../Models/ApplicationModel.dart';
 import '../../Utilis/FlushBar.dart';
+import '../../viewModel/CommitteeHeadViewModel/ApplicationHistory.dart';
 import '../../viewModel/StudentViewModel/StudentInfoViewModel.dart';
 
 class StudentDashBoard extends StatefulWidget {
@@ -140,8 +143,77 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
           ),
           subtitle: Column(
             children: [
+              DrawerCustomButtons(
+                  onTab: ()async{
+                    SharedPreferences sp = await SharedPreferences.getInstance();
+                List<Application> list=await ApplicationHistory().getAllApplication(sp.getInt('id')!.toInt());
+                if(context.mounted){
+                  if(list.isNotEmpty)
+                  {
+                    int totalAccepted=0;
+                    int totalRejected=0;
+                    for(var item in list){
+                      if(item.session!=null && item.applicationStatus?.toLowerCase().toString()=='rejected'){
+                        totalRejected++;
+                      }else if(item.session!=null && item .applicationStatus?.toLowerCase().toString()=='accepted'){
+                        totalAccepted++;
+                      }
+                    }
+                    showDialog(context: context, builder: (context) {
+                      return AlertDialog(
+                        title: SizedBox(
+                          height: CustomSize().customHeight(context)/2,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: CustomSize().customHeight(context)/100),
+                                child: PieChart(
+                                  legendOptions: const LegendOptions(
+                                      legendPosition: LegendPosition.left),
+                                  dataMap: {
+                                    'Accepted':totalAccepted.toDouble(),
+                                    'Rejected':totalRejected.toDouble(),
+                                  },
+                                  chartRadius: CustomSize().customWidth(context) / 3,
+                                  chartValuesOptions: const ChartValuesOptions(
+                                      showChartValuesInPercentage: true),
+                                  centerText: "Accepted : $totalAccepted/Rejected : $totalRejected",
+                                  animationDuration: const Duration(milliseconds: 1000),
+                                  chartType: ChartType.ring,
+                                  colorList: const [Colors.green, Colors.red],
+                                ),
+                              ),
+                              Expanded(
+                                child:  ListView.builder(
+                                  itemCount: list.length,
+                                  itemBuilder: (context, index1) {
+                                    return Card(
+                                      child: ListTile(
+                                        title: Text(list[index1].name),
+                                        subtitle: Text(list[index1].aridNo),
+                                        trailing: Column(
+                                          children: [
+                                            Text(list[index1].session??""),
+                                            Text(list[index1].applicationStatus??"",style:const TextStyle(color:Colors.red)),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },);
+                  }
+                  else{
+                    Utilis.flushBarMessage("No record Exist", context);
+                  }
+                }
+              }, title: "History"),
               SizedBox(
-                height: CustomSize().customHeight(context) / 1.4,
+                height: CustomSize().customHeight(context) / 1.6,
               ),
               DrawerCustomButtons(
                   title: "Logout",

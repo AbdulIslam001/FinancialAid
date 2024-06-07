@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=>ApplicationViewModel()),
         ChangeNotifierProvider(create: (_)=>CustomButtonViewModel()),
         ChangeNotifierProvider(create: (_)=>ViewSuggestionViewModel()),
-        ChangeNotifierProvider(create: (_)=>NeedBaseTotalAmount()),
+     //   ChangeNotifierProvider(create: (_)=>NeedBaseTotalAmount()),
 
       ],
       child: MaterialApp(
