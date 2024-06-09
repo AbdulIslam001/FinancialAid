@@ -62,11 +62,14 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
         .setStudentInfo(obj["name"].toString(), obj["arid_no"].toString());
   }
 
+  String amountApproved="";
+
   Future<void> getApplicationStatus() async {
     Response res = await StudentApiHandle().applicationStatus();
     if (res.statusCode == 200) {
       dynamic obj = jsonDecode(res.body);
       if (obj != null) {
+        amountApproved=obj["amount"].toString();
         obj["applicationStatus"].toString() != null
             ? applicationStatus = obj["applicationStatus"].toString()
             : applicationStatus = 'Not Submitted';
@@ -249,6 +252,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                       return Consumer<StudentInfoViewModel>(
                         builder: (context, value, child) {
                           return InfoContainer(
+                            amount: amountApproved,
                               session: session,
                               name: name, aridNo: aridNo, status: applicationStatus);
                         },
@@ -263,7 +267,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
             Consumer<StudentInfoViewModel>(
               builder: (context, value, child) {
               return Visibility(
-                visible: applicationStatus == 'Not Submitted' ? false : true,
+                visible: applicationStatus == 'Not Submitted' ? true : false,
                 child: const Text("Apply before 01/03/2024"),
               );
             },),
@@ -276,10 +280,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
               children: [
                 OptionContainer(
                     onTap: () async{
-                      if (applicationStatus == 'Pending') {
-                        Utilis.flushBarMessage(
-                            "Application already submitted", context);
-                      } else {
+                      if (applicationStatus == 'Not Submitted' ) {
                         Response res=await StudentApiHandle().checkCgpaPolicy();
                         if(context.mounted){
                           if(res.statusCode==200){
@@ -304,6 +305,10 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                             Utilis.flushBarMessage("error try again later", context);
                           }
                         }
+                      }else
+                      {
+                        Utilis.flushBarMessage(
+                            "Application already submitted", context);
                       }
                     },
                     image: "Assets/scholarship.png",

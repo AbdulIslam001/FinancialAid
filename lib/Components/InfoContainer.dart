@@ -9,7 +9,8 @@ class InfoContainer extends StatelessWidget {
   String aridNo;
   String status;
   String session;
-  InfoContainer({super.key, required this.name,required this.session,required this.aridNo,required this.status});
+  String amount;
+  InfoContainer({super.key,required this.amount,required this.name,required this.session,required this.aridNo,required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +75,17 @@ class InfoContainer extends StatelessWidget {
               ),*/
               ListTile(
                 title:Text("Application Status",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),) ,
-                subtitle: Row(
+                subtitle: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(status,style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
+                    status=="Accepted"?Row(
+                      children: [
+                        Text("Approved Amount : ",style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),),
+                        Text(amount,style: TextStyle(fontSize: CustomSize().customHeight(context)/50,fontStyle: FontStyle.italic),),
+                      ],
+                    ):
+                    SizedBox(),
                   ],
                 ),
               ),
