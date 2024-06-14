@@ -61,7 +61,6 @@ class _NeedBaseApplicationDetailsState
       dowloading = true;
       progress = 0;
     });
-
     try {
       await Dio().download(url, filePath,
           onReceiveProgress: (count, total) {
@@ -109,6 +108,7 @@ class _NeedBaseApplicationDetailsState
   ///////////////////////
   List<bool> _isShow=[];
   bool isVisible=false;
+  bool isTrue=false;
 
   @override
   Widget build(BuildContext context) {
@@ -652,7 +652,9 @@ class _NeedBaseApplicationDetailsState
                                   );
                                 },);
                               }),
-                              CustomButton(title: 'Accept', loading: false,onTap: (){
+                              CustomButton(title: 'Accept',
+                                  loading: false,
+                                  onTap: (){
                                 showDialog(
                                   barrierDismissible: false,
                                   context: context,
@@ -684,19 +686,30 @@ class _NeedBaseApplicationDetailsState
                                               CustomButton(title: "cancel", loading: false,onTap: (){
                                                 Navigator.pop(context);
                                               },),
-                                              CustomButton(title: "Accept", loading: false,onTap: ()async {
-                                                int res=await AdminApiHandler().acceptApplication(
-                                                    int.parse(widget.application.applicationID),
-                                                    int.parse(_amount.text)
-                                                );
-                                                    if(context.mounted){
-                                                  if(res==200){
-                                                    Navigator.pop(context);
-                                                    Utilis.flushBarMessage("Application Accepted", context);
-                                                  }else{
-                                                    Utilis.flushBarMessage("try again later", context);
+                                              CustomButton(title: "Accept",
+                                                loading: isTrue,onTap: ()async {
+                                                if(!isTrue){
+                                                  isTrue=true;
+                                                  setState(() {
+
+                                                  });
+                                                  int res=await AdminApiHandler().acceptApplication(
+                                                      int.parse(widget.application.applicationID),
+                                                      int.parse(_amount.text)
+                                                  );
+                                                  if(context.mounted){
+                                                    if(res==200){
+                                                      Navigator.pop(context);
+                                                      Utilis.flushBarMessage("Application Accepted", context);
+                                                    }else{
+                                                      Utilis.flushBarMessage("try again later", context);
+                                                    }
+                                                    isTrue=false;
+                                                    setState(() {
+
+                                                    });
+                                                    Navigator.pushReplacementNamed(context, RouteName.needBaseScreen);
                                                   }
-                                                  Navigator.pushReplacementNamed(context, RouteName.needBaseScreen);
                                                 }
                                               },),
                                             ],
