@@ -39,6 +39,12 @@ class AddCommitteeMember extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+            onTap: (){
+              Navigator.pushReplacementNamed(context, RouteName.committeeRecord);
+            },
+            child:const Icon(Icons.arrow_back_ios_new)),
+        automaticallyImplyLeading: false,
           centerTitle: true,
           title:const Text("Add Committee Member"),
           backgroundColor: Theme.of(context).primaryColor),
@@ -81,6 +87,7 @@ class AddCommitteeMember extends StatelessWidget {
                                       if(context.mounted){
                                         if(code==200){
                                           Utilis.flushBarMessage("Added", context);
+                                          Navigator.pushReplacementNamed(context, RouteName.committeeRecord);
                                         }else if(code==302){
                                           Utilis.flushBarMessage("already a member", context);
                                         }else{

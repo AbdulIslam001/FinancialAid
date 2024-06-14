@@ -48,5 +48,8 @@ class EndPoint{
   static String checkCgpaPolicy=baseUrl+"api/Student/checkCgpaPolicy";
   static String getApplicationHistory=baseUrl+"api/Admin/ApplicationHistory";
   static String getSession=baseUrl+"api/Admin/getSession";
+  static String rejectMeritBaseApplication=baseUrl+"api/Admin/RejectMeritBaseApplication";
+  static String removeCommitteeMember=baseUrl+"api/Admin/removeCommitteeMember";
+
   //MeritBaseAmmount
 }

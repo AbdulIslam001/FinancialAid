@@ -257,4 +257,18 @@ class AdminApiHandler {
     var response = await http.get(uri);
     return response;
   }
+
+
+  Future<int> rejectMeritBaseApplication(int studentId) async {
+    String apiEndPoint = EndPoint.rejectMeritBaseApplication+"?studentId=$studentId";
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.post(uri);
+    return response.statusCode;
+  }
+  Future<int> removeCommitteeMember(int id) async {
+    String apiEndPoint = EndPoint.removeCommitteeMember+"?Id=$id";
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.post(uri);
+    return response.statusCode;
+  }
 }

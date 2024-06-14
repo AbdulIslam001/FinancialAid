@@ -18,7 +18,7 @@ import '../../../Utilis/Routes/RouteName.dart';
 
 class MeritBaseStudent extends StatefulWidget {
 //  List<Student>? list;
-  bool isTrue;
+  bool isTrue ;
   MeritBaseStudent({super.key,required this.isTrue});
 
   @override
@@ -26,6 +26,8 @@ class MeritBaseStudent extends StatefulWidget {
 }
 
 class _MeritBaseStudentState extends State<MeritBaseStudent> {
+
+  bool isShow = false;
   Future<List<Student>> getMeritBaseShortListed()async{
     List<Student> list=[];
 
@@ -42,7 +44,7 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
             degree: i['degree'].toString(),
             fatherName: i['position'].toString(),
             gender: i['gender'].toString(),
-            studentId: 0,//int.parse(i['student_id'].toString()),
+            studentId: int.parse(i['student_id'].toString()),
             profileImage: i['profile_image'].toString());
         list.add(s);
       }
@@ -143,7 +145,46 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
                         itemCount: filteredList.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: (){},
+                            onLongPress: ()async{
+                              showDialog(context: context, builder: (context) {
+                                return AlertDialog(
+                                  title: Column(
+                                    children: [
+                                      Text("Are you sure"),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          CustomButton(title: "cancel", loading: false,onTap: (){
+                                            Navigator.pop(context);
+                                          },),
+                                          CustomButton(title: "Remove",
+                                            loading: isShow,onTap: ()async {
+                                              if(!isShow){
+                                                isShow=true;
+                                                setState(() {
+
+                                                });
+                                                int code=await AdminApiHandler().rejectMeritBaseApplication(filteredList[index].studentId);
+                                                if(context.mounted){
+                                                  if(code==200){
+                                                    Utilis.flushBarMessage("Application Rejected", context);
+                                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                                      return MeritBaseStudent(isTrue: true);
+                                                    },));
+                                                  }else{
+                                                    Utilis.flushBarMessage("error try again later", context);
+                                                  }
+                                                  isShow=false;
+                                                }
+                                              }
+                                            },),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },);
+                            },
                             child: ListTile(
                               leading: CircleAvatar(
                                 backgroundColor: Colors.transparent,

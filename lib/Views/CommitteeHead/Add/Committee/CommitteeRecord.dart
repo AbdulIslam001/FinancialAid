@@ -6,7 +6,9 @@ import 'package:financial_aid/Services/Admin/AdminApiHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
+import '../../../../Components/CustomButton.dart';
 import '../../../../Resources/CustomSize.dart';
+import '../../../../Utilis/FlushBar.dart';
 import '../../../../Utilis/Routes/RouteName.dart';
 
 class CommitteeRecord extends StatefulWidget {
@@ -19,6 +21,7 @@ class CommitteeRecord extends StatefulWidget {
 class _CommitteeRecordState extends State<CommitteeRecord> {
   final TextEditingController _search = TextEditingController();
 
+  bool isTrue=false;
   Future<List<FacultyModel>> getFacultyMembers() async {
     List<FacultyModel> list = [];
     Response res = await AdminApiHandler().getCommitteeMembers();
@@ -91,9 +94,47 @@ class _CommitteeRecordState extends State<CommitteeRecord> {
                 return ListView.builder(
                   itemCount: filteredList.length,
                   itemBuilder: (context, index) {
-                    return FacultyInfo(
-                        name: filteredList[index].name ?? "",
-                        image: filteredList[index].profileImage ?? "");
+                    return GestureDetector(
+                      onLongPress: ()async{
+                        showDialog(context: context, builder: (context) {
+                          return AlertDialog(
+                            title: Column(
+                              children: [
+                                Text("Are you sure"),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    CustomButton(title: "cancel", loading: false,onTap: (){
+                                      Navigator.pop(context);
+                                    },),
+                                    CustomButton(title: "Remove",
+                                      loading: isTrue,onTap: ()async {
+                                        if(!isTrue){
+                                          isTrue=true;
+                                          setState(() {});
+                                          int code=await AdminApiHandler().removeCommitteeMember(filteredList[index].id);
+                                          if(context.mounted){
+                                            if(code==200){
+                                              Utilis.flushBarMessage("Removed", context);
+                                              Navigator.pushReplacementNamed(context, RouteName.committeeRecord);
+                                            }else{
+                                              Utilis.flushBarMessage("error try again later", context);
+                                            }
+                                            isTrue=false;
+                                          }
+                                        }
+                                      },),
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        },);
+                      },
+                      child: FacultyInfo(
+                          name: filteredList[index].name ?? "",
+                          image: filteredList[index].profileImage ?? ""),
+                    );
                   },
                 );
               } else {
