@@ -49,8 +49,8 @@ class RoutesNavigation {
         return MaterialPageRoute(builder: (context) => ApplicationForm());
       case RouteName.applicationFormOne:
         return MaterialPageRoute(builder: (context) => ApplicationFormOne());*/
-/*      case RouteName.studentRecord:
-        return MaterialPageRoute(builder: (context) => StudentRecord());*/
+      case RouteName.studentRecord:
+        return MaterialPageRoute(builder: (context) => StudentRecord());
       case RouteName.addStudent:
         return MaterialPageRoute(builder: (context) => AddStudent());
       case RouteName.budget:

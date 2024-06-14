@@ -325,7 +325,7 @@ class _NeedBaseApplicationDetailsState
                                       ),
                                     ),
                                     Padding(
-                                      padding:const EdgeInsets.only(top: 108.0,left: 50),
+                                      padding:const EdgeInsets.only(top: 108.0,left: 40),
                                       child: GestureDetector(
                                           onTap: ()async{
                                               fileName = Path.basename(EndPoint.houseAgreement + e.toString());
@@ -340,9 +340,10 @@ class _NeedBaseApplicationDetailsState
                                     : e.split('.')[1] == "docx"
                                     ? Row(
                                   children: [
-                                    const Center(
+                                    Center(
                                       child: Image(
-                                        image: AssetImage("Assets/docx1.png"),
+                                        width: CustomSize().customWidth(context)/2,
+                                        image:const AssetImage("Assets/docx1.png"),
                                         fit: BoxFit.contain,
                                       ),
                                     ),

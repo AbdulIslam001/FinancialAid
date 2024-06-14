@@ -93,6 +93,7 @@ class _StudentRecordState extends State<StudentRecord> {
                     return ListView.builder(
                       itemCount: filteredList.length,
                       itemBuilder: (context, index) {
+
                         return Padding(
                           padding: EdgeInsets.only(left:CustomSize().customWidth(context)/40,right: CustomSize().customWidth(context)/40,top: CustomSize().customWidth(context)/100,bottom: CustomSize().customWidth(context)/100),
                           child: GestureDetector(
@@ -103,7 +104,7 @@ class _StudentRecordState extends State<StudentRecord> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
+                                color:filteredList[index].semester>8?Colors.red:Theme.of(context).primaryColor,
                                 borderRadius: BorderRadius.circular(CustomSize().customWidth(context)/20),
                               ),
                               child: ListTile(

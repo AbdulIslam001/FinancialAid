@@ -131,8 +131,8 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                 child: DrawerCustomButtons(
                     title: "Student",
                     onTab: () async {
-//                  Navigator.pushNamed(context, RouteName.studentRecord);
-                      Response res = await AdminApiHandler().getAllStudent();
+                  Navigator.pushNamed(context, RouteName.studentRecord);
+ /*                     Response res = await AdminApiHandler().getAllStudent();
                       List<Student> studentList = [];
                       if (res.statusCode == 200 && context.mounted) {
                         dynamic obj = jsonDecode(res.body);
@@ -156,7 +156,7 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                             return StudentRecord();
                           },
                         ));
-                      }
+                      }*/
                     }),
               ),
               Padding(
@@ -288,7 +288,7 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                                 degree: i['degree'].toString(),
                                 fatherName: i['position'].toString(),
                                 gender: i['gender'].toString(),
-                                studentId: int.parse(i['student_id'].toString()),
+                                studentId: 0,//int.parse(i['student_id'].toString()),
                                 profileImage: i['profile_image'].toString());
                             list.add(s);
                           }

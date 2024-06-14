@@ -344,8 +344,20 @@ class _AllocationDetailsState extends State<AllocationDetails> {
                                 DataColumn(label: Text("previous\ncgpa")),
                                 DataColumn(label: Text("Fee\nExempted")),
                               ],rows:snapshot.data!.map((item) {
-//                                  needBaseTotalAmount+=item.exemptedAmount!;
+                              double previous;
+                              double current;
+                              if(int.parse(item.semester) >1){
+                                previous=double.parse(item.prevCgpa!);
+                                current=double.parse(item.cgpa);
+                              }else{
+                                previous=double.parse((4*(double.parse(item.prevCgpa!)/100)).toString());
+                                current=double.parse(item.cgpa.toString());
+                              }
+                              bool isTrue=previous>current?true:false;
                               return DataRow(
+                                color: MaterialStateColor.resolveWith((states) {
+                                    return isTrue?Colors.red:Colors.transparent;
+                                  } ),
                                   cells: [
                                     DataCell(Text(item.aridNo.toString())),
                                     DataCell(Text(item.name.toString())),
@@ -440,10 +452,16 @@ class _AllocationDetailsState extends State<AllocationDetails> {
                                     DataColumn(label: Text("position")),
                                     DataColumn(label: Text("Amount")),
                                   ],rows:snapshot.data!.map((item) {
-
-                                    double pre=double.parse((4*(item.prevCgpa!/100)).toString());
-                                    double cgpa=double.parse(item.cgpa.toString());
-                                    bool isTrue=pre>cgpa?true:false;
+                                double previous;
+                                double current;
+                                    if(item.semester>1){
+                                      previous=item.prevCgpa!;
+                                      current=item.cgpa;
+                                    }else{
+                                      previous=double.parse((4*(item.prevCgpa!/100)).toString());
+                                      current=double.parse(item.cgpa.toString());
+                                    }
+                                    bool isTrue=previous>current?true:false;
                                     return DataRow(
                                       color: MaterialStateColor.resolveWith((states) {
                                         return isTrue?Colors.red:Colors.transparent;

@@ -38,6 +38,8 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
   late CancelToken cancelToken;
   var getPathFile = DirectoryPath();
 
+  bool isTrue=false;
+
   startDownload(String url) async {
     cancelToken = CancelToken();
     var storePath = await getPathFile.getPath();
@@ -436,32 +438,37 @@ class _ApplicationDetailsState extends State<ApplicationDetails> {
                                             ),
                                             CustomButton(
                                               title: "confirm",
-                                              loading: false,
+                                              loading: isTrue,
                                               onTap: () async {
-                                                if (_formKey.currentState!
-                                                    .validate()) {
-                                                  _amount.text="0";
-                                                  int code =
-                                                      await CommitteeApiHandler()
-                                                          .giveSuggestion(
-                                                              _why.text,
-                                                              status,
-                                                              int.parse(widget
-                                                                  .application
-                                                                  .applicationID
-                                                                  .toString()),
+                                                if(!isTrue){
+                                                  isTrue=true;
+                                                  setState(() {});
+                                                  if (_formKey.currentState!.validate()) {
+                                                    _amount.text="0";
+                                                    int code =
+                                                    await CommitteeApiHandler()
+                                                        .giveSuggestion(
+                                                        _why.text,
+                                                        status,
+                                                        int.parse(widget
+                                                            .application
+                                                            .applicationID
+                                                            .toString()),
                                                         int.parse(_amount.text.toString())
-                                                      );
-                                                  if (code == 200 &&
-                                                      context.mounted) {
-                                                    Navigator.pushReplacementNamed(
-                                                        context,
-                                                        RouteName
-                                                            .committeeDashBoard);
-                                                  } else if (context.mounted) {
-                                                    Utilis.flushBarMessage(
-                                                        "Error try again later",
-                                                        context);
+                                                    );
+                                                    if (code == 200 &&
+                                                        context.mounted) {
+                                                      Navigator.pushReplacementNamed(
+                                                          context,
+                                                          RouteName
+                                                              .committeeDashBoard);
+                                                    } else if (context.mounted) {
+                                                      Utilis.flushBarMessage(
+                                                          "Error try again later",
+                                                          context);
+                                                    }
+                                                    isTrue=false;
+                                                    setState(() {});
                                                   }
                                                 }
                                               },

@@ -213,11 +213,15 @@ class AdminApiHandler {
     return response;
   }
 
-  Future<http.Response> doMeritBaseShortListing() async {
+  Future<int> doMeritBaseShortListing(File file) async {
     String apiEndPoint = EndPoint.meritBaseShortListing;
     Uri uri = Uri.parse(apiEndPoint);
-    var response = await http.post(uri);
-    return response;
+    http.MultipartRequest request=http.MultipartRequest('POST',uri);
+    http.MultipartFile ss=await http.MultipartFile.
+    fromPath("enrollment",file!.path);
+    request.files.add(ss);
+    var response =await request.send();
+    return response.statusCode;
   }
 
   Future<int> removeGrader(int id) async {

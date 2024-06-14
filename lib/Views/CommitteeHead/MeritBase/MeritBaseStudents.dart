@@ -42,7 +42,7 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
             degree: i['degree'].toString(),
             fatherName: i['position'].toString(),
             gender: i['gender'].toString(),
-            studentId: int.parse(i['student_id'].toString()),
+            studentId: 0,//int.parse(i['student_id'].toString()),
             profileImage: i['profile_image'].toString());
         list.add(s);
       }
@@ -66,40 +66,37 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: !widget.isTrue?Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Consumer<CustomButtonViewModel>(
-              builder: (context, value, child) {
-              return CustomButton(title: "Short List",loading: value.loading,onTap: ()async{
+      body: !widget.isTrue?
+      Consumer<CustomButtonViewModel>(builder: (context, value, child) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Student Record ",style: TextStyle(fontSize: CustomSize().customHeight(context)/50)),
+                SizedBox(
+                  height: CustomSize().customHeight(context)/15,
+                ),
+                TextButton(onPressed: (){
+                  value.setPickFile();
+                }, child:const Text("Upload"),),
+                 Center(
+                child: value.isPicked?const Icon(Icons.check,color: Colors.blue,):const Text(""),
+              ),
+              ],
+            ),
+            CustomButton(
+                title: "Short List",loading: value.loading,onTap: ()async{
+              if(value.isPicked){
                 value.setLoading(true);
                 int code=await AdminApiHandler().checkBalance();
                 if(context.mounted){
                   if(code==200 ){
-                    Response response=await AdminApiHandler().doMeritBaseShortListing();
-                    if(response.statusCode==200)
+                    int response=await AdminApiHandler().doMeritBaseShortListing(value.pickFile);
+                    if(response==200)
                     {
-                      /*List<Student>list=[];
-                  dynamic obj=jsonDecode(response.body);
-                  for(var i in obj){
-                    Student s= Student(aridNo: i['arid_no'].toString(),
-                        name: i['name'].toString(),
-                        semester: int.parse(i['semester'].toString()),
-                        cgpa: double.parse(i['cgpa'].toString()),
-                        section: i['section'].toString(),
-                        degree: i['degree'].toString(),
-                        gender: i['gender'].toString(),
-                        studentId: int.parse(i['student_id'].toString()),
-                        profileImage: i['profile_image'].toString(),
-                        fatherName: 'gender');
-                    list.add(s);
-                  }
-                  if(context.mounted){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                      return MeritBaseStudent(isTrue: true,);//list: list,);
-                    },));
-                  }*/
+                      value.setIsPicked(false);
                       widget.isTrue=true;
                       setState(() {});
                     }
@@ -110,11 +107,13 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
                   }
                 }
                 value.setLoading(false);
-              });
-            },),
-          )
-        ],
-      ):Column(
+              }else{
+                Utilis.flushBarMessage("Upload Excel File", context);
+              }
+            })
+          ],
+        );
+      },):Column(
         children: [
           Padding(
             padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),

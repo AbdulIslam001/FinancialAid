@@ -131,37 +131,39 @@ class Login extends StatelessWidget {
                                       title: 'Login',
                                       loading: value.loading,
                                       onTap: () async{
-                                        if(_formKey.currentState!.validate()){
-                                          value.setLoading(true);
-                                          Response res=await LoginApiHandler().login(_userName.text.toString(), _password.text.toString());
-                                          if(res.statusCode==200 && context.mounted)
-                                          {
-                                            dynamic obj=jsonDecode(res.body);
-                                            if(int.parse(obj["role"].toString())==1)
+                                        if(!value.loading){
+                                          if(_formKey.currentState!.validate()){
+                                            value.setLoading(true);
+                                            Response res=await LoginApiHandler().login(_userName.text.toString(), _password.text.toString());
+                                            if(res.statusCode==200 && context.mounted)
                                             {
-                                              Navigator.pushReplacementNamed(context, RouteName.committeeHeadDashBoard);
-                                            }else if(int.parse(obj["role"].toString())==2)
+                                              dynamic obj=jsonDecode(res.body);
+                                              if(int.parse(obj["role"].toString())==1)
+                                              {
+                                                Navigator.pushReplacementNamed(context, RouteName.committeeHeadDashBoard);
+                                              }else if(int.parse(obj["role"].toString())==2)
+                                              {
+                                                Navigator.pushReplacementNamed(context, RouteName.committeeDashBoard);
+                                              }else if(int.parse(obj["role"].toString())==3)
+                                              {
+                                                Navigator.pushReplacementNamed(context, RouteName.facultyDashBoard);
+                                              }else
+                                              {
+                                                Navigator.pushReplacementNamed(context, RouteName.studentDashBoard);
+                                              }
+                                              SharedPreferences sp=await SharedPreferences.getInstance();
+                                              sp.setBool("inLogin", true);
+                                              sp.setInt("id", int.parse(obj["profileId"].toString()));
+                                              sp.setInt("role", int.parse(obj["role"].toString()));
+                                            }else if(res.statusCode==204 && context.mounted)
                                             {
-                                              Navigator.pushReplacementNamed(context, RouteName.committeeDashBoard);
-                                            }else if(int.parse(obj["role"].toString())==3)
-                                            {
-                                              Navigator.pushReplacementNamed(context, RouteName.facultyDashBoard);
-                                            }else
-                                            {
-                                              Navigator.pushReplacementNamed(context, RouteName.studentDashBoard);
+                                              Utilis.flushBarMessage("Account not Exist", context);
+                                            }else if(context.mounted){
+                                              Utilis.flushBarMessage("Try again later", context);
                                             }
-                                            SharedPreferences sp=await SharedPreferences.getInstance();
-                                            sp.setBool("inLogin", true);
-                                            sp.setInt("id", int.parse(obj["profileId"].toString()));
-                                            sp.setInt("role", int.parse(obj["role"].toString()));
-                                          }else if(res.statusCode==204 && context.mounted)
-                                          {
-                                            Utilis.flushBarMessage("Account not Exist", context);
-                                          }else if(context.mounted){
-                                            Utilis.flushBarMessage("Try again later", context);
                                           }
+                                          value.setLoading(false);
                                         }
-                                        value.setLoading(false);
                                       },
                                     ),
                                   ],
