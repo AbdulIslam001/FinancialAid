@@ -90,28 +90,30 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
             ),
             CustomButton(
                 title: "Short List",loading: value.loading,onTap: ()async{
-              if(value.isPicked){
-                value.setLoading(true);
-                int code=await AdminApiHandler().checkBalance();
-                if(context.mounted){
-                  if(code==200 ){
-                    int response=await AdminApiHandler().doMeritBaseShortListing(value.pickFile);
-                    if(response==200)
-                    {
-                      value.setIsPicked(false);
-                      widget.isTrue=true;
-                      setState(() {});
+                  if(!value.loading){
+                    if(value.isPicked){
+                      value.setLoading(true);
+                      int code=await AdminApiHandler().checkBalance();
+                      if(context.mounted){
+                        if(code==200 ){
+                          int response=await AdminApiHandler().doMeritBaseShortListing(value.pickFile);
+                          if(response==200)
+                          {
+                            value.setIsPicked(false);
+                            widget.isTrue=true;
+                            setState(() {});
+                          }
+                        }else if(code == 406){
+                          Utilis.flushBarMessage("Remaining Balance is Low", context);
+                        }else{
+                          Utilis.flushBarMessage("Error try again later", context);
+                        }
+                      }
+                      value.setLoading(false);
+                    }else{
+                      Utilis.flushBarMessage("Upload Excel File", context);
                     }
-                  }else if(code == 406){
-                    Utilis.flushBarMessage("Remaining Balance is Low", context);
-                  }else{
-                    Utilis.flushBarMessage("Error try again later", context);
                   }
-                }
-                value.setLoading(false);
-              }else{
-                Utilis.flushBarMessage("Upload Excel File", context);
-              }
             })
           ],
         );

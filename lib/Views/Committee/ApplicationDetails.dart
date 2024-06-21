@@ -550,9 +550,7 @@ bool isATrue=false;
                                               onTap: () async {
                                                 if(!isATrue){
                                                   isATrue=true;
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                   if (_formKey.currentState!
                                                       .validate()) {
                                                     int code =

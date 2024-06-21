@@ -690,9 +690,7 @@ class _NeedBaseApplicationDetailsState
                                                 loading: isTrue,onTap: ()async {
                                                 if(!isTrue){
                                                   isTrue=true;
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                   int res=await AdminApiHandler().acceptApplication(
                                                       int.parse(widget.application.applicationID),
                                                       int.parse(_amount.text)

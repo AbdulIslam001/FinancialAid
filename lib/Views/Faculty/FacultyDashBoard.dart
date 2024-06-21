@@ -48,6 +48,8 @@ class _FacultyDashBoardState extends State<FacultyDashBoard> {
     }
   }
 
+  bool loading=false;
+
   final TextEditingController _reason=TextEditingController();
 
   Future<List<GraderModel>> getAllGraders() async {
@@ -366,21 +368,30 @@ class _FacultyDashBoardState extends State<FacultyDashBoard> {
                                                 SizedBox(
                                                   height: CustomSize().customHeight(context)/10,
                                                 ),
-                                                CustomButton(title: "Rate", loading: false,onTap: ()async{
-                                                  int status=await FacultyApiHandler().rateGraderPerformance(
-                                                      _reason.text.toString(),
-                                                      snapshot.data![index].studentId.toString(),
-                                                      snapshot.data![index].facultyId.toString(),
-                                                      rating.toString());
-                                                  if(context.mounted) {
-                                                    if (status == 200) {
-                                                      Navigator.pop(context);
-                                                    }else if(status==302){
-                                                      Utilis.flushBarMessage("Already Rated", context);
-                                                    }else{
-                                                      Utilis.flushBarMessage("error", context);
+                                                CustomButton(
+                                                  title: "Rate",
+                                                  loading: loading,
+                                                  onTap: ()async{
+                                                    if(!loading){
+                                                      loading=true;
+                                                      setState(() {});
+                                                      int status=await FacultyApiHandler().rateGraderPerformance(
+                                                          _reason.text.toString(),
+                                                          snapshot.data![index].studentId.toString(),
+                                                          snapshot.data![index].facultyId.toString(),
+                                                          rating.toString());
+                                                      if(context.mounted) {
+                                                        if (status == 200) {
+                                                          Navigator.pop(context);
+                                                        }else if(status==302){
+                                                          Utilis.flushBarMessage("Already Rated", context);
+                                                        }else{
+                                                          Utilis.flushBarMessage("error", context);
+                                                        }
+                                                      }
+                                                      loading=false;
+                                                      setState(() {});
                                                     }
-                                                  }
                                                 },)
                                               ],
                                             )),
