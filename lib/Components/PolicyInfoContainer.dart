@@ -17,7 +17,8 @@ class PolicyInfoContainer extends StatelessWidget {
   String val1;
   String val2;
   bool show;
-  PolicyInfoContainer({super.key,required this.show,required this.val1,required this.val2,required this.policy ,required this.description,required this.session,required this.policyFor});
+  VoidCallback? onTap;
+  PolicyInfoContainer({super.key,required this.show,required this.val1,required this.val2,required this.policy ,required this.description,required this.session,required this.policyFor,this.onTap});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -66,7 +67,9 @@ class PolicyInfoContainer extends StatelessWidget {
                   ),
                   Visibility(
                       visible: show,
-                      child: const Icon(Icons.edit))
+                      child: GestureDetector(
+                          onTap: onTap,
+                          child: const Icon(Icons.edit)))
                 ],
               ),
             ),

@@ -105,6 +105,7 @@ class _PolicyState extends State<Policy> {
                     itemCount: filteredList.length,
                     itemBuilder: (context, index) {
                       return PolicyInfoContainer(
+                        onTap: (){},
                         show: widget.show,
                         val1: filteredList[index].val1,
                         session: filteredList[index].session ?? "",
