@@ -461,11 +461,11 @@ class _AllocationDetailsState extends State<AllocationDetails> {
                                       previous=double.parse((4*(item.prevCgpa!/100)).toString());
                                       current=double.parse(item.cgpa.toString());
                                     }
-                                    bool isTrue=previous>current?true:false;
+                                bool isTrue1=previous>current?true:false;
                                     return DataRow(
-                                      color: MaterialStateColor.resolveWith((states) {
-                                        return isTrue?Colors.red:Colors.transparent;
-                                      } ),
+                                        color: MaterialStateColor.resolveWith((states) {
+                                          return isTrue1?Colors.red:Colors.transparent;
+                                        } ),
                                     cells: [
                                       DataCell(Text(item.aridNo.toString())),
                                       DataCell(Text(item.name.toString())),

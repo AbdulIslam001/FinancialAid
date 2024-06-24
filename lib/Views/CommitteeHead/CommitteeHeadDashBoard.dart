@@ -59,7 +59,7 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
   @override
   void initState() {
     // TODO: implement initState
-    getAdminData();
+//    getAdminData();
     super.initState();
   }
 
