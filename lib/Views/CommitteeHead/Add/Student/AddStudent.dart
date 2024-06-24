@@ -282,7 +282,7 @@ class _AddStudentState extends State<AddStudent> {
                         _cgpa.text);
                     if (context.mounted) {
                       if (code == 200) {
-                        Utilis.flushBarMessage("Add Successfully", context);
+//                        Utilis.flushBarMessage("Add Successfully", context);
                         Navigator.pop(context);
                       } else {
                         Utilis.flushBarMessage("error!!", context);
