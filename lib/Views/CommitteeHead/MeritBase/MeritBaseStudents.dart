@@ -152,7 +152,7 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
                                 return AlertDialog(
                                   title: Column(
                                     children: [
-                                      Text("Are you sure"),
+                                      Text("Are you Sure"),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                         children: [

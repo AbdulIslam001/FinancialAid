@@ -104,7 +104,7 @@ class _StudentRecordState extends State<StudentRecord> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color:filteredList[index].semester>8?Colors.red:Theme.of(context).primaryColor,
+                                color:filteredList[index].semester>8 || filteredList[index].cgpa<2.0?Colors.red:Theme.of(context).primaryColor,
                                 borderRadius: BorderRadius.circular(CustomSize().customWidth(context)/20),
                               ),
                               child: ListTile(
