@@ -5,5 +5,6 @@ class FacultyModel{
   String contact;
   String profileImage;
   int id;
-  FacultyModel({required this.name,required this.profileImage,required this.contact, required this.id});
+  String? count;
+  FacultyModel({required this.name,required this.profileImage,required this.contact,this.count, required this.id});
 }

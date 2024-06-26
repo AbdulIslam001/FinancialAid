@@ -251,7 +251,9 @@ class _FacultyRecordState extends State<FacultyRecord> {
                                 }
                               }
                             },
-                            child: FacultyInfo(name: filteredList[index].name, image: filteredList[index].profileImage));
+                            child: FacultyInfo(
+                                isShow: false,
+                                name: filteredList[index].name, image: filteredList[index].profileImage));
                       },);
                   }else{
                     return const Column(

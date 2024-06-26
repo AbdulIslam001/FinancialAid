@@ -10,48 +10,55 @@ import '../Views/CommitteeHead/Add/Faculty/FacultyRecord.dart';
 class FacultyInfo extends StatelessWidget {
   String name;
   String image;
-  FacultyInfo({super.key , required this.name,required this.image});
+  bool isShow;
+  String? count;
+  FacultyInfo({super.key , required this.name,required this.image,required this.isShow,this.count});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only( top: CustomSize().customHeight(context)/45),
       child: Center(
-        child: Container(
-          height: CustomSize().customHeight(context)/10,
-          width: CustomSize().customWidth(context)/1.13,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/80),
-            color: Colors.blueGrey.withOpacity(0.2),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white,
-                spreadRadius: CustomSize().customHeight(context)/1000,
-                blurRadius: CustomSize().customHeight(context)/100,
-                offset: Offset(CustomSize().customHeight(context)/1400,
-                    CustomSize().customHeight(context)/1400),
-              ),
-            ],
-          ),
-          child:Center(
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                radius: CustomSize().customHeight(context) / 30,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                      CustomSize().customHeight(context) / 30),
-                  child:EndPoint.imageUrl+image!=EndPoint.imageUrl||EndPoint.imageUrl+image!="${EndPoint.imageUrl}null"?Image(
-                    image: NetworkImage(EndPoint.imageUrl + image),
-                    width: CustomSize().customHeight(context) / 12,//CustomSize().customHeight(context)/15
-                    height: CustomSize().customHeight(context) / 12,
-                    fit: BoxFit.fill,
-                  ):const Icon(Icons.person),
+        child: Badge(
+          alignment: Alignment.topCenter,
+          backgroundColor:isShow?Colors.red:Colors.transparent,
+          label: isShow ? Text(count??""):const Text(""),
+          child: Container(
+            height: CustomSize().customHeight(context)/10,
+            width: CustomSize().customWidth(context)/1.13,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/80),
+              color: Colors.blueGrey.withOpacity(0.2),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white,
+                  spreadRadius: CustomSize().customHeight(context)/1000,
+                  blurRadius: CustomSize().customHeight(context)/100,
+                  offset: Offset(CustomSize().customHeight(context)/1400,
+                      CustomSize().customHeight(context)/1400),
                 ),
-              ),
-              title: Text(name,style: TextStyle(fontSize: CustomSize().customHeight(context)/40,fontStyle: FontStyle.italic),)
+              ],
             ),
-          )
+            child:Center(
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: CustomSize().customHeight(context) / 30,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        CustomSize().customHeight(context) / 30),
+                    child:EndPoint.imageUrl+image!=EndPoint.imageUrl||EndPoint.imageUrl+image!="${EndPoint.imageUrl}null"?Image(
+                      image: NetworkImage(EndPoint.imageUrl + image),
+                      width: CustomSize().customHeight(context) / 12,//CustomSize().customHeight(context)/15
+                      height: CustomSize().customHeight(context) / 12,
+                      fit: BoxFit.fill,
+                    ):const Icon(Icons.person),
+                  ),
+                ),
+                title: Text(name,style: TextStyle(fontSize: CustomSize().customHeight(context)/40,fontStyle: FontStyle.italic),)
+              ),
+            )
+          ),
         ),
       ),
     );

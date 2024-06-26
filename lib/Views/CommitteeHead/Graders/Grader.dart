@@ -12,9 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 import '../../../Components/FacultyInfo.dart';
+import '../../../Models/GraderModel.dart';
 import '../../../Resources/AppUrl.dart';
 import '../../../Resources/CustomColor.dart';
 import '../../../Resources/CustomSize.dart';
+import '../../../Services/Faculty/FacultyAPiHandler.dart';
 
 class Graders extends StatefulWidget {
   const Graders({super.key});
@@ -24,6 +26,7 @@ class Graders extends StatefulWidget {
 }
 
 class _GradersState extends State<Graders> {
+
   Future<List<FacultyModel>> getFacultyMembers() async {
     List<FacultyModel> fList = [];
     Response res = await AdminApiHandler().getAllFaculty();
@@ -72,6 +75,7 @@ class _GradersState extends State<Graders> {
   final TextEditingController _search1 = TextEditingController();
 
   Widget build(BuildContext context) {
+    int count=0;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -156,75 +160,82 @@ class _GradersState extends State<Graders> {
                               dynamic obj=jsonDecode(res.body);
                               FacultyModel f;
                               for(var i in obj){
-                                f =FacultyModel(name: i["name"], profileImage: i["profilePic"],id: i["facultyId"],contact: i["contactNo"]);
+                                f =FacultyModel(
+                                    count: i["GraderCount"].toString(),
+                                    name: i["name"], profileImage: i["profilePic"],id: i["facultyId"],contact: i["contactNo"]);
                                 list.add(f);
                               }
-                              showDialog(
-                                context: context, builder: (context) {
-                                return SingleChildScrollView(
-                                  child: AlertDialog(
-                                    title: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            GestureDetector(
-                                                onTap:(){
-                                                  Navigator.pop(context);
+                              if(context.mounted){
+                                showDialog(
+                                  context: context, builder: (context) {
+                                  return SingleChildScrollView(
+                                    child: AlertDialog(
+                                      title: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                  onTap:(){
+                                                    Navigator.pop(context);
 //                                                Navigator.pushNamed(context, RouteName.graders);
-                                                },
-                                                child:const Icon(Icons.arrow_back_ios_new))
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
-                                          child: TextFormField(
-                                            onChanged: (val){
-                                            },
-                                            controller: _search1,
-                                            decoration: InputDecoration(
-                                              hintText: "search",
-                                              labelText: "search",
-                                              suffixIcon:Icon(Icons.search,size: CustomSize().customWidth(context)/10),
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                                  },
+                                                  child:const Icon(Icons.arrow_back_ios_new))
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
+                                            child: TextFormField(
+                                              onChanged: (val){
+                                              },
+                                              controller: _search1,
+                                              decoration: InputDecoration(
+                                                hintText: "search",
+                                                labelText: "search",
+                                                suffixIcon:Icon(Icons.search,size: CustomSize().customWidth(context)/10),
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: CustomSize().customHeight(context)/2.5,
-                                          child: Column(
-                                            children: [
-                                              Expanded(
-                                                child:  ListView.builder(
-                                                  itemCount: list.length,
-                                                  itemBuilder: (context, index1) {
-                                                    if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
-                                                      return GestureDetector(
-                                                          onTap: ()async{
-                                                            int code=await AdminApiHandler().assignGrader(snapshot.data![index].studentId, list[index1].id);
-                                                            if(context.mounted){
-                                                              if(code==200 ){
-                                                                Navigator.pop(context);
-                                                                setState(() {
-                                                                });
-                                                              }else{
-                                                                Utilis.flushBarMessage("error try again", context);
+                                          SizedBox(
+                                            height: CustomSize().customHeight(context)/2.5,
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                  child:  ListView.builder(
+                                                    itemCount: list.length,
+                                                    itemBuilder: (context, index1) {
+                                                      if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
+                                                        return GestureDetector(
+                                                            onTap: ()async{
+                                                              int code=await AdminApiHandler().assignGrader(snapshot.data![index].studentId, list[index1].id);
+                                                              if(context.mounted){
+                                                                if(code==200 ){
+                                                                  Navigator.pop(context);
+                                                                  setState(() {
+                                                                  });
+                                                                }else{
+                                                                  Utilis.flushBarMessage("error try again", context);
+                                                                }
                                                               }
-                                                            }
-                                                          },
-                                                          child: FacultyInfo(name: list[index1].name, image: list[index1].profileImage));
-                                                    }
-                                                  },),
-                                              ),
-                                            ],
+                                                            },
+                                                            child: FacultyInfo(
+                                                                isShow: true,
+                                                                count: list[index1].count,
+                                                                name: list[index1].name, image: list[index1].profileImage));
+                                                      }
+                                                    },),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },);
+                                  );
+                                },);
+                              }
                             }
 /*                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return FacultyRecord(name: snapshot.data![index].name,isShow: true,studentId:snapshot.data![index].studentId.toString(),);

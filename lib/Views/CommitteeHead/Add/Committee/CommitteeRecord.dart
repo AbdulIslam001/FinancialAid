@@ -132,6 +132,7 @@ class _CommitteeRecordState extends State<CommitteeRecord> {
                         },);
                       },
                       child: FacultyInfo(
+                        isShow: false,
                           name: filteredList[index].name ?? "",
                           image: filteredList[index].profileImage ?? ""),
                     );

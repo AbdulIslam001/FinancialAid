@@ -93,7 +93,6 @@ class _StudentRecordState extends State<StudentRecord> {
                     return ListView.builder(
                       itemCount: filteredList.length,
                       itemBuilder: (context, index) {
-
                         return Padding(
                           padding: EdgeInsets.only(left:CustomSize().customWidth(context)/40,right: CustomSize().customWidth(context)/40,top: CustomSize().customWidth(context)/100,bottom: CustomSize().customWidth(context)/100),
                           child: GestureDetector(

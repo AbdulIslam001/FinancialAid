@@ -271,4 +271,11 @@ class AdminApiHandler {
     var response = await http.post(uri);
     return response.statusCode;
   }
+
+  Future<http.Response> getGraderInformation(int id) async {
+    String apiEndPoint = EndPoint.getGraderInfo+ "?id=$id";
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.get(uri);
+    return response;
+  }
 }
