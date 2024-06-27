@@ -213,6 +213,15 @@ class AdminApiHandler {
     return response;
   }
 
+  Future<http.Response> getPreviousApplicationStatus(int id)async{
+    String apiEndPoint = EndPoint.previousApplicationStatus+"?id=$id";
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.get(uri);
+    return response;
+  }
+
+
+
   Future<int> doMeritBaseShortListing(File file) async {
     String apiEndPoint = EndPoint.meritBaseShortListing;
     Uri uri = Uri.parse(apiEndPoint);

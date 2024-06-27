@@ -30,7 +30,8 @@ class NeedBaseApplicationDetails extends StatefulWidget {
   Application application;
   bool isTrue;
   bool trackRecord;
-  NeedBaseApplicationDetails({super.key, required this.application,required this.isTrue,required this.trackRecord});
+  String? status;
+  NeedBaseApplicationDetails({super.key,this.status ,required this.application,required this.isTrue,required this.trackRecord});
 
   @override
   State<NeedBaseApplicationDetails> createState() =>
@@ -163,6 +164,7 @@ class _NeedBaseApplicationDetailsState
                   widget.trackRecord?Padding(
                     padding: EdgeInsets.only(left: CustomSize().customWidth(context)/10),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         TextButton(
                             onPressed: ()async{
@@ -232,6 +234,7 @@ class _NeedBaseApplicationDetailsState
                                 }
                               }
                         }, child:const Text("Track Record")),
+                        widget.status.toString()=='Accepted'?const Text("Verified"):const Text("Not Verified"),
                       ],
                     ),
                   ):const SizedBox(),

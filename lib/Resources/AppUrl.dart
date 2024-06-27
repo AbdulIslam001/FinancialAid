@@ -50,6 +50,6 @@ class EndPoint{
   static String getSession=baseUrl+"api/Admin/getSession";
   static String rejectMeritBaseApplication=baseUrl+"api/Admin/RejectMeritBaseApplication";
   static String removeCommitteeMember=baseUrl+"api/Admin/removeCommitteeMember";
-
+  static String previousApplicationStatus=baseUrl+"api/Admin/previousApplicationStatus";
   //MeritBaseAmmount
 }

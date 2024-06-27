@@ -96,6 +96,17 @@ class _NeedBaseApplicationsState extends State<NeedBaseApplications> {
     }
     return applicationList;
   }
+  Future<String> previousApplicationStatus(int id)async{
+    String status='';
+    Response res=await AdminApiHandler().getPreviousApplicationStatus(id);
+    if(res.statusCode==200){
+      dynamic response=jsonDecode(res.body);
+      for(var obj in response){
+        status=obj[0]['applicationStatus'].toString();
+      }
+    }
+    return status;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,10 +188,21 @@ class _NeedBaseApplicationsState extends State<NeedBaseApplications> {
                           padding: EdgeInsets.all(CustomSize().customHeight(context)/80),
                           child: Center(
                             child: GestureDetector(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return NeedBaseApplicationDetails(application: filteredList[index],isTrue: false,trackRecord: true,);
-                                },));
+                              onTap: ()async{
+                                //String previousStatus=await previousApplicationStatus(int.parse(filteredList[index].studentId));
+                                String status='';
+                                Response res=await AdminApiHandler().getPreviousApplicationStatus(int.parse(filteredList[index].studentId));
+                                if(res.statusCode==200){
+                                  dynamic response=jsonDecode(res.body);
+                                  for(var obj in response){
+                                    status=obj['previousStatus']['applicationStatus'].toString();
+                                  }
+                                  if(context.mounted){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return NeedBaseApplicationDetails(status: status,application: filteredList[index],isTrue: false,trackRecord: true,);
+                                    },));
+                                  }
+                                }
                               },
                               child:ListTile(
                                 title: Container(
