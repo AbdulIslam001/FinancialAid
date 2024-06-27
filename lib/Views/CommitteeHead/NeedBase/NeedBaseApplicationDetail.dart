@@ -234,7 +234,7 @@ class _NeedBaseApplicationDetailsState
                                 }
                               }
                         }, child:const Text("Track Record")),
-                        widget.status.toString()=='Accepted'?const Text("Verified"):const Text("Not Verified"),
+                        Text(widget.status.toString()=='Accepted'?"Verified":"",style:const TextStyle(color: Colors.blue)),
                       ],
                     ),
                   ):const SizedBox(),
