@@ -31,7 +31,7 @@ class EndPoint{
   static String accepted=baseUrl+"api/Admin/AcceptedApplication";
   static String rejected=baseUrl+"api/Admin/RejectedApplication";
   static String assignGrader=baseUrl+"api/Admin/AssignGrader";
-  static String meritBaseShortListing=baseUrl+"api/Admin/UploadFile";
+  static String meritBaseShortListing=baseUrl+"api/User/UploadFile1";
   static String addStudent=baseUrl+"api/Admin/AddStudent";
   static String addPolicies=baseUrl+"api/Admin/AddPolicies";
   static String getPolicies=baseUrl+"api/Admin/getPolicies";
@@ -40,6 +40,7 @@ class EndPoint{
   static String getGraderInfo=baseUrl+"api/Admin/gradersInformation";
   static String rateGraderPerformance=baseUrl+"api/Faculty/RateGraderPerformance";
   static String getMeritBaseShortListedStudent=baseUrl+"api/Admin/GetMeritBaseShortListedStudent";
+  static String getPendingMeritBaseShortListedStudent=baseUrl+"api/Admin/GetPendingMeritBaseShortListedStudent";
   static String removeGrader=baseUrl+"api/Admin/Removegrader";
   static String canRateGrader=baseUrl+"api/Faculty/CanRateGrader";
   static String addSession=baseUrl+"api/Admin/AddSession";
@@ -51,5 +52,7 @@ class EndPoint{
   static String rejectMeritBaseApplication=baseUrl+"api/Admin/RejectMeritBaseApplication";
   static String removeCommitteeMember=baseUrl+"api/Admin/removeCommitteeMember";
   static String previousApplicationStatus=baseUrl+"api/Admin/previousApplicationStatus";
+  static String getMeritBaseRejectApplication=baseUrl+"api/Admin/MeritBaseRejectedApplication";
+  static String accpetMeritBaseApplication=baseUrl+"api/Student/decideMeritBaseApplication";
   //MeritBaseAmmount
 }

@@ -213,6 +213,13 @@ class AdminApiHandler {
     return response;
   }
 
+  Future<http.Response> getPendingMeritBaseShortListed() async {
+    String apiEndPoint = EndPoint.getPendingMeritBaseShortListedStudent;
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.get(uri);
+    return response;
+  }
+
   Future<http.Response> getPreviousApplicationStatus(int id)async{
     String apiEndPoint = EndPoint.previousApplicationStatus+"?id=$id";
     Uri uri = Uri.parse(apiEndPoint);
@@ -267,6 +274,12 @@ class AdminApiHandler {
     return response;
   }
 
+  Future<http.Response> getMeritBaseRejectedApplication() async {
+    String apiEndPoint = EndPoint.getMeritBaseRejectApplication;
+    Uri uri = Uri.parse(apiEndPoint);
+    var response = await http.get(uri);
+    return response;
+  }
 
   Future<int> rejectMeritBaseApplication(int studentId) async {
     String apiEndPoint = EndPoint.rejectMeritBaseApplication+"?studentId=$studentId";

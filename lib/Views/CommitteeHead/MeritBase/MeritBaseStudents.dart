@@ -31,7 +31,7 @@ class _MeritBaseStudentState extends State<MeritBaseStudent> {
   Future<List<Student>> getMeritBaseShortListed()async{
     List<Student> list=[];
 
-    Response res=await AdminApiHandler().getMeritBaseShortListed();
+    Response res=await AdminApiHandler().getPendingMeritBaseShortListed();
     if(res.statusCode==200)
     {
       dynamic obj=jsonDecode(res.body);

@@ -12,8 +12,10 @@ class Student {
   String profileImage;
   double? prevCgpa;
   String? amount;
+  String? rating;
   Student({
     this.amount,
+    this.rating,
       required this.aridNo,
     this.position,
     this.prevCgpa,

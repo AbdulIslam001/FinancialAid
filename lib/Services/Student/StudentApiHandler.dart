@@ -60,6 +60,16 @@ class StudentApiHandle {
     return response;
   }
 
+  Future<int> decideMeritBaseApplication(String status)async{
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    String id=sp.getInt('id').toString();
+    String apiEndPoint=EndPoint.accpetMeritBaseApplication+"?id=$id&status=$status";
+    Uri uri = Uri.parse(apiEndPoint);
+    var response=await http.post(uri);
+    return response.statusCode;
+  }
+
+
   Future<http.Response> applicationStatus()async{
     SharedPreferences sp = await SharedPreferences.getInstance();
     String apiEndPoint =

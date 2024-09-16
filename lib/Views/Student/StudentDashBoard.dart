@@ -63,6 +63,7 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
   }
 
   String amountApproved="";
+  bool isTrue=false;
 
   Future<void> getApplicationStatus() async {
     Response res = await StudentApiHandle().applicationStatus();
@@ -73,6 +74,9 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
         obj["applicationStatus"].toString() != null
             ? applicationStatus = obj["applicationStatus"].toString()
             : applicationStatus = 'Not Submitted';
+        if(obj["applicationStatus"].toString().toLowerCase()=="pending" && obj["aidtype"].toString().toLowerCase()=="meritbase"){
+          isTrue=true;
+        }
       } else {
         applicationStatus = 'Not Submitted';
       }
@@ -117,6 +121,11 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
               child: FutureBuilder(
                 future: getStudentData(),
                 builder: (context, snapshot) {
+/*                  isTrue?showDialog(context: context, builder: (context) {
+                    return const AlertDialog(
+                      title: Text("isTrue"),
+                    );
+                  },):const Text("nothing");*/
                   return CircleAvatar(
                     backgroundColor: Colors.transparent,
                     radius: CustomSize().customHeight(context) / 13,
@@ -241,7 +250,8 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                 child: Center(child: Text(session,style: TextStyle(fontSize: CustomSize().customHeight(context)/40,fontStyle: FontStyle.italic,),)),
               );
             },),*/
-            FutureBuilder(future: getApplicationStatus(),
+            FutureBuilder(
+              future: getApplicationStatus(),
               builder: (context, snapshot) {
               return FutureBuilder(
                 future: getSession(),
@@ -251,10 +261,60 @@ class _StudentDashBoardState extends State<StudentDashBoard> {
                     builder: (context, snapshot) {
                       return Consumer<StudentInfoViewModel>(
                         builder: (context, value, child) {
-                          return InfoContainer(
-                            amount: amountApproved,
-                              session: session,
-                              name: name, aridNo: aridNo, status: applicationStatus);
+                          return Column(
+                            children: [
+                              InfoContainer(
+                                amount: amountApproved,
+                                  session: session,
+                                  name: name, aridNo: aridNo, status: applicationStatus),
+                              isTrue?Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                      onTap: ()async{
+                                        int code=await StudentApiHandle().decideMeritBaseApplication("Rejected");
+                                        if(context.mounted)
+                                        {
+                                          if(code==200){
+                                            isTrue=false;
+                                            setState(() {
+
+                                            });
+                                          }else if(code==404)
+                                          {
+                                            Utilis.flushBarMessage("Not Found", context);
+                                          }else{
+                                            Utilis.flushBarMessage("Error try again later", context);
+                                          }
+                                        }
+                                      },
+                                      child:const Text("Reject",style: TextStyle(color: Colors.red),)),
+                                  SizedBox(
+                                    width: CustomSize().customWidth(context)/30,
+                                  ),
+                                  GestureDetector(
+                                      onTap: ()async{
+                                        int code=await StudentApiHandle().decideMeritBaseApplication("Accepted");
+                                        if(context.mounted)
+                                        {
+                                          if(code==200){
+                                            isTrue=false;
+                                            setState(() {
+
+                                            });
+                                          }else if(code==404)
+                                          {
+                                            Utilis.flushBarMessage("Not Found", context);
+                                          }else{
+                                            Utilis.flushBarMessage("Error try again later", context);
+                                          }
+                                        }
+                                      },
+                                      child:const Text("Accept",style: TextStyle(color: Colors.green),))
+                                ],
+                              ):Text(""),
+                            ],
+                          );
                         },
                       );
                     },

@@ -272,7 +272,7 @@ class _CommitteeHeadDashBoardState extends State<CommitteeHeadDashBoard> {
                 OptionContainer(
                     onTap: () async{
                       bool isTrue=false;
-                      Response res=await AdminApiHandler().getMeritBaseShortListed();
+                      Response res=await AdminApiHandler().getPendingMeritBaseShortListed();
                       if(context.mounted)
                       {
                         if(res.statusCode==200)

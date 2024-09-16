@@ -9,6 +9,7 @@ import 'package:financial_aid/Utilis/FlushBar.dart';
 import 'package:financial_aid/Utilis/Routes/RouteName.dart';
 import 'package:financial_aid/Views/CommitteeHead/Add/Faculty/FacultyRecord.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
 
 import '../../../Components/FacultyInfo.dart';
@@ -53,6 +54,7 @@ class _GradersState extends State<Graders> {
       dynamic obj = jsonDecode(res.body);
       for (var i in obj) {
         Student s = Student(
+          rating: i["AverageRating"].toString(),
             aridNo: i["arid_no"].toString(),
             name: i["name"].toString(),
             semester: int.parse(i["semester"].toString()),
@@ -69,6 +71,7 @@ class _GradersState extends State<Graders> {
     }
     return list;
   }
+  double rating=0.0;
 
   @override
   final TextEditingController _search = TextEditingController();
@@ -123,139 +126,157 @@ class _GradersState extends State<Graders> {
                   return ListView.builder(
                     itemCount: filteredList.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          radius: CustomSize().customHeight(context) / 30,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                CustomSize().customHeight(context) / 30),
-                            child: EndPoint.imageUrl +
-                                filteredList[index].profileImage ==
-                                        "${EndPoint.imageUrl}null" ||
-                                    EndPoint.imageUrl +
-                                        filteredList[index].profileImage ==
-                                        EndPoint.imageUrl
-                                ? (filteredList[index].gender == 'M'
-                                    ? Image.asset("Assets/male.png")
-                                    : Image.asset("Assets/female.png"))
-                                : Image(
-                                    image: NetworkImage(EndPoint.imageUrl +
-                                        filteredList[index].profileImage),
-                                    width: CustomSize().customHeight(context) /
-                                        12, //CustomSize().customHeight(context)/15
-                                    height:
-                                        CustomSize().customHeight(context) / 12,
-                                    fit: BoxFit.fill,
-                                  ),
+                      /*print(filteredList[index].rating!);
+                      double rating=0.0;
+                      if(filteredList[index].rating==null){
+
+                      }else{
+                        double.parse(filteredList[index].rating.toString());
+                      }*/
+//                      var abc=
+//                      var rating=filteredList[index].rating==null || filteredList[index].rating==0.toString()?0.0:double.parse(filteredList[index].rating!);
+                      print(filteredList[index].rating);
+                      return Container(
+                        color: filteredList[index].rating !="0" && filteredList[index].rating == "3.0" || filteredList[index].rating == "2.0" || filteredList[index].rating == "1.0" ?Colors.red:Colors.transparent,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: CustomSize().customHeight(context) / 30,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  CustomSize().customHeight(context) / 30),
+                              child: EndPoint.imageUrl +
+                                  filteredList[index].profileImage ==
+                                          "${EndPoint.imageUrl}null" ||
+                                      EndPoint.imageUrl +
+                                          filteredList[index].profileImage ==
+                                          EndPoint.imageUrl
+                                  ? (filteredList[index].gender == 'M'
+                                      ? Image.asset("Assets/male.png")
+                                      : Image.asset("Assets/female.png"))
+                                  : Image(
+                                      image: NetworkImage(EndPoint.imageUrl +
+                                          filteredList[index].profileImage),
+                                      width: CustomSize().customHeight(context) /
+                                          12, //CustomSize().customHeight(context)/15
+                                      height:
+                                          CustomSize().customHeight(context) / 12,
+                                      fit: BoxFit.fill,
+                                    ),
+                            ),
                           ),
-                        ),
-                        title: Text(filteredList[index].name),
-                        subtitle: Text(filteredList[index].aridNo),
-                        trailing: GestureDetector(
-                          onTap: () async{
-                            List<FacultyModel> list=[];
-                            Response res=await AdminApiHandler().getAllFaculty();
-                            if(res.statusCode==200 && context.mounted){
-                              dynamic obj=jsonDecode(res.body);
-                              FacultyModel f;
-                              for(var i in obj){
-                                f =FacultyModel(
-                                    count: i["GraderCount"].toString(),
-                                    name: i["name"], profileImage: i["profilePic"],id: i["facultyId"],contact: i["contactNo"]);
-                                list.add(f);
-                              }
-                              if(context.mounted){
-                                showDialog(
-                                  context: context, builder: (context) {
-                                  return SingleChildScrollView(
-                                    child: AlertDialog(
-                                      title: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                  onTap:(){
-                                                    Navigator.pop(context);
+                          title: Text(filteredList[index].name),
+                          subtitle: Column(
+                            children: [
+                              Text(filteredList[index].aridNo),
+                              Text(filteredList[index].rating.toString()),
+                            ],
+                          ),
+                          trailing: GestureDetector(
+                            onTap: () async{
+                              List<FacultyModel> list=[];
+                              Response res=await AdminApiHandler().getAllFaculty();
+                              if(res.statusCode==200 && context.mounted){
+                                dynamic obj=jsonDecode(res.body);
+                                FacultyModel f;
+                                for(var i in obj){
+                                  f =FacultyModel(
+                                      count: i["GraderCount"].toString(),
+                                      name: i["name"], profileImage: i["profilePic"],id: i["facultyId"],contact: i["contactNo"]);
+                                  list.add(f);
+                                }
+                                if(context.mounted){
+                                  showDialog(
+                                    context: context, builder: (context) {
+                                    return SingleChildScrollView(
+                                      child: AlertDialog(
+                                        title: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                GestureDetector(
+                                                    onTap:(){
+                                                      Navigator.pop(context);
 //                                                Navigator.pushNamed(context, RouteName.graders);
-                                                  },
-                                                  child:const Icon(Icons.arrow_back_ios_new))
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
-                                            child: TextFormField(
-                                              onChanged: (val){
-                                              },
-                                              controller: _search1,
-                                              decoration: InputDecoration(
-                                                hintText: "search",
-                                                labelText: "search",
-                                                suffixIcon:Icon(Icons.search,size: CustomSize().customWidth(context)/10),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                                    },
+                                                    child:const Icon(Icons.arrow_back_ios_new))
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(left:CustomSize().customWidth(context)/20,right: CustomSize().customWidth(context)/20,top: CustomSize().customWidth(context)/30),
+                                              child: TextFormField(
+                                                onChanged: (val){
+                                                },
+                                                controller: _search1,
+                                                decoration: InputDecoration(
+                                                  hintText: "search",
+                                                  labelText: "search",
+                                                  suffixIcon:Icon(Icons.search,size: CustomSize().customWidth(context)/10),
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.circular(CustomSize().customHeight(context)/60),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            height: CustomSize().customHeight(context)/2.5,
-                                            child: Column(
-                                              children: [
-                                                Expanded(
-                                                  child:  ListView.builder(
-                                                    itemCount: list.length,
-                                                    itemBuilder: (context, index1) {
-                                                      if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
-                                                        return GestureDetector(
-                                                            onTap: ()async{
-                                                              int code=await AdminApiHandler().assignGrader(snapshot.data![index].studentId, list[index1].id);
-                                                              if(context.mounted){
-                                                                if(code==200 ){
-                                                                  Navigator.pop(context);
-                                                                  setState(() {
-                                                                  });
-                                                                }else{
-                                                                  Utilis.flushBarMessage("error try again", context);
+                                            SizedBox(
+                                              height: CustomSize().customHeight(context)/2.5,
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    child:  ListView.builder(
+                                                      itemCount: list.length,
+                                                      itemBuilder: (context, index1) {
+                                                        if(snapshot.data![index].name.toLowerCase().contains(_search.text.toLowerCase())){
+                                                          return GestureDetector(
+                                                              onTap: ()async{
+                                                                int code=await AdminApiHandler().assignGrader(snapshot.data![index].studentId, list[index1].id);
+                                                                if(context.mounted){
+                                                                  if(code==200 ){
+                                                                    Navigator.pop(context);
+                                                                    setState(() {
+                                                                    });
+                                                                  }else{
+                                                                    Utilis.flushBarMessage("error try again", context);
+                                                                  }
                                                                 }
-                                                              }
-                                                            },
-                                                            child: FacultyInfo(
-                                                                isShow: true,
-                                                                count: list[index1].count,
-                                                                name: list[index1].name, image: list[index1].profileImage));
-                                                      }
-                                                    },),
-                                                ),
-                                              ],
+                                                              },
+                                                              child: FacultyInfo(
+                                                                  isShow: true,
+                                                                  count: list[index1].count,
+                                                                  name: list[index1].name, image: list[index1].profileImage));
+                                                        }
+                                                      },),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },);
+                                    );
+                                  },);
+                                }
                               }
-                            }
 /*                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return FacultyRecord(name: snapshot.data![index].name,isShow: true,studentId:snapshot.data![index].studentId.toString(),);
-                            },));*/
-                          },
-                          child: Container(
-                            height: CustomSize().customHeight(context) / 20,
-                            width: CustomSize().customWidth(context) / 6,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  CustomSize().customHeight(context) / 90),
-                              color: CustomColor().customButtonColor(),
-                            ),
-                            child: Center(
-                              child: Text("Assign",
-                                  style: TextStyle(
-                                    color: CustomColor().customWhiteColor(),
-                                    fontSize:
-                                        CustomSize().customHeight(context) / 50,
-                                  )),
+                                return FacultyRecord(name: snapshot.data![index].name,isShow: true,studentId:snapshot.data![index].studentId.toString(),);
+                              },));*/
+                            },
+                            child: Container(
+                              height: CustomSize().customHeight(context) / 20,
+                              width: CustomSize().customWidth(context) / 6,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    CustomSize().customHeight(context) / 90),
+                                color: CustomColor().customButtonColor(),
+                              ),
+                              child: Center(
+                                child: Text("Assign",
+                                    style: TextStyle(
+                                      color: CustomColor().customWhiteColor(),
+                                      fontSize:
+                                          CustomSize().customHeight(context) / 50,
+                                    )),
+                              ),
                             ),
                           ),
                         ),

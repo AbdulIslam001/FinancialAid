@@ -35,8 +35,8 @@ class _AllocationDetailsState extends State<AllocationDetails> {
       int mGirl=0;
       int mBoy=0;
       int totalMeritBase=0;
-      int mBoysAmount=0;
-      int mGirlsAmount=0;
+      double mBoysAmount=0;
+      double mGirlsAmount=0;
 /*      Future<List<Application>> acceptedApplication1()async{
         List<Application> applicationList=[];
         Response res=await AdminApiHandler().acceptedApplication();
@@ -262,10 +262,10 @@ class _AllocationDetailsState extends State<AllocationDetails> {
           for(var i in obj){
             if(i["gender"].toString()=="M"){
               mBoy++;
-              mBoysAmount+=int.parse(i["amount"].toString());
+              mBoysAmount+=double.parse(i["amount"].toString());
             }else{
               mGirl++;
-              mGirlsAmount+=int.parse(i["amount"].toString());
+              mGirlsAmount+=double.parse(i["amount"].toString());
             }
 
 //            totalMeritBase+=mGirlsAmount+mBoysAmount;
